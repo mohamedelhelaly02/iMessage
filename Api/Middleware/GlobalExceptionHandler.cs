@@ -21,7 +21,7 @@ public sealed class GlobalExceptionHandler(
         {
             case ValidationException validationException:
                 var errors = validationException.Errors
-                                .Select(x => $"{x.ErrorCode}: {x.ErrorMessage}")
+                                .Select(x => x.ErrorMessage)
                                 .ToList();
 
                 problemDetails.Status =

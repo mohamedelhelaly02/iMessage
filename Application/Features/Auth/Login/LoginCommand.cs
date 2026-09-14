@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Domain.Abstractions;
+using MediatR;
 
 namespace Application.Features.Auth.Login;
 
-internal class LoginCommand
-{
-}
+public sealed record LoginCommand(
+    string Email,
+    string Password) : IRequest<Result<AuthResponse>>;
