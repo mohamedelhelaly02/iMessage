@@ -25,9 +25,9 @@ public static class LoginEndpoint
                .WithTags("Auth")
                .Produces<AuthResponse>(StatusCodes.Status200OK)
                .ProducesProblem(StatusCodes.Status400BadRequest)
-               .ProducesProblem(StatusCodes.Status401Unauthorized)
                .ProducesProblem(StatusCodes.Status500InternalServerError)
-               .ProducesProblem(StatusCodes.Status422UnprocessableEntity);
+               .ProducesProblem(StatusCodes.Status422UnprocessableEntity)
+               .ProducesProblem(StatusCodes.Status401Unauthorized);
         }
     }
 }

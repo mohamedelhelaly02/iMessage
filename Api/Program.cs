@@ -5,6 +5,8 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddOpenApi();
+
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddProblemDetails();
@@ -19,9 +21,13 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    app.MapOpenApi();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseApiKeyMiddleware();
 
 app.UseExceptionHandler(o => { });
 

@@ -27,7 +27,8 @@ public static class RegisterEndpoint
                .ProducesProblem(StatusCodes.Status400BadRequest)
                .ProducesProblem(StatusCodes.Status409Conflict)
                .ProducesProblem(StatusCodes.Status500InternalServerError)
-               .ProducesProblem(StatusCodes.Status422UnprocessableEntity);
+               .ProducesProblem(StatusCodes.Status422UnprocessableEntity)
+               .ProducesProblem(StatusCodes.Status401Unauthorized);
         }
     }
 }
