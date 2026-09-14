@@ -5,9 +5,7 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddOpenApi();
-
-builder.Services.AddSwaggerGen();
+builder.Services.AddOpenApiDoc();
 
 builder.Services.AddProblemDetails();
 
@@ -23,8 +21,7 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "iMessage"));
 }
 
 app.UseApiKeyMiddleware();

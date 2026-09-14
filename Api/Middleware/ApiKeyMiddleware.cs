@@ -10,6 +10,12 @@ public sealed class ApiKeyMiddleware(
     private const string ApiKeyHeaderName = "X-API-KEY";
     public async Task InvokeAsync(HttpContext context)
     {
+        if (context.Request.Path.StartsWithSegments("/openapi"))
+        {
+            await next(context);
+            return;
+        }
+
         // 1. Get API Key from request header
         if (!context.Request.Headers.TryGetValue(
                 ApiKeyHeaderName,
@@ -25,7 +31,7 @@ public sealed class ApiKeyMiddleware(
         }
 
         // 2. Get configured API Key
-        var configuredApiKey = configuration["ApiKey"];
+        var configuredApiKey = configuration["Authentication:ApiKey"];
 
         if (string.IsNullOrWhiteSpace(configuredApiKey))
         {
