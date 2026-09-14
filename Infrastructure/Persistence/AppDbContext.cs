@@ -1,0 +1,25 @@
+﻿using Domain.Entities;
+using Infrastructure.Persistence.Configurations;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+
+namespace Infrastructure.Persistence;
+
+public sealed class AppDbContext(
+    DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser>(options)
+{
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        base.OnConfiguring(optionsBuilder);
+
+        optionsBuilder.ConfigureWarnings(cfg => cfg.Ignore(RelationalEventId.PendingModelChangesWarning));
+    }
+
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        base.OnModelCreating(builder);
+
+        builder.ApplyConfigurationsFromAssembly(typeof(UserConfiguration).Assembly);
+    }
+}
