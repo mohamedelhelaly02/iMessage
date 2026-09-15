@@ -7,8 +7,8 @@ namespace Domain.Entities;
 public sealed class ConversationParticipant : Entity
 {
     #region Properties
-    public Guid UserId { get; private set; }
-    public Guid ConversationId { get; private set; }
+    public string UserId { get; private set; }
+    public string ConversationId { get; private set; }
     public ParticipantRole Role { get; private set; }
     public DateTime JoinedAtUtc { get; private set; }
     #endregion
@@ -17,11 +17,11 @@ public sealed class ConversationParticipant : Entity
     private ConversationParticipant() { }
 
     private ConversationParticipant(
-        Guid conversationId,
-        Guid userId,
+        string conversationId,
+        string userId,
         ParticipantRole role)
     {
-        Id = Guid.NewGuid();
+        Id = Guid.NewGuid().ToString();
         ConversationId = conversationId;
         UserId = userId;
         Role = role;
@@ -37,8 +37,8 @@ public sealed class ConversationParticipant : Entity
 
     #region Methods
     public static Result<ConversationParticipant> Create(
-        Guid conversationId,
-        Guid userId,
+        string conversationId,
+        string userId,
         ParticipantRole role)
     {
         return Result<ConversationParticipant>.Success(new ConversationParticipant(conversationId, userId, role));

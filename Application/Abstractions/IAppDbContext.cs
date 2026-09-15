@@ -1,0 +1,11 @@
+﻿using Domain.Entities;
+using Microsoft.EntityFrameworkCore;
+
+namespace Application.Abstractions;
+
+public interface IAppDbContext
+{
+    DbSet<Conversation> Conversations { get; }
+    Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
+
+}

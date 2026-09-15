@@ -13,7 +13,7 @@ internal sealed class ConversationConfiguration : IEntityTypeConfiguration<Conve
 
         builder.Property(x => x.Id).ValueGeneratedNever();
 
-        builder.Property(x => x.Title).IsRequired();
+        builder.Property(x => x.Title).IsRequired(false);
 
         builder.Property(x => x.ConversationType)
             .HasConversion(
@@ -23,11 +23,15 @@ internal sealed class ConversationConfiguration : IEntityTypeConfiguration<Conve
 
 
         builder.HasOne(x => x.CreatedBy)
-            .WithMany()
+            .WithMany(x => x.Conversations)
             .HasForeignKey(x => x.CreatedByUserId)
-            .OnDelete(DeleteBehavior.Cascade)
-            .IsRequired();
+            .OnDelete(DeleteBehavior.Restrict);
 
-        builder.ToTable("Conversation");
+        builder.HasMany(x => x.Participants)
+            .WithOne(x => x.Conversation)
+            .HasForeignKey(x => x.ConversationId)
+            .OnDelete(DeleteBehavior.Cascade);
+
+        builder.ToTable("Conversations");
     }
 }

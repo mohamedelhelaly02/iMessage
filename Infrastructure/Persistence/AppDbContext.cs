@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Abstractions;
+using Domain.Entities;
 using Infrastructure.Persistence.Configurations;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -7,11 +8,10 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 
 namespace Infrastructure.Persistence;
 
-public sealed class AppDbContext(
-    DbContextOptions<AppDbContext> options) : IdentityDbContext<ApplicationUser, IdentityRole<Guid>, Guid>(options)
+public sealed class AppDbContext(DbContextOptions<AppDbContext> options)
+    : IdentityDbContext<ApplicationUser, IdentityRole<string>, string>(options), IAppDbContext
 {
     public DbSet<Conversation> Conversations => Set<Conversation>();
-
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

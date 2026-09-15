@@ -1,52 +1,88 @@
 ﻿using Domain.Abstractions;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Extensions;
 
 public static class ResultExtensions
 {
-    public static IResult ToApiResponse<T>(this Result<T> result)
+    public static IActionResult ToApiResponse<T>(this Result<T> result)
     {
         if (result.IsSuccess)
-            return TypedResults.Ok(result.Value);
+            return new OkObjectResult(result.Value);
 
         if (result.Error is null)
         {
-            return TypedResults.Problem(
-                statusCode: StatusCodes.Status500InternalServerError,
-                title: "An unexpected error occurred.");
+            return new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status500InternalServerError,
+                Title = "An unexpected error occurred."
+            })
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
         }
 
         return result.Error.Type switch
         {
-            ErrorType.Validation => TypedResults.Problem(
-                statusCode: StatusCodes.Status400BadRequest,
-                title: "Validation failed.",
-                detail: result.Error.Message),
+            ErrorType.Validation => new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status400BadRequest,
+                Title = "Validation failed.",
+                Detail = result.Error.Message
+            })
+            {
+                StatusCode = StatusCodes.Status400BadRequest
+            },
 
-            ErrorType.Conflict => Results.Problem(
-                statusCode: StatusCodes.Status409Conflict,
-                title: "Conflict.",
-                detail: result.Error.Message),
+            ErrorType.Conflict => new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status409Conflict,
+                Title = "Conflict.",
+                Detail = result.Error.Message
+            })
+            {
+                StatusCode = StatusCodes.Status409Conflict
+            },
 
-            ErrorType.NotFound => TypedResults.Problem(
-                statusCode: StatusCodes.Status404NotFound,
-                title: "Resource not found.",
-                detail: result.Error.Message),
+            ErrorType.NotFound => new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status404NotFound,
+                Title = "Resource not found.",
+                Detail = result.Error.Message
+            })
+            {
+                StatusCode = StatusCodes.Status404NotFound
+            },
 
-            ErrorType.Unauthorized => TypedResults.Problem(
-                statusCode: StatusCodes.Status401Unauthorized,
-                title: "Unauthorized.",
-                detail: result.Error.Message),
+            ErrorType.Unauthorized => new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status401Unauthorized,
+                Title = "Unauthorized.",
+                Detail = result.Error.Message
+            })
+            {
+                StatusCode = StatusCodes.Status401Unauthorized
+            },
 
-            ErrorType.Forbidden => TypedResults.Problem(
-                statusCode: StatusCodes.Status403Forbidden,
-                title: "Forbidden.",
-                detail: result.Error.Message),
+            ErrorType.Forbidden => new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status403Forbidden,
+                Title = "Forbidden.",
+                Detail = result.Error.Message
+            })
+            {
+                StatusCode = StatusCodes.Status403Forbidden
+            },
 
-            _ => TypedResults.Problem(
-                statusCode: StatusCodes.Status500InternalServerError,
-                title: "An unexpected error occurred.",
-                detail: result.Error.Message)
+            _ => new ObjectResult(new ProblemDetails
+            {
+                Status = StatusCodes.Status500InternalServerError,
+                Title = "An unexpected error occurred.",
+                Detail = result.Error.Message
+            })
+            {
+                StatusCode = StatusCodes.Status500InternalServerError
+            }
         };
     }
 }

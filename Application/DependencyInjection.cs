@@ -7,19 +7,22 @@ namespace Application
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        extension(IServiceCollection services)
         {
-            var assembly = typeof(RegisterCommand).Assembly;
-
-            services.AddValidatorsFromAssembly(assembly);
-
-            services.AddMediatR(cfg =>
+            public IServiceCollection AddApplication()
             {
-                cfg.RegisterServicesFromAssembly(assembly);
-                cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-            });
+                var assembly = typeof(RegisterCommand).Assembly;
 
-            return services;
+                services.AddValidatorsFromAssembly(assembly);
+
+                services.AddMediatR(cfg =>
+                {
+                    cfg.RegisterServicesFromAssembly(assembly);
+                    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
+                });
+
+                return services;
+            }
         }
     }
 }

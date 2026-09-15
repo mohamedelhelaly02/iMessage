@@ -4,8 +4,7 @@ using System.Security.Claims;
 
 namespace Infrastructure.Identity;
 
-internal sealed class CurrentUserService(
-    IHttpContextAccessor accessor) : ICurrentUserService
+internal sealed class CurrentUserService(IHttpContextAccessor accessor) : ICurrentUserService
 {
     public string GetUserId()
     {

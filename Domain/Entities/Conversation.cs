@@ -11,7 +11,7 @@ public sealed class Conversation : Entity
 
     public ConversationType ConversationType { get; private set; }
     public string? Title { get; private set; }
-    public Guid CreatedByUserId { get; private set; }
+    public string CreatedByUserId { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? LastMessageAtUtc { get; private set; }
     #endregion
@@ -22,9 +22,9 @@ public sealed class Conversation : Entity
     private Conversation(
         ConversationType type,
         string? title,
-        Guid createdByUserId)
+        string createdByUserId)
     {
-        Id = Guid.NewGuid();
+        Id = Guid.NewGuid().ToString();
         ConversationType = type;
         CreatedByUserId = createdByUserId;
         Title = title;
@@ -34,7 +34,7 @@ public sealed class Conversation : Entity
     #endregion
 
     #region Methods
-    public static Result<Conversation> CreatePrivate(Guid senderId, Guid otherUserId)
+    public static Result<Conversation> CreatePrivate(string senderId, string otherUserId)
     {
         if (senderId == otherUserId)
             return Result<Conversation>.Failure(new Error("", "Can Not Create Chat With The Same User", ErrorType.Failure));
@@ -52,9 +52,9 @@ public sealed class Conversation : Entity
     }
 
     public static Result<Conversation> CreateGroup(
-        Guid ownerId,
+        string ownerId,
         string title,
-        IEnumerable<Guid> memberIds)
+        IEnumerable<string> memberIds)
     {
         var trimmedTitle = title?.Trim() ?? string.Empty;
 
@@ -71,7 +71,7 @@ public sealed class Conversation : Entity
         return Result<Conversation>.Success(conversation);
     }
 
-    public Result AddParticipant(Guid userId, ParticipantRole role = ParticipantRole.Member)
+    public Result AddParticipant(string userId, ParticipantRole role = ParticipantRole.Member)
     {
         if (ConversationType == ConversationType.Private && Participants.Count >= 2)
             return Result.Failure(new Error("", "Can not add members to private conversation", ErrorType.Failure));

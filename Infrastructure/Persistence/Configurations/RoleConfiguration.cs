@@ -4,20 +4,20 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistence.Configurations;
 
-internal sealed class RoleConfiguration : IEntityTypeConfiguration<IdentityRole<Guid>>
+internal sealed class RoleConfiguration : IEntityTypeConfiguration<IdentityRole<string>>
 {
-    public void Configure(EntityTypeBuilder<IdentityRole<Guid>> builder)
+    public void Configure(EntityTypeBuilder<IdentityRole<string>> builder)
     {
         builder.HasData([
-            new IdentityRole<Guid>
+            new IdentityRole<string>
             {
-                Id = Guid.Parse("25801C14-CBA0-4E74-8F6A-9AA57BA5A57F"),
+                Id = "25801C14-CBA0-4E74-8F6A-9AA57BA5A57F",
                 Name = "User",
                 NormalizedName = "USER"
             },
-            new IdentityRole<Guid>
+            new IdentityRole<string>
             {
-                Id = Guid.Parse("BE3B9D48-68F5-42E3-9371-E7964F96A25D"),
+                Id = "BE3B9D48-68F5-42E3-9371-E7964F96A25D",
                 Name = "Admin",
                 NormalizedName = "ADMIN"
             }

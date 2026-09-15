@@ -6,6 +6,10 @@ using Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllers();
+
+builder.Services.AddEndpointsApiExplorer();
+
 builder.Services.AddOpenApiDoc();
 
 builder.Services.AddProblemDetails();
@@ -52,7 +56,7 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-app.MapEndpoints();
+app.MapControllers();
 
 app.MapHub<ChatHub>("/hubs/chat");
 

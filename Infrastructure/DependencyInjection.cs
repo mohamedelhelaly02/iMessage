@@ -25,29 +25,21 @@ namespace Infrastructure
 
                 services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
 
-                var jwtSettings = new JwtSettings();
-
-                configuration.GetSection(nameof(JwtSettings)).Bind(jwtSettings);
-
-                services.AddSingleton(jwtSettings);
-
-                services.AddAuthentication(
-                    options =>
-                    {
-                        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                        options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                    })
+                services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options =>
                     {
                         options.SaveToken = true;
-                        options.TokenValidationParameters = new()
+
+                        options.TokenValidationParameters = new TokenValidationParameters
                         {
                             ValidateIssuer = true,
                             ValidateAudience = true,
-                            ValidIssuer = jwtSettings.Issuer,
-                            ValidAudience = jwtSettings.Audience,
-                            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Key)),
                             ValidateLifetime = true,
+                            ValidIssuer = configuration["JwtSettings:Issuer"],
+                            ValidAudience = configuration["JwtSettings:Audience"],
+                            IssuerSigningKey = new SymmetricSecurityKey(
+                                Encoding.UTF8.GetBytes(
+                                    configuration.GetValue<string>("JwtSettings:Key")!)),
                             ClockSkew = TimeSpan.Zero
                         };
 
@@ -57,25 +49,14 @@ namespace Infrastructure
                             {
                                 var path = context.HttpContext.Request.Path;
 
-                                if (!path.StartsWithSegments("/hubs"))
-                                    return Task.CompletedTask;
+                                if (path.StartsWithSegments("/hubs"))
+                                {
+                                    var accessToken = context.Request.Query["access_token"];
 
-                                var accessToken = context.Request.Query["access_token"];
-                                if (!string.IsNullOrEmpty(accessToken))
-                                    context.Token = accessToken;
+                                    if (!string.IsNullOrEmpty(accessToken))
+                                        context.Token = accessToken;
+                                }
 
-                                return Task.CompletedTask;
-                            },
-
-                            OnAuthenticationFailed = context =>
-                            {
-                                Console.WriteLine($"[JWT] Auth failed: {context.Exception.GetType().Name} - {context.Exception.Message}");
-                                return Task.CompletedTask;
-                            },
-
-                            OnTokenValidated = context =>
-                            {
-                                Console.WriteLine($"[JWT] Token validated for path: {context.HttpContext.Request.Path}");
                                 return Task.CompletedTask;
                             }
                         };
@@ -83,7 +64,7 @@ namespace Infrastructure
 
                 services.AddAuthorization();
 
-                services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+                services.AddIdentity<ApplicationUser, IdentityRole<string>>(options =>
                 {
                     options.Password.RequiredLength = 8;
                     options.Password.RequireNonAlphanumeric = true;
@@ -98,6 +79,7 @@ namespace Infrastructure
 
                 services.AddScoped<IJwtTokenGenerator, JwtTokenGenerator>();
                 services.AddScoped<ICurrentUserService, CurrentUserService>();
+                services.AddScoped<IAppDbContext>(sp => sp.GetRequiredService<AppDbContext>());
 
                 return services;
             }

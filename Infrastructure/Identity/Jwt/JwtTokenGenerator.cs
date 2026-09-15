@@ -18,34 +18,38 @@ internal sealed class JwtTokenGenerator(
 
     public async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
     {
-        var userClaims = await userManager.GetClaimsAsync(user);
         var userRoles = await userManager.GetRolesAsync(user);
-
-        var roleClaims = userRoles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
 
         var claims = new List<Claim>
         {
-            new(JwtRegisteredClaimNames.Sub, user.UserName ?? string.Empty),
-            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new(ClaimTypes.Name, user.DisplayName)
+            new(ClaimTypes.Name, user.UserName ?? string.Empty),
+            new(ClaimTypes.Email, user.Email ?? string.Empty)
         };
 
-        claims.AddRange(roleClaims);
-        claims.AddRange(userClaims);
+        claims.AddRange(
+            userRoles.Select(role =>
+                new Claim(ClaimTypes.Role, role))
+        );
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        var key = new SymmetricSecurityKey(
+            Encoding.UTF8.GetBytes(_jwtSettings.Key)
+        );
 
-        var signingCredentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+        var credentials = new SigningCredentials(
+            key,
+            SecurityAlgorithms.HmacSha256
+        );
 
-        var jwtSecurityToken = new JwtSecurityToken(
+        var token = new JwtSecurityToken(
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
-            claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.AccessTokenExpirationInMins),
-            signingCredentials: signingCredentials);
+            claims: claims,
+            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes),
+            signingCredentials: credentials
+        );
 
-        return _jwtSecurityTokenHandler.WriteToken(jwtSecurityToken);
+        return _jwtSecurityTokenHandler.WriteToken(token);
     }
 }
