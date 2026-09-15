@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -15,7 +17,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -29,7 +31,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     DisplayName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     ProfilePictureUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -58,7 +60,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -79,7 +81,7 @@ namespace Infrastructure.Persistence.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
@@ -101,7 +103,7 @@ namespace Infrastructure.Persistence.Migrations
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -118,8 +120,8 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -142,7 +144,7 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
@@ -156,6 +158,70 @@ namespace Infrastructure.Persistence.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Conversation",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConversationType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedByUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    LastMessageAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    ApplicationUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Conversation", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Conversation_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Conversation_AspNetUsers_CreatedByUserId",
+                        column: x => x.CreatedByUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ConversationParticipant",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ConversationId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Role = table.Column<int>(type: "int", nullable: false),
+                    JoinedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ConversationParticipant", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ConversationParticipant_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_ConversationParticipant_Conversation_ConversationId",
+                        column: x => x.ConversationId,
+                        principalTable: "Conversation",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.InsertData(
+                table: "AspNetRoles",
+                columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
+                values: new object[,]
+                {
+                    { new Guid("25801c14-cba0-4e74-8f6a-9aa57ba5a57f"), "25c4c9b4-4123-43fd-94ba-94783e6a9a79", "User", "USER" },
+                    { new Guid("be3b9d48-68f5-42e3-9371-e7964f96a25d"), "b28ec079-ba32-4070-b358-a367ef662204", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -201,6 +267,26 @@ namespace Infrastructure.Persistence.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversation_ApplicationUserId",
+                table: "Conversation",
+                column: "ApplicationUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Conversation_CreatedByUserId",
+                table: "Conversation",
+                column: "CreatedByUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConversationParticipant_ConversationId",
+                table: "ConversationParticipant",
+                column: "ConversationId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ConversationParticipant_UserId",
+                table: "ConversationParticipant",
+                column: "UserId");
         }
 
         /// <inheritdoc />
@@ -222,7 +308,13 @@ namespace Infrastructure.Persistence.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ConversationParticipant");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "Conversation");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

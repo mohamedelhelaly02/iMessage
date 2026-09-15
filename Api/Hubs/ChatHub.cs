@@ -23,4 +23,9 @@ internal sealed class ChatHub(ILogger<ChatHub> logger) : Hub
         return Task.CompletedTask;
     }
 
+    public async Task NotifyCallerOnline()
+    {
+        await Clients.Caller.SendAsync("ReceiveCallerConnected");
+    }
+
 }

@@ -21,7 +21,7 @@ public sealed class RegisterCommandHandler(
             return Result<AuthResponse>.Failure(new Error(
                 "USER.CONFLICT", "There exists a user with same email address", ErrorType.Conflict));
 
-        var userResult = ApplicationUser.Create(request.DisplayName, request.Email, request.DateOfBirth, request.Gender);
+        var userResult = ApplicationUser.Create(request.DisplayName, request.Email);
 
         if (!userResult.IsSuccess)
             return Result<AuthResponse>.Failure(userResult.Error!);

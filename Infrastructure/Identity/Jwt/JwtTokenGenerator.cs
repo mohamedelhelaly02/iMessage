@@ -1,5 +1,4 @@
 ﻿using Application.Abstractions;
-using Application.Utility;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -29,10 +28,8 @@ internal sealed class JwtTokenGenerator(
             new(JwtRegisteredClaimNames.Sub, user.UserName ?? string.Empty),
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-            new(ClaimTypes.NameIdentifier, user.Id),
-            new(ClaimTypes.Name, user.DisplayName),
-            new(CustomClaims.DateOfBirth, user.DateOfBirth.ToString("yyyy-MM-dd")),
-            new(CustomClaims.Gender, user.Gender.ToString())
+            new(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            new(ClaimTypes.Name, user.DisplayName)
         };
 
         claims.AddRange(roleClaims);
