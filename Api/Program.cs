@@ -1,4 +1,5 @@
 using Api.Extensions;
+using Api.Hubs;
 using Api.Middleware;
 using Application;
 using Infrastructure;
@@ -15,6 +16,20 @@ builder.Services
     .AddInfrastructure(builder.Configuration)
     .AddApplication();
 
+builder.Services.AddSignalR();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("Angular", policy =>
+    {
+        policy
+           .WithOrigins(builder.Configuration["ClientUri"]!)
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowCredentials();
+    });
+});
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -24,7 +39,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "iMessage"));
 }
 
-app.UseApiKeyMiddleware();
+
+app.UseCors("Angular");
 
 app.UseExceptionHandler(o => { });
 
@@ -37,5 +53,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapEndpoints();
+
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.Run();

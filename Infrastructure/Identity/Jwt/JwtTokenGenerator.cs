@@ -10,7 +10,7 @@ using System.Text;
 
 namespace Infrastructure.Identity.Jwt;
 
-public sealed class JwtTokenGenerator(
+internal sealed class JwtTokenGenerator(
     UserManager<ApplicationUser> userManager,
     IOptions<JwtSettings> jwtOptions) : IJwtTokenGenerator
 {
@@ -24,16 +24,19 @@ public sealed class JwtTokenGenerator(
 
         var roleClaims = userRoles.Select(r => new Claim(ClaimTypes.Role, r)).ToList();
 
-        var claims = new[]
+        var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.UserName ?? string.Empty),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
-            new Claim(ClaimTypes.NameIdentifier, user.Id),
-            new Claim(CustomClaims.DisplayName, user.DisplayName),
-            new Claim(CustomClaims.DateOfBirth, user.DateOfBirth.ToString("yyyy-MM-dd")),
-            new Claim(CustomClaims.Gender, user.Gender.ToString())
+            new(JwtRegisteredClaimNames.Sub, user.UserName ?? string.Empty),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(JwtRegisteredClaimNames.Email, user.Email ?? string.Empty),
+            new(ClaimTypes.NameIdentifier, user.Id),
+            new(ClaimTypes.Name, user.DisplayName),
+            new(CustomClaims.DateOfBirth, user.DateOfBirth.ToString("yyyy-MM-dd")),
+            new(CustomClaims.Gender, user.Gender.ToString())
         };
+
+        claims.AddRange(roleClaims);
+        claims.AddRange(userClaims);
 
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Key));
 
