@@ -15,4 +15,4 @@ public sealed record ConversationDto(
     string CreatedByUserId,
     DateTime CreatedAtUtc,
     DateTime? LastMessageAtUtc,
-    HashSet<ConversationParticipantDto> OtherParticipant);
+    ConversationParticipantDto[] Participants);

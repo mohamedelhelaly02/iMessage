@@ -1,5 +1,5 @@
 ﻿using Api.Extensions;
-using Application.Features.Auth;
+using Application.DTO;
 using Application.Features.Auth.Login;
 using Application.Features.Auth.Register;
 using MediatR;
@@ -12,7 +12,7 @@ namespace Api.Controllers;
 public sealed class AuthController(ISender sender) : ControllerBase
 {
     [HttpPost("register")]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
@@ -26,7 +26,7 @@ public sealed class AuthController(ISender sender) : ControllerBase
     }
 
     [HttpPost("login")]
-    [ProducesResponseType(typeof(AuthResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]

@@ -1,6 +1,4 @@
-﻿using Application.DTO;
-using Application.Interfaces;
-using Application.Mapping;
+﻿using Application.Interfaces;
 using Domain.Abstractions;
 using Domain.Entities;
 using Domain.Enums;
@@ -14,9 +12,9 @@ internal sealed class CreatePrivateCommandHandler(
     UserManager<ApplicationUser> userManager,
     ICurrentUserService currentUserService,
     IAppDbContext db)
-    : IRequestHandler<CreatePrivateCommand, Result<ConversationDto>>
+    : IRequestHandler<CreatePrivateCommand, Result<string>>
 {
-    public async Task<Result<ConversationDto>> Handle(
+    public async Task<Result<string>> Handle(
         CreatePrivateCommand request,
         CancellationToken cancellationToken)
     {
@@ -25,25 +23,25 @@ internal sealed class CreatePrivateCommandHandler(
         var otherUser = await userManager.FindByIdAsync(request.OtherUserId);
 
         if (otherUser == null)
-            return Result<ConversationDto>.Failure(UserErrors.NotFound);
+            return Result<string>.Failure(UserErrors.NotFound);
 
         var existedConversation = await db.Conversations
             .AsNoTracking()
             .Include(c => c.Participants)
-            .ThenInclude(p => p.User)
-            .Where(
-                c => c.ConversationType == ConversationType.Private &&
+            .Where(c =>
+                c.ConversationType == ConversationType.Private &&
                 c.Participants.Count == 2 &&
-                (c.Participants.Any(p => p.UserId == userId) || c.Participants.Any(p => p.UserId == request.OtherUserId)))
+                c.Participants.Any(p => p.UserId == userId) &&
+                c.Participants.Any(p => p.UserId == request.OtherUserId))
             .FirstOrDefaultAsync(cancellationToken);
 
         if (existedConversation != null)
-            return Result<ConversationDto>.Success(existedConversation.ToDto());
+            return Result<string>.Success(existedConversation.Id);
 
         var conversationResult = Conversation.CreatePrivate(userId, request.OtherUserId);
 
         if (!conversationResult.IsSuccess)
-            return Result<ConversationDto>.Failure(conversationResult.Error!);
+            return Result<string>.Failure(conversationResult.Error!);
 
         var conversation = conversationResult.Value!;
 
@@ -51,6 +49,6 @@ internal sealed class CreatePrivateCommandHandler(
 
         await db.SaveChangesAsync(cancellationToken);
 
-        return Result<ConversationDto>.Success(conversation.ToDto());
+        return Result<string>.Success(conversation.Id);
     }
 }

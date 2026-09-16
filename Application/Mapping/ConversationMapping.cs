@@ -14,12 +14,12 @@ internal static class ConversationMapping
             conversation.CreatedByUserId,
             conversation.CreatedAtUtc,
             conversation.LastMessageAtUtc,
-            conversation.Participants
-                .Select(p => new ConversationParticipantDto(
+            [.. conversation.Participants.Select(p =>
+                new ConversationParticipantDto(
                     p.UserId,
                     p.User.DisplayName,
                     p.Role,
-                    p.User.ProfilePictureUrl
-                )).ToHashSet());
+                    p.User.ProfilePictureUrl))]
+            );
     }
 }

@@ -1,4 +1,5 @@
-﻿using Application.Interfaces;
+﻿using Application.DTO;
+using Application.Interfaces;
 using Domain.Abstractions;
 using Domain.Entities;
 using MediatR;
@@ -9,29 +10,29 @@ namespace Application.Features.Auth.Register;
 public sealed class RegisterCommandHandler(
     UserManager<ApplicationUser> userManager,
     IJwtTokenGenerator jwtTokenGenerator)
-    : IRequestHandler<RegisterCommand, Result<AuthResponse>>
+    : IRequestHandler<RegisterCommand, Result<AuthResponseDto>>
 {
-    public async Task<Result<AuthResponse>> Handle(
+    public async Task<Result<AuthResponseDto>> Handle(
         RegisterCommand request, CancellationToken cancellationToken)
     {
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
         if (existingUser != null)
-            return Result<AuthResponse>.Failure(UserErrors.EmailAlreadyExists);
+            return Result<AuthResponseDto>.Failure(UserErrors.EmailAlreadyExists);
 
         var userResult = ApplicationUser.Create(request.DisplayName, request.Email);
 
         if (!userResult.IsSuccess)
-            return Result<AuthResponse>.Failure(userResult.Error!);
+            return Result<AuthResponseDto>.Failure(userResult.Error!);
 
-        var user = userResult.Value;
+        ApplicationUser user = userResult.Value!;
 
         var createResult = await userManager.CreateAsync(user!, request.Password);
 
         if (!createResult.Succeeded)
         {
             var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
-            return Result<AuthResponse>.Failure(UserErrors.RegisterationValidation(errors));
+            return Result<AuthResponseDto>.Failure(UserErrors.RegisterationValidation(errors));
         }
 
         var roleResult = await userManager.AddToRoleAsync(user!, "User");
@@ -40,11 +41,19 @@ public sealed class RegisterCommandHandler(
         {
             var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
 
-            return Result<AuthResponse>.Failure(UserErrors.RoleAssignFailed(errors));
+            return Result<AuthResponseDto>.Failure(UserErrors.RoleAssignFailed(errors));
         }
 
         var token = await jwtTokenGenerator.GenerateAccessTokenAsync(user!);
 
-        return Result<AuthResponse>.Success(new AuthResponse(token));
+        var response = new AuthResponseDto(
+            token,
+            new UserDto(
+                user.Id,
+                user.DisplayName,
+                user.UserName!,
+                user.Email!, user.ProfilePictureUrl));
+
+        return Result<AuthResponseDto>.Success(response);
     }
 }

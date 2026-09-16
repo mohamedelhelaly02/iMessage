@@ -3,40 +3,73 @@
 ### Register user as Mohamed
 POST {{Api_HostAddress}}/api/auth/register
 Content-Type: application/json
+
 {
   "displayName": "Mohamed Ehab",
-  "email": "me5260287@gmail.com",
+  "email": "mohamed.ehab@test.com",
   "password": "P@ssword1#",
   "confirmPassword": "P@ssword1#"
 }
+
 ###
 
-### login as Mohamed
-POST {{Api_HostAddress}}/api/auth/login
+### Register user as Ahmed
+POST {{Api_HostAddress}}/api/auth/register
 Content-Type: application/json
-{
-  "email": "me5260287@gmail.com",
-  "password": "P@ssword1#"
-}
-###
 
+{
+  "displayName": "Ahmed Hassan",
+  "email": "ahmed.hassan@test.com",
+  "password": "P@ssword2#",
+  "confirmPassword": "P@ssword2#"
+}
+
+###
 
 ### Register user as Omar
 POST {{Api_HostAddress}}/api/auth/register
 Content-Type: application/json
+
 {
   "displayName": "Omar Mohamed",
-  "email": "omarmohamed123@gmail.com",
-  "password": "P@ssword1#",
-  "confirmPassword": "P@ssword1#"
+  "email": "omar.mohamed@test.com",
+  "password": "P@ssword3#",
+  "confirmPassword": "P@ssword3#"
 }
+
 ###
 
-### Create a private conversation
-POST {{Api_HostAddress}}/api/conversations/private
-Authorization: bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJtZTUyNjAyODciLCJqdGkiOiJlNzQxMDExYy1lMjUzLTRmNWMtYWI3OS0yN2E3MTNlZmNlMDUiLCJlbWFpbCI6Im1lNTI2MDI4N0BnbWFpbC5jb20iLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6ImRlNTZiODZlLTIwMDAtNGE3MS05NTZkLTA4ZGYxMzJiYTg2ZSIsImh0dHA6Ly9zY2hlbWFzLnhtbHNvYXAub3JnL3dzLzIwMDUvMDUvaWRlbnRpdHkvY2xhaW1zL25hbWUiOiJNb2hhbWVkIEVoYWIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJVc2VyIiwiZXhwIjoxNzg5NDg5MDM0LCJpc3MiOiJpTWVzc2FnZS5BcGkiLCJhdWQiOiJpTWVzc2FnZS5DbGllbnQifQ.K-hyVrQJjo7FFa0pAMxuhuHK2n5AiVaf_vcProQsY9o
+### Register user as Youssef
+POST {{Api_HostAddress}}/api/auth/register
 Content-Type: application/json
+
 {
-  "otherUserId": "6028fdf1-8b22-4250-956e-08df132ba86e"
+  "displayName": "Youssef Ali",
+  "email": "youssef.ali@test.com",
+  "password": "P@ssword4#",
+  "confirmPassword": "P@ssword4#"
 }
+
 ###
+
+### Register user as Karim
+POST {{Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "displayName": "Karim Mahmoud",
+  "email": "karim.mahmoud@test.com",
+  "password": "P@ssword5#",
+  "confirmPassword": "P@ssword5#"
+}
+
+### Register user as Hossam
+POST {{Api_HostAddress}}/api/auth/register
+Content-Type: application/json
+
+{
+  "displayName": "Karim Mahmoud",
+  "email": "hossam.mahmoud@test.com",
+  "password": "P@ssword6#",
+  "confirmPassword": "P@ssword6#"
+}

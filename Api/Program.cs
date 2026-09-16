@@ -4,10 +4,17 @@ using Api.Middleware;
 using Application;
 using Infrastructure;
 using Scalar.AspNetCore;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+        options
+        .JsonSerializerOptions
+        .Converters
+        .Add(new JsonStringEnumConverter()));
+
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -17,23 +24,18 @@ builder.Services.AddProblemDetails();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 
-builder.Services
-    .AddInfrastructure(builder.Configuration)
+builder.Services.AddInfrastructure(builder.Configuration)
     .AddApplication();
 
 builder.Services.AddSignalR();
 
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("Angular", policy =>
-    {
-        policy
-           .WithOrigins(builder.Configuration["ClientUri"]!)
-           .AllowAnyHeader()
-           .AllowAnyMethod()
-           .AllowCredentials();
-    });
-});
+    options.AddPolicy("Angular",
+        policy =>
+            policy.WithOrigins(builder.Configuration["ClientUri"]!)
+                .AllowAnyHeader()
+                .AllowAnyMethod()
+                .AllowCredentials()));
 
 var app = builder.Build();
 
@@ -42,18 +44,16 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 
     app.MapScalarApiReference();
-
-    //app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "iMessage"));
 }
 
-
-app.UseCors("Angular");
 
 app.UseExceptionHandler(o => { });
 
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseCors("Angular");
 
 app.UseAuthentication();
 
