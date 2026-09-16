@@ -11,7 +11,7 @@ public sealed class Conversation : Entity
 
     public ConversationType ConversationType { get; private set; }
     public string? Title { get; private set; }
-    public string CreatedByUserId { get; private set; }
+    public string CreatedByUserId { get; private set; } = null!;
     public DateTime CreatedAtUtc { get; private set; }
     public DateTime? LastMessageAtUtc { get; private set; }
     #endregion
@@ -37,7 +37,7 @@ public sealed class Conversation : Entity
     public static Result<Conversation> CreatePrivate(string senderId, string otherUserId)
     {
         if (senderId == otherUserId)
-            return Result<Conversation>.Failure(new Error("", "Can Not Create Chat With The Same User", ErrorType.Failure));
+            return Result<Conversation>.Failure(ConversationErrors.CannotChatWithSelf);
 
         var conversation = new Conversation(
             ConversationType.Private,
@@ -59,7 +59,7 @@ public sealed class Conversation : Entity
         var trimmedTitle = title?.Trim() ?? string.Empty;
 
         if (string.IsNullOrWhiteSpace(trimmedTitle))
-            return Result<Conversation>.Failure(new Error("Conversation.REQUIRED_TITLE", "Title is required", ErrorType.Validation));
+            return Result<Conversation>.Failure(ConversationErrors.TitleRequired);
 
         var conversation = new Conversation(ConversationType.Group, trimmedTitle, ownerId);
         conversation.AddParticipant(ownerId, ParticipantRole.Owner);
@@ -74,17 +74,15 @@ public sealed class Conversation : Entity
     public Result AddParticipant(string userId, ParticipantRole role = ParticipantRole.Member)
     {
         if (ConversationType == ConversationType.Private && Participants.Count >= 2)
-            return Result.Failure(new Error("", "Can not add members to private conversation", ErrorType.Failure));
+            return Result.Failure(ConversationErrors.CannotAddMemberToPrivateConversation);
 
         if (_participants.Any(p => p.UserId == userId))
-            return Result.Failure(new Error("", "User is existed in conversation yet", ErrorType.Conflict));
+            return Result.Failure(ConversationErrors.ParticipantAlreadyExists);
 
         var result = ConversationParticipant.Create(Id, userId, role);
 
         if (result.IsSuccess)
-        {
             _participants.Add(result.Value!);
-        }
 
         return Result.Success();
     }

@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Interfaces;
 using Domain.Abstractions;
 using Domain.Entities;
 using MediatR;
@@ -16,14 +16,14 @@ public sealed class LoginCommandHandler(
         var user = await userManager.FindByEmailAsync(request.Email);
 
         if (user == null)
-            return Result<AuthResponse>.Failure(new Error("USER.CONFLICT", "Invalid Email Or Password", ErrorType.Conflict));
+            return Result<AuthResponse>.Failure(UserErrors.NotFound);
 
         var isPasswordValid = await userManager.CheckPasswordAsync(user, request.Password);
 
         if (!isPasswordValid)
-            return Result<AuthResponse>.Failure(new Error("USER.CONFLICT", "Invalid Email Or Password", ErrorType.Conflict));
+            return Result<AuthResponse>.Failure(UserErrors.InvalidCredentials);
 
-        var token = await jwtTokenGenerator.GenerateJwtTokenAsync(user);
+        var token = await jwtTokenGenerator.GenerateAccessTokenAsync(user);
 
         return Result<AuthResponse>.Success(new AuthResponse(token));
     }

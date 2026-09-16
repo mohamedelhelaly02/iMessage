@@ -36,10 +36,16 @@ public sealed class ApplicationUser : IdentityUser<string>
         string email)
     {
         if (string.IsNullOrWhiteSpace(displayName))
-            return Result<ApplicationUser>.Failure(new Error("USER.DISPLAY_NAME", "Display name is required", ErrorType.Validation));
+            return Result<ApplicationUser>.Failure(
+                Error.Validation(
+                    "User.DisplayNameRequired",
+                    "Display name is required."));
 
         if (string.IsNullOrWhiteSpace(email))
-            return Result<ApplicationUser>.Failure(new Error("USER.EMAIL", "Email address is required", ErrorType.Validation));
+            return Result<ApplicationUser>.Failure(
+                Error.Validation(
+                    "User.EmailRequired",
+                    "Email address is required."));
 
         return Result<ApplicationUser>.Success(
             new ApplicationUser(

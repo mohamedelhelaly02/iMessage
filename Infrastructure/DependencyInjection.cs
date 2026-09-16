@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Interfaces;
 using Domain.Entities;
 using Infrastructure.Identity;
 using Infrastructure.Identity.Jwt;

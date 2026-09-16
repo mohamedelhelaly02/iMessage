@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Interfaces;
 using Domain.Abstractions;
 using Domain.Entities;
 using MediatR;
@@ -14,12 +14,10 @@ public sealed class RegisterCommandHandler(
     public async Task<Result<AuthResponse>> Handle(
         RegisterCommand request, CancellationToken cancellationToken)
     {
-
         var existingUser = await userManager.FindByEmailAsync(request.Email);
 
         if (existingUser != null)
-            return Result<AuthResponse>.Failure(new Error(
-                "USER.CONFLICT", "There exists a user with same email address", ErrorType.Conflict));
+            return Result<AuthResponse>.Failure(UserErrors.EmailAlreadyExists);
 
         var userResult = ApplicationUser.Create(request.DisplayName, request.Email);
 
@@ -28,20 +26,24 @@ public sealed class RegisterCommandHandler(
 
         var user = userResult.Value;
 
-        var result = await userManager.CreateAsync(user!, request.Password);
+        var createResult = await userManager.CreateAsync(user!, request.Password);
 
-        if (!result.Succeeded)
+        if (!createResult.Succeeded)
         {
-            var error = result.Errors.FirstOrDefault();
-            return Result<AuthResponse>.Failure(
-                new Error(
-                "USER.VALIDATION",
-                $"Validation errors occured: {error?.Description ?? ""}", ErrorType.Validation));
+            var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
+            return Result<AuthResponse>.Failure(UserErrors.RegisterationValidation(errors));
         }
 
-        await userManager.AddToRoleAsync(user!, "User");
+        var roleResult = await userManager.AddToRoleAsync(user!, "User");
 
-        var token = await jwtTokenGenerator.GenerateJwtTokenAsync(user!);
+        if (!roleResult.Succeeded)
+        {
+            var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+
+            return Result<AuthResponse>.Failure(UserErrors.RoleAssignFailed(errors));
+        }
+
+        var token = await jwtTokenGenerator.GenerateAccessTokenAsync(user!);
 
         return Result<AuthResponse>.Success(new AuthResponse(token));
     }

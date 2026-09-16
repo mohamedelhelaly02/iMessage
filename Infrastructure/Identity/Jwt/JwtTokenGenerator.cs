@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Interfaces;
 using Domain.Entities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
@@ -16,39 +16,33 @@ internal sealed class JwtTokenGenerator(
     private readonly JwtSettings _jwtSettings = jwtOptions.Value;
     private readonly JwtSecurityTokenHandler _jwtSecurityTokenHandler = new();
 
-    public async Task<string> GenerateJwtTokenAsync(ApplicationUser user)
+    public async Task<string> GenerateAccessTokenAsync(ApplicationUser user)
     {
-        var userRoles = await userManager.GetRolesAsync(user);
+        var roles = await userManager.GetRolesAsync(user);
+        var roleClaims = roles.Select(role => new Claim(ClaimTypes.Role, role));
 
-        var claims = new List<Claim>
-        {
-            new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
+        List<Claim> claims = [
             new(ClaimTypes.NameIdentifier, user.Id.ToString()),
             new(ClaimTypes.Name, user.UserName ?? string.Empty),
             new(ClaimTypes.Email, user.Email ?? string.Empty)
+        ];
+
+        claims.AddRange(roleClaims);
+
+        SymmetricSecurityKey key = new(Encoding.UTF8.GetBytes(_jwtSettings.Key));
+        SigningCredentials credentials = new(key, SecurityAlgorithms.HmacSha256);
+
+
+        SecurityTokenDescriptor descriptor = new()
+        {
+            Subject = new ClaimsIdentity(claims),
+            SigningCredentials = credentials,
+            Expires = DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes),
+            Issuer = _jwtSettings.Issuer,
+            Audience = _jwtSettings.Audience
         };
 
-        claims.AddRange(
-            userRoles.Select(role =>
-                new Claim(ClaimTypes.Role, role))
-        );
-
-        var key = new SymmetricSecurityKey(
-            Encoding.UTF8.GetBytes(_jwtSettings.Key)
-        );
-
-        var credentials = new SigningCredentials(
-            key,
-            SecurityAlgorithms.HmacSha256
-        );
-
-        var token = new JwtSecurityToken(
-            issuer: _jwtSettings.Issuer,
-            audience: _jwtSettings.Audience,
-            claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(_jwtSettings.ExpiryInMinutes),
-            signingCredentials: credentials
-        );
+        SecurityToken token = _jwtSecurityTokenHandler.CreateToken(descriptor);
 
         return _jwtSecurityTokenHandler.WriteToken(token);
     }

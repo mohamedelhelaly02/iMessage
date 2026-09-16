@@ -1,4 +1,4 @@
-﻿using Application.Abstractions;
+﻿using Application.Interfaces;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 

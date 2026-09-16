@@ -3,6 +3,7 @@ using Api.Hubs;
 using Api.Middleware;
 using Application;
 using Infrastructure;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 
-    app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "iMessage"));
+    app.MapScalarApiReference();
+
+    //app.UseSwaggerUI(options => options.SwaggerEndpoint("/openapi/v1.json", "iMessage"));
 }
 
 
