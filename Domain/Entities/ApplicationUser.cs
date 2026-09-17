@@ -5,54 +5,66 @@ namespace Domain.Entities;
 
 public sealed class ApplicationUser : IdentityUser<string>
 {
-    #region Constructors
+    private readonly HashSet<Conversation> _conversations = [];
+
     private ApplicationUser() { }
 
-    private ApplicationUser(
-        string displayName,
-        string email)
+    private ApplicationUser(string displayName, string email)
     {
         Id = Guid.NewGuid().ToString();
         DisplayName = displayName;
         Email = email;
-        UserName = email.Split('@')[0];
+        UserName = email;
     }
-    #endregion
 
-    #region Properties
-    private readonly HashSet<Conversation> _conversations = [];
     public string DisplayName { get; private set; } = null!;
     public string? ProfilePictureUrl { get; private set; }
-    #endregion
+    public DateTime? LastSeenAtUtc { get; private set; }
 
-    #region Navigation Props
-    public IReadOnlyCollection<Conversation> Conversations => _conversations.AsReadOnly();
-    #endregion
+    public IReadOnlyCollection<Conversation> Conversations =>
+        _conversations.AsReadOnly();
 
-
-    #region Methods
-    public static Result<ApplicationUser> Create(
-        string displayName,
-        string email)
+    public static Result<ApplicationUser> Create(string displayName, string email)
     {
         if (string.IsNullOrWhiteSpace(displayName))
+        {
             return Result<ApplicationUser>.Failure(
                 Error.Validation(
                     "User.DisplayNameRequired",
                     "Display name is required."));
+        }
 
         if (string.IsNullOrWhiteSpace(email))
+        {
             return Result<ApplicationUser>.Failure(
                 Error.Validation(
                     "User.EmailRequired",
                     "Email address is required."));
+        }
+
+        email = email.Trim();
 
         return Result<ApplicationUser>.Success(
-            new ApplicationUser(
-                displayName.Trim(),
-                email.Trim()));
+            new ApplicationUser(displayName.Trim(), email));
     }
 
-    #endregion
+    public Result UpdateProfile(string displayName, string? profilePictureUrl)
+    {
+        if (string.IsNullOrWhiteSpace(displayName))
+        {
+            return Result.Failure(
+                Error.Validation(
+                    "User.DisplayNameRequired",
+                    "Display name is required."));
+        }
 
+        DisplayName = displayName.Trim();
+        ProfilePictureUrl = string.IsNullOrWhiteSpace(profilePictureUrl)
+            ? null
+            : profilePictureUrl.Trim();
+
+        return Result.Success();
+    }
+
+    public void MarkAsSeen() => LastSeenAtUtc = DateTime.UtcNow;
 }

@@ -19,7 +19,8 @@ internal static class ConversationMapping
                     p.UserId,
                     p.User.DisplayName,
                     p.Role,
-                    p.User.ProfilePictureUrl))]
+                    p.User.ProfilePictureUrl,
+                    p.User.LastSeenAtUtc))]
             );
     }
 }

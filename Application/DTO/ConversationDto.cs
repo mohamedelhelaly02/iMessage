@@ -6,7 +6,8 @@ public sealed record ConversationParticipantDto(
     string UserId,
     string DisplayName,
     ParticipantRole role,
-    string? PictureUrl);
+    string? PictureUrl,
+    DateTime? LastSeenAtUtc);
 
 public sealed record ConversationDto(
     string Id,

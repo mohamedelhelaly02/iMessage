@@ -51,8 +51,10 @@ public sealed class RegisterCommandHandler(
             new UserDto(
                 user.Id,
                 user.DisplayName,
-                user.UserName!,
-                user.Email!, user.ProfilePictureUrl));
+                user.UserName,
+                user.Email,
+                user.ProfilePictureUrl,
+                user.LastSeenAtUtc));
 
         return Result<AuthResponseDto>.Success(response);
     }
