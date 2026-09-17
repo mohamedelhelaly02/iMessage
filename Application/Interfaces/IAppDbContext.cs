@@ -6,6 +6,7 @@ namespace Application.Interfaces;
 public interface IAppDbContext
 {
     DbSet<Conversation> Conversations { get; }
+    DbSet<ConversationParticipant> ConversationParticipants { get; }
     Task<int> SaveChangesAsync(CancellationToken cancellationToken = default);
 
 }

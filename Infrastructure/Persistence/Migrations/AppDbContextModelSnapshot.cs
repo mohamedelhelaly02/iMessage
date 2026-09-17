@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Persistence.Migrations
 {
     [DbContext(typeof(AppDbContext))]
     partial class AppDbContextModelSnapshot : ModelSnapshot
@@ -152,7 +152,7 @@ namespace Infrastructure.Migrations
                     b.HasIndex("ConversationId", "UserId")
                         .IsUnique();
 
-                    b.ToTable("ConversationParticipant");
+                    b.ToTable("ConversationParticipants");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole<string>", b =>
@@ -185,14 +185,14 @@ namespace Infrastructure.Migrations
                         new
                         {
                             Id = "25801C14-CBA0-4E74-8F6A-9AA57BA5A57F",
-                            ConcurrencyStamp = "f6477ec6-3d08-4c83-bad8-564587243114",
+                            ConcurrencyStamp = "1c08fdae-46ca-4976-a8b1-279fe7a543f9",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
                             Id = "BE3B9D48-68F5-42E3-9371-E7964F96A25D",
-                            ConcurrencyStamp = "2c497842-acb7-45dc-be0c-33bcf97cc838",
+                            ConcurrencyStamp = "4cbf25bd-5978-4be3-8bdd-80667116d550",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });

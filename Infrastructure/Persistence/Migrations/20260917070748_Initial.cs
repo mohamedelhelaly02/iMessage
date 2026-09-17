@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
 
-namespace Infrastructure.Migrations
+namespace Infrastructure.Persistence.Migrations
 {
     /// <inheritdoc />
     public partial class Initial : Migration
@@ -183,7 +183,7 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ConversationParticipant",
+                name: "ConversationParticipants",
                 columns: table => new
                 {
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
@@ -194,15 +194,15 @@ namespace Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ConversationParticipant", x => x.Id);
+                    table.PrimaryKey("PK_ConversationParticipants", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ConversationParticipant_AspNetUsers_UserId",
+                        name: "FK_ConversationParticipants_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ConversationParticipant_Conversations_ConversationId",
+                        name: "FK_ConversationParticipants_Conversations_ConversationId",
                         column: x => x.ConversationId,
                         principalTable: "Conversations",
                         principalColumn: "Id",
@@ -214,8 +214,8 @@ namespace Infrastructure.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "25801C14-CBA0-4E74-8F6A-9AA57BA5A57F", "f6477ec6-3d08-4c83-bad8-564587243114", "User", "USER" },
-                    { "BE3B9D48-68F5-42E3-9371-E7964F96A25D", "2c497842-acb7-45dc-be0c-33bcf97cc838", "Admin", "ADMIN" }
+                    { "25801C14-CBA0-4E74-8F6A-9AA57BA5A57F", "1c08fdae-46ca-4976-a8b1-279fe7a543f9", "User", "USER" },
+                    { "BE3B9D48-68F5-42E3-9371-E7964F96A25D", "4cbf25bd-5978-4be3-8bdd-80667116d550", "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -263,14 +263,14 @@ namespace Infrastructure.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConversationParticipant_ConversationId_UserId",
-                table: "ConversationParticipant",
+                name: "IX_ConversationParticipants_ConversationId_UserId",
+                table: "ConversationParticipants",
                 columns: new[] { "ConversationId", "UserId" },
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ConversationParticipant_UserId",
-                table: "ConversationParticipant",
+                name: "IX_ConversationParticipants_UserId",
+                table: "ConversationParticipants",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -298,7 +298,7 @@ namespace Infrastructure.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
-                name: "ConversationParticipant");
+                name: "ConversationParticipants");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");

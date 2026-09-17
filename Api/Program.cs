@@ -1,5 +1,6 @@
 using Api.Extensions;
 using Api.Hubs;
+using Api.Hubs.Helpers;
 using Api.Middleware;
 using Application;
 using Infrastructure;
@@ -36,6 +37,8 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader()
                 .AllowAnyMethod()
                 .AllowCredentials()));
+
+builder.Services.AddSingleton<IConnectionTracker, ConnectionTracker>();
 
 var app = builder.Build();
 
