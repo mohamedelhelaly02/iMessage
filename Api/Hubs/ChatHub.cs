@@ -16,6 +16,7 @@ internal sealed class ChatHub(
     IConnectionTracker connectionTracker) : Hub
 {
     private const string GroupNamePrefix = "user:";
+    private const string ConversationGroupPrefix = "conversation:";
     public override async Task OnConnectedAsync()
     {
         try
@@ -176,4 +177,96 @@ internal sealed class ChatHub(
         await Clients.Caller.SendAsync("OnlineStatus", onlineStatuses);
     }
 
+    public async Task JoinConversation(string conversationId)
+    {
+        var userId = currentUserService.GetUserId();
+        var isUserParticipant = await db.ConversationParticipants
+            .AsNoTracking()
+            .AnyAsync(p => p.ConversationId == conversationId &&
+                p.UserId == userId);
+
+        if (!isUserParticipant)
+        {
+            throw new HubException("You are not a participant in this conversation");
+        }
+
+        await Groups.AddToGroupAsync(
+            Context.ConnectionId,
+            GetConversationGroupName(conversationId));
+
+        logger.LogInformation(
+            "User {UserId} joined conversation {ConversationId}",
+            userId,
+            conversationId);
+    }
+
+    public async Task LeaveConversation(string conversationId)
+    {
+        var userId = currentUserService.GetUserId();
+        await Groups.RemoveFromGroupAsync(
+            Context.ConnectionId,
+            GetConversationGroupName(conversationId));
+
+        logger.LogInformation(
+            "User {UserId} leaved conversation {ConversationId}",
+            userId,
+            conversationId);
+
+    }
+
+
+    public async Task StartTyping(string conversationId)
+    {
+        var userId = currentUserService.GetUserId();
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return;
+        }
+
+        var isParticipant = await db.ConversationParticipants
+            .AsNoTracking()
+            .AnyAsync(p => p.ConversationId == conversationId && p.UserId == userId);
+
+        if (!isParticipant)
+        {
+            throw new HubException("You are not participant in this conversation");
+        }
+
+        logger.LogInformation($"Joining {Context.ConnectionId} to {GetConversationGroupName(conversationId)}");
+        logger.LogInformation($"Typing: {userId} -> {GetConversationGroupName(conversationId)}");
+
+        await Clients.OthersInGroup(GetConversationGroupName(conversationId))
+            .SendAsync("UserTyping", conversationId, userId);
+
+    }
+
+    public async Task StopTyping(string conversationId)
+    {
+        var userId = currentUserService.GetUserId();
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return;
+        }
+
+        var isParticipant = await db.ConversationParticipants
+            .AsNoTracking()
+            .AnyAsync(p => p.ConversationId == conversationId && p.UserId == userId);
+
+        if (!isParticipant)
+        {
+            throw new HubException("You are not participant in this conversation");
+        }
+
+        await Clients.OthersInGroup(
+            GetConversationGroupName(conversationId)).SendAsync("UserStoppedTyping", conversationId, userId);
+
+    }
+
+
+    private string GetConversationGroupName(string conversationId)
+    {
+        return $"{ConversationGroupPrefix}{conversationId}";
+    }
 }
