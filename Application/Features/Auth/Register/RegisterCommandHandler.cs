@@ -4,12 +4,10 @@ using Domain.Abstractions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Auth.Register;
 
 public sealed class RegisterCommandHandler(
-    ILogger<RegisterCommandHandler> logger,
     UserManager<ApplicationUser> userManager,
     IJwtTokenGenerator jwtTokenGenerator)
     : IRequestHandler<RegisterCommand, Result<AuthResponseDto>>

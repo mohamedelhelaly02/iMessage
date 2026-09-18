@@ -65,21 +65,7 @@ internal sealed class ChatHub(
         if (user is null)
             return;
 
-        var conversationIds = await db.ConversationParticipants
-         .AsNoTracking()
-         .Where(p => p.UserId == userId)
-         .Select(p => p.ConversationId)
-         .ToListAsync();
-
-        if (conversationIds.Count == 0)
-            return;
-
-        var relatedUserIds = await db.ConversationParticipants
-            .AsNoTracking()
-            .Where(p => conversationIds.Contains(p.ConversationId) && p.UserId != userId)
-            .Select(p => p.UserId)
-            .Distinct()
-            .ToListAsync();
+        var relatedUserIds = await GetRelatedParticipantsOf(userId);
 
         var eventName = isOnline ? "UserOnline" : "UserOffline";
 
@@ -214,6 +200,85 @@ internal sealed class ChatHub(
 
     }
 
+
+    public async Task StartConversationTyping(string conversationId)
+    {
+        var userId = currentUserService.GetUserId();
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return;
+        }
+
+        var isParticipant = await db.ConversationParticipants
+            .AsNoTracking()
+            .AnyAsync(p => p.ConversationId == conversationId && p.UserId == userId);
+
+        if (!isParticipant)
+        {
+            throw new HubException("You are not participant in this conversation");
+        }
+
+        var relatedUserIds = await GetRelatedParticipantsOf(userId);
+
+        if (relatedUserIds?.Count > 0)
+        {
+            foreach (var id in relatedUserIds)
+                await Clients.Group(GetGroupName(id))
+                    .SendAsync("ConversationStartedTyping", conversationId);
+        }
+
+    }
+
+    private async Task<List<string>> GetRelatedParticipantsOf(string userId)
+    {
+
+        var conversationIds = await db.ConversationParticipants
+                .AsNoTracking()
+                .Where(p => p.UserId == userId)
+                .Select(p => p.ConversationId)
+                .ToListAsync();
+
+        if (conversationIds.Count == 0)
+            return [];
+
+        var relatedUserIds = await db.ConversationParticipants
+            .AsNoTracking()
+            .Where(p => conversationIds.Contains(p.ConversationId) && p.UserId != userId)
+            .Select(p => p.UserId)
+            .Distinct()
+            .ToListAsync();
+
+        return relatedUserIds;
+    }
+
+    public async Task StopConversationTyping(string conversationId)
+    {
+        var userId = currentUserService.GetUserId();
+
+        if (string.IsNullOrEmpty(userId))
+        {
+            return;
+        }
+
+        var isParticipant = await db.ConversationParticipants
+            .AsNoTracking()
+            .AnyAsync(p => p.ConversationId == conversationId && p.UserId == userId);
+
+        if (!isParticipant)
+        {
+            throw new HubException("You are not participant in this conversation");
+        }
+
+        var relatedUserIds = await GetRelatedParticipantsOf(userId);
+
+        if (relatedUserIds?.Count > 0)
+        {
+            foreach (var id in relatedUserIds)
+                await Clients.Group(GetGroupName(id))
+                    .SendAsync("ConversationStoppedTyping", conversationId);
+        }
+    }
 
     public async Task StartTyping(string conversationId)
     {
