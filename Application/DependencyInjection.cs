@@ -1,28 +1,18 @@
-﻿using Application.Behaviors;
-using Application.Features.Auth.Register;
+﻿using Application.Features.Auth.Login;
 using FluentValidation;
 using Microsoft.Extensions.DependencyInjection;
+using System.Reflection;
 
-namespace Application
+namespace Application;
+
+public static class DependencyInjection
 {
-    public static class DependencyInjection
+    public static IServiceCollection AddApplication(this IServiceCollection services)
     {
-        extension(IServiceCollection services)
-        {
-            public IServiceCollection AddApplication()
-            {
-                var assembly = typeof(RegisterCommand).Assembly;
+        services.AddValidatorsFromAssemblyContaining<LoginCommandValidator>();
 
-                services.AddValidatorsFromAssembly(assembly);
+        services.AddMediatR(options => options.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
-                services.AddMediatR(cfg =>
-                {
-                    cfg.RegisterServicesFromAssembly(assembly);
-                    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-                });
-
-                return services;
-            }
-        }
+        return services;
     }
 }

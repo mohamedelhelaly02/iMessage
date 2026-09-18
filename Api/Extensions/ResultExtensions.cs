@@ -10,7 +10,9 @@ public static class ResultExtensions
         if (result.IsSuccess)
             return new OkObjectResult(result.Value);
 
-        var statusCode = result.Error?.ErrorType switch
+        var error = result.Error!;
+
+        var statusCode = error.ErrorType switch
         {
             ErrorType.Validation => StatusCodes.Status400BadRequest,
             ErrorType.Unauthorized => StatusCodes.Status401Unauthorized,
@@ -21,12 +23,16 @@ public static class ResultExtensions
             _ => StatusCodes.Status500InternalServerError
         };
 
+
         ProblemDetails details = new()
         {
             Status = statusCode,
-            Title = result.Error?.Code,
-            Detail = result.Error?.Message
+            Title = "Request failed",
+            Detail = error.Message
         };
+
+        details.Extensions["code"] = error.Code;
+        details.Extensions["errors"] = error.Errors;
 
         return new ObjectResult(details) { StatusCode = statusCode };
 

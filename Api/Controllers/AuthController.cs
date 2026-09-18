@@ -2,6 +2,7 @@
 using Application.DTO;
 using Application.Features.Auth.Login;
 using Application.Features.Auth.Register;
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,27 +15,40 @@ public sealed class AuthController(ISender sender) : ControllerBase
     [HttpPost("register")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     [ProducesResponseType(StatusCodes.Status409Conflict)]
     public async Task<IActionResult> Register(
-        RegisterCommand command,
-        CancellationToken cancellation = default)
+        [FromBody] RegisterCommand command,
+        [FromServices] IValidator<RegisterCommand> validator,
+        CancellationToken cancellationToken = default)
     {
-        var result = await sender.Send(command, cancellation);
+        var validationResult = await validator.ValidateAsync(
+            command,
+            cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationApiResponse();
+
+        var result = await sender.Send(command, cancellationToken);
         return result.ToApiResponse();
     }
 
     [HttpPost("login")]
     [ProducesResponseType(typeof(AuthResponseDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
     public async Task<IActionResult> Login(
-       LoginCommand command,
-       CancellationToken cancellation = default)
+       [FromBody] LoginCommand command,
+       [FromServices] IValidator<LoginCommand> validator,
+       CancellationToken cancellationToken = default)
     {
-        var result = await sender.Send(command, cancellation);
+        var validationResult = await validator.ValidateAsync(
+                 command,
+                 cancellationToken);
+
+        if (!validationResult.IsValid)
+            return validationResult.ToValidationApiResponse();
+
+        var result = await sender.Send(command, cancellationToken);
+
         return result.ToApiResponse();
     }
 

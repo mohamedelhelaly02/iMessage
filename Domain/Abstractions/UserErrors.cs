@@ -17,10 +17,10 @@ public static class UserErrors
             "User.InvalidCredentials",
             "Invalid email or password.");
 
-    public static Error RegisterationValidation(string message)
+    public static Error RegisterationValidation(Dictionary<string, string[]>? errors)
         => Error.Validation(
             "User.RegisterationValidation",
-            message);
+            errors: errors);
 
     public static Error RoleAssignFailed(string message)
        => Error.Validation(

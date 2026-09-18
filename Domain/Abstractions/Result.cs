@@ -10,10 +10,17 @@ public enum ErrorType
     Failure
 }
 
-public sealed record Error(string Code, string Message, ErrorType ErrorType)
+public sealed record Error(
+    string Code,
+    string? Message,
+    ErrorType ErrorType,
+    Dictionary<string, string[]>? Errors = null)
 {
-    public static Error Validation(string code, string message)
-        => new(code, message, ErrorType.Validation);
+    public static Error Validation(
+        string code,
+        string? message = null,
+        Dictionary<string, string[]>? errors = null)
+        => new(code, message, ErrorType.Validation, errors);
 
     public static Error Conflict(string code, string message)
         => new(code, message, ErrorType.Conflict);

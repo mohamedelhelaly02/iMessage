@@ -4,10 +4,12 @@ using Domain.Abstractions;
 using Domain.Entities;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Logging;
 
 namespace Application.Features.Auth.Register;
 
 public sealed class RegisterCommandHandler(
+    ILogger<RegisterCommandHandler> logger,
     UserManager<ApplicationUser> userManager,
     IJwtTokenGenerator jwtTokenGenerator)
     : IRequestHandler<RegisterCommand, Result<AuthResponseDto>>
@@ -31,7 +33,15 @@ public sealed class RegisterCommandHandler(
 
         if (!createResult.Succeeded)
         {
-            var errors = string.Join(", ", createResult.Errors.Select(e => e.Description));
+
+            var errors = createResult.Errors
+                .GroupBy(e => char.ToLowerInvariant(e.Code[0]) + e.Code[1..])
+                .ToDictionary(
+                    x => x.Key,
+                    x => x.Select(x => x.Description).ToArray()
+                );
+
+
             return Result<AuthResponseDto>.Failure(UserErrors.RegisterationValidation(errors));
         }
 

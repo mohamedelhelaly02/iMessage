@@ -20,13 +20,13 @@ public static class OpenApiExtensions
 
                     document.Components ??= new OpenApiComponents();
                     document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
-                    document.Components.SecuritySchemes["ApiKey"] = new OpenApiSecurityScheme
-                    {
-                        Name = "X-API-KEY",
-                        Type = SecuritySchemeType.ApiKey,
-                        In = ParameterLocation.Header,
-                        Description = "API key needed to access the endpoints. Add 'X-API-KEY' header with your API key."
-                    };
+                    //document.Components.SecuritySchemes["ApiKey"] = new OpenApiSecurityScheme
+                    //{
+                    //    Name = "X-API-KEY",
+                    //    Type = SecuritySchemeType.ApiKey,
+                    //    In = ParameterLocation.Header,
+                    //    Description = "API key needed to access the endpoints. Add 'X-API-KEY' header with your API key."
+                    //};
                     document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
                     {
                         Type = SecuritySchemeType.Http,
@@ -36,10 +36,10 @@ public static class OpenApiExtensions
                         Description = "JWT Bearer token"
                     };
                     document.Security ??= [];
-                    document.Security.Add(new OpenApiSecurityRequirement
-                    {
-                        [new OpenApiSecuritySchemeReference("ApiKey", document)] = []
-                    });
+                    //document.Security.Add(new OpenApiSecurityRequirement
+                    //{
+                    //    [new OpenApiSecuritySchemeReference("ApiKey", document)] = []
+                    //});
                     document.Security.Add(new OpenApiSecurityRequirement
                     {
                         [new OpenApiSecuritySchemeReference("Bearer", document)] = []
