@@ -51,15 +51,15 @@ namespace server.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "7c6de888-fd83-4a62-abfa-15158fac14a3",
-                            ConcurrencyStamp = "ee1ecb0a-443e-434e-b28f-ffc44a149255",
+                            Id = "366be902-9365-4a5e-950a-549c1f8abb03",
+                            ConcurrencyStamp = "dc6f17d4-4659-4fcf-91b9-0badb112351b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "7e7abca8-3185-4bd9-b6c5-604e5c0757dc",
-                            ConcurrencyStamp = "d2e8251d-92fe-454c-88a1-3714c760a05e",
+                            Id = "021cdc11-e70e-487a-9253-86f02899908f",
+                            ConcurrencyStamp = "8dc4594f-e16c-440f-8857-d432edc4c5a9",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -169,6 +169,48 @@ namespace server.Infrastructure.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("server.Domain.Entities.RefreshToken", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ExpiresAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("FamilyId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsUsed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("ReplacedByTokenId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("RevokedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("TokenHash")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TokenHash")
+                        .IsUnique();
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("server.Domain.Entities.User", b =>
@@ -296,6 +338,22 @@ namespace server.Infrastructure.Persistence.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("server.Domain.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("server.Domain.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("server.Domain.Entities.User", b =>
+                {
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

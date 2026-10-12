@@ -1,5 +1,3 @@
-using System;
-
 namespace server.Shared.Abstraction;
 
 public class Result

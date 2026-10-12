@@ -1,4 +1,3 @@
-using System;
 using server.Domain.Entities;
 
 namespace server.Application.Interfaces;

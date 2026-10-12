@@ -1,5 +1,3 @@
-using System;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
@@ -10,6 +8,9 @@ namespace server.Infrastructure.Persistence;
 public sealed class AppDbContext(
     DbContextOptions<AppDbContext> options) : IdentityDbContext<User>(options)
 {
+
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         base.OnConfiguring(optionsBuilder);

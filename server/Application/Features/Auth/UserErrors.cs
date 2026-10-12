@@ -1,4 +1,3 @@
-using System;
 using server.Shared.Abstraction;
 
 namespace server.Application.Features.Auth;

@@ -3,7 +3,6 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using server.Application.Behaviors;
-using server.Application.Features.Auth;
 using server.Application.Interfaces;
 using server.Domain.Entities;
 using server.Infrastructure.Identity;
@@ -66,6 +65,8 @@ builder.Services.AddOptions<JwtSettings>()
                settings.RefreshTokenExpirationInDays > 0;
     }, "Invalid JWT configuration.")
     .ValidateOnStart();
+
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddEndpoints();
 

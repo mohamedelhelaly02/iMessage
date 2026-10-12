@@ -1,5 +1,3 @@
-using System;
-
 namespace server.Shared.Helpers;
 
 public interface IEndpoint

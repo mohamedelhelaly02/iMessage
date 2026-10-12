@@ -7,4 +7,5 @@ public sealed class User : IdentityUser
     public string DisplayName { get; set; } = string.Empty;
     public string? ProfilePictureUrl { get; set; }
     public DateTime? LastSeenAtUtc { get; set; }
+    public ICollection<RefreshToken> RefreshTokens { get; set; } = [];
 }

@@ -1,9 +1,11 @@
-using System;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using server.Application.Interfaces;
 using server.Domain.Entities;
+using server.Infrastructure.Identity;
+using server.Infrastructure.Persistence;
 using server.Shared.Abstraction;
 using server.Shared.Extensions;
 using server.Shared.Helpers;
@@ -38,10 +40,17 @@ public class Login : IEndpoint
     public sealed class Handler(
         UserManager<User> userManager,
         SignInManager<User> signInManager,
-        IJwtGenerator jwtGenerator) : IRequestHandler<Command, Result<AuthResponse>>
+        IJwtGenerator jwtGenerator,
+        IOptions<JwtSettings> jwtOptions,
+        AppDbContext dbContext,
+        IHostEnvironment environment,
+        IHttpContextAccessor contextAccessor) : IRequestHandler<Command, Result<AuthResponse>>
     {
+        private readonly JwtSettings jwtSettings = jwtOptions.Value;
         public async Task<Result<AuthResponse>> Handle(Command request, CancellationToken cancellationToken)
         {
+            var httpResponse = contextAccessor.HttpContext?.Response;
+
             var user = await userManager.FindByEmailAsync(request.Email);
             if (user is null)
                 return Result<AuthResponse>.Failure(UserErrors.InvalidCredentails);
@@ -52,6 +61,27 @@ public class Login : IEndpoint
                 return Result<AuthResponse>.Failure(UserErrors.InvalidCredentails);
 
             var token = jwtGenerator.Generate(user);
+            var refreshToken = RefreshTokenGenerator.GenerateToken();
+
+            var hashed = RefreshTokenHasher.Hash(refreshToken);
+
+            RefreshToken rfToken = new()
+            {
+                TokenHash = hashed,
+                UserId = user.Id,
+                ExpiresAtUtc = DateTime.UtcNow.AddDays(jwtSettings.RefreshTokenExpirationInDays)
+            };
+
+            dbContext.RefreshTokens.Add(rfToken);
+
+            await dbContext.SaveChangesAsync(cancellationToken);
+
+            CookieHelper.SetRefreshTokenCookie(
+                httpResponse!,
+                refreshToken,
+                rfToken.ExpiresAtUtc,
+                environment.IsDevelopment());
+
             var response = new AuthResponse(user.DisplayName, user.Email, user.UserName, token);
 
             return Result<AuthResponse>.Success(response);
