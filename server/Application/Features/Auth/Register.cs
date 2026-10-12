@@ -101,7 +101,10 @@ public class Register
         })
         .AllowAnonymous()
         .WithName("Register")
-        .WithTags("Auth");
+        .WithTags("Auth")
+        .Produces(StatusCodes.Status409Conflict)
+        .Produces(StatusCodes.Status400BadRequest)
+        .Produces(StatusCodes.Status204NoContent);
     }
 
 }

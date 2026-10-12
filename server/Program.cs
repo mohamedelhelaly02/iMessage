@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using server.Application.Behaviors;
+using server.Application.Features.Auth;
 using server.Domain.Entities;
 using server.Infrastructure.Persistence;
 using server.Shared.Abstraction;
@@ -70,5 +71,7 @@ app.UseCors("AllowAngularApp");
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+Register.MapEndpoint(app);
 
 app.Run();
