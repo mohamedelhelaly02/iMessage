@@ -1,0 +1,343 @@
+.auth-card {
+    width: 100%;
+    max-width: 500px;
+    min-width: 0;
+    background: var(--color-bg-card);
+    border-radius: 22px;
+    padding: 36px 32px 28px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08), 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.auth-card__logo {
+    width: 56px;
+    height: 56px;
+    margin-bottom: 14px;
+}
+
+.auth-card__logo svg {
+    width: 100%;
+    height: 100%;
+}
+
+.auth-card__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 4px;
+    color: var(--color-text);
+    letter-spacing: -0.01em;
+}
+
+.auth-card__subtitle {
+    font-size: 14px;
+    color: var(--color-text-secondary);
+    margin: 0 0 24px;
+}
+
+.auth-card__footer {
+    margin: 20px 0 0;
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.auth-card__footer a {
+    color: var(--color-accent);
+    font-weight: 600;
+    text-decoration: none;
+    margin-inline-end: 4px;
+}
+
+.auth-card__footer a:hover {
+    text-decoration: underline;
+}
+
+.auth-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    text-align: start;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.form-field__label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.form-field__input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-field__input {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background: var(--color-field-bg);
+    font-size: 15px;
+    font-family: inherit;
+    color: var(--color-text);
+    outline: none;
+    transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.form-field__input-wrap .form-field__input {
+    padding-inline-start: 40px;
+}
+
+.form-field__input:focus {
+    border-color: var(--color-accent);
+    background: #ffffff;
+}
+
+.form-field__input::placeholder {
+    color: #a1a1a6;
+}
+
+.form-field__toggle {
+    position: absolute;
+    inset-inline-start: 10px;
+    border: none;
+    background: transparent;
+    color: var(--color-text-secondary);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+}
+
+.form-field__toggle svg {
+    width: 18px;
+    height: 18px;
+}
+
+.auth-form__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.auth-form__link {
+    font-size: 13px;
+    color: var(--color-accent);
+    text-decoration: none;
+}
+
+.auth-form__link:hover {
+    text-decoration: underline;
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.checkbox__box {
+    width: 18px;
+    height: 18px;
+    border-radius: 5px;
+    border: 1.5px solid var(--color-border);
+    background: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.checkbox input:checked+.checkbox__box {
+    background: var(--color-accent);
+    border-color: var(--color-accent);
+}
+
+.checkbox input:checked+.checkbox__box::after {
+    content: "";
+    width: 5px;
+    height: 9px;
+    border: solid #fff;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg) translate(-1px, -1px);
+}
+
+.checkbox__label {
+    font-size: 13px;
+    color: var(--color-text-secondary);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 12px;
+    background: var(--color-accent);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.btn-primary:hover {
+    background: var(--info);
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+.auth-form__divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-secondary);
+    font-size: 12px;
+    margin: 2px 0;
+}
+
+.auth-form__divider::before,
+.auth-form__divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid var(--color-border);
+    background: #fff;
+    color: var(--color-text);
+    font-size: 14px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background-color 0.15s ease;
+}
+
+.btn-secondary:hover {
+    background: var(--color-field-bg);
+}
+
+.btn-secondary svg {
+    width: 18px;
+    height: 18px;
+}
+
+.auth-card--wide {
+    max-width: 440px;
+}
+
+/* ===================== الجنس (Segmented Control) ===================== */
+.segmented {
+    display: flex;
+    background: var(--color-field-bg);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    padding: 3px;
+    gap: 3px;
+}
+
+.segmented__option {
+    flex: 1;
+    position: relative;
+    cursor: pointer;
+}
+
+.segmented__option input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.segmented__label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 0;
+    border-radius: 9px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-text-secondary);
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.segmented__option input:checked+.segmented__label {
+    background: #ffffff;
+    color: var(--color-accent);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+}
+
+/* ===================== حقل التاريخ ===================== */
+input[type="date"].form-field__input {
+    color: var(--color-text);
+}
+
+input[type="date"].form-field__input::-webkit-calendar-picker-indicator {
+    filter: invert(0.4);
+    cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .auth-card {
+        padding: 28px 20px 22px;
+        border-radius: 18px;
+    }
+}
+
+.btn-primary {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

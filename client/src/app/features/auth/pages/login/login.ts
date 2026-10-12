@@ -6,8 +6,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
-import { LoginCredentails } from '../../models';
 import { AuthStore } from '../../services/store';
+import { LoginCredentails } from '../../models/credentails';
 
 @Component({
   imports: [TranslatePipe, ReactiveFormsModule],

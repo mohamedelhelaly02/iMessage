@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
+import { LanguageSelector } from '../language-switcher/language-switcher';
 
 @Component({
-  imports: [TranslatePipe],
+  imports: [TranslatePipe, LanguageSelector],
   selector: 'app-auth-navbar',
   styleUrl: './auth-navbar.css',
   templateUrl: './auth-navbar.html',

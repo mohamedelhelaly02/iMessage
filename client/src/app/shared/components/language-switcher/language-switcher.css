@@ -1,0 +1,192 @@
+/* Container Wrapper */
+.imessage-lang-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", Arial, sans-serif;
+}
+
+/* Trigger Button - iOS Pill Style */
+.imessage-lang-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    height: 32px;
+    padding: 0 12px;
+    border-radius: 9999px;
+    background: rgba(255, 255, 255, 0.76);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    color: #1f2937;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.imessage-lang-trigger:hover {
+    background: rgba(255, 255, 255, 0.92);
+    border-color: rgba(0, 0, 0, 0.12);
+}
+
+.imessage-lang-trigger:active {
+    transform: scale(0.96);
+}
+
+.imessage-lang-trigger:focus-visible {
+    box-shadow: 0 0 0 3px rgba(0, 122, 255, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    border-color: #007AFF;
+}
+
+/* Flag & Code */
+.imessage-lang-flag {
+    font-size: 14px;
+    line-height: 1;
+}
+
+.imessage-lang-code {
+    letter-spacing: -0.01em;
+    font-weight: 600;
+}
+
+/* Chevron */
+.imessage-lang-chevron {
+    width: 12px;
+    height: 12px;
+    opacity: 0.5;
+    transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.imessage-lang-trigger:hover .imessage-lang-chevron {
+    opacity: 0.8;
+}
+
+.imessage-lang-chevron.rotate {
+    transform: rotate(180deg);
+}
+
+/* Popover Menu Dropdown */
+.imessage-lang-menu {
+    position: absolute;
+    right: 0;
+    top: calc(100% + 6px);
+    width: 170px;
+    padding: 6px;
+    background: rgba(255, 255, 255, 0.82);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 14px;
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.12), 0 2px 8px rgba(0, 0, 0, 0.06);
+    z-index: 50;
+    animation: menuAppear 0.15s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    transform-origin: top right;
+}
+
+@keyframes menuAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.95) translateY(-4px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+/* Menu Header */
+.imessage-lang-header {
+    padding: 4px 8px 6px 8px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #8e8e93;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+/* Menu Options */
+.imessage-lang-option {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 400;
+    color: #1c1c1e;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.1s ease, color 0.1s ease;
+}
+
+.imessage-lang-option-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.imessage-lang-option:hover {
+    background: #007AFF;
+    color: #ffffff;
+}
+
+.imessage-lang-option.selected {
+    font-weight: 600;
+}
+
+/* Active Checkmark */
+.imessage-lang-check {
+    width: 14px;
+    height: 14px;
+    color: #007AFF;
+    transition: color 0.1s ease;
+}
+
+.imessage-lang-option:hover .imessage-lang-check {
+    color: #ffffff;
+}
+
+/* Dark Mode Support (Automatic based on OS or system preference) */
+@media (prefers-color-scheme: dark) {
+    .imessage-lang-trigger {
+        background: rgba(45, 45, 48, 0.75);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        color: #f2f2f7;
+    }
+
+    .imessage-lang-trigger:hover {
+        background: rgba(60, 60, 65, 0.85);
+        border-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .imessage-lang-menu {
+        background: rgba(30, 30, 35, 0.82);
+        border-color: rgba(255, 255, 255, 0.12);
+        box-shadow: 0 16px 40px rgba(0, 0, 0, 0.4), 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .imessage-lang-header {
+        color: #98989d;
+    }
+
+    .imessage-lang-option {
+        color: #f2f2f7;
+    }
+
+    .imessage-lang-option:hover {
+        background: #0a84ff;
+        color: #ffffff;
+    }
+
+    .imessage-lang-check {
+        color: #0a84ff;
+    }
+}

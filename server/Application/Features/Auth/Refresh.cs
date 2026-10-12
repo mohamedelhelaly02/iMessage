@@ -117,6 +117,7 @@ public sealed class Refresh : IEndpoint
 
             return Result<Login.AuthResponse>.Success(
                 new Login.AuthResponse(
+                    existedRefresh.User.Id,
                     existedRefresh.User.DisplayName,
                     existedRefresh.User.Email,
                     existedRefresh.User.UserName,
