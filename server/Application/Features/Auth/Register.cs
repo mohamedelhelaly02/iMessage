@@ -5,10 +5,11 @@ using Microsoft.AspNetCore.Identity;
 using server.Domain.Entities;
 using server.Shared.Abstraction;
 using server.Shared.Extensions;
+using server.Shared.Helpers;
 
 namespace server.Application.Features.Auth;
 
-public class Register
+public class Register : IEndpoint
 {
     public sealed record Command(
         string DisplayName,
@@ -92,9 +93,9 @@ public class Register
         }
     }
 
-    public static void MapEndpoint(IEndpointRouteBuilder app)
+    public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/auth/register", async (Command command, ISender sender) =>
+        app.MapPost("auth/register", async (Command command, ISender sender) =>
         {
             var result = await sender.Send(command);
             return result.ToResponse(StatusCodes.Status204NoContent);

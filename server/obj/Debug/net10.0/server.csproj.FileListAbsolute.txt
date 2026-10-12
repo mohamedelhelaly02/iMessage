@@ -169,3 +169,5 @@ D:\projects\iMessage\server\bin\Debug\net10.0\FluentValidation.dll
 D:\projects\iMessage\server\bin\Debug\net10.0\FluentValidation.DependencyInjectionExtensions.dll
 D:\projects\iMessage\server\bin\Debug\net10.0\MediatR.dll
 D:\projects\iMessage\server\bin\Debug\net10.0\MediatR.Contracts.dll
+D:\projects\iMessage\server\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\projects\iMessage\server\bin\Debug\net10.0\Microsoft.Bcl.Cryptography.dll

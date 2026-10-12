@@ -4,9 +4,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using server.Application.Behaviors;
 using server.Application.Features.Auth;
+using server.Application.Interfaces;
 using server.Domain.Entities;
+using server.Infrastructure.Identity;
 using server.Infrastructure.Persistence;
 using server.Shared.Abstraction;
+using server.Shared.Extensions;
+using server.Shared.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,15 +20,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("Default"), c => c.EnableRetryOnFailure()));
 
-builder.Services.AddIdentity<User, IdentityRole>(cfg =>
-{
-    cfg.Password.RequireDigit = true;
-    cfg.Password.RequireLowercase = true;
-    cfg.Password.RequireUppercase = true;
-    cfg.Password.RequireNonAlphanumeric = true;
-    cfg.Password.RequiredLength = 8;
-    cfg.User.RequireUniqueEmail = true;
-})
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
@@ -55,6 +51,24 @@ builder.Services.AddMediatR(cfg =>
     cfg.AddBehavior(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 });
 
+builder.Services.AddScoped<IJwtGenerator, JwtGenerator>();
+
+builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(JwtSettings.SectionName));
+
+builder.Services.AddOptions<JwtSettings>()
+    .Bind(builder.Configuration.GetSection(JwtSettings.SectionName))
+    .Validate(settings =>
+    {
+        return !string.IsNullOrWhiteSpace(settings.Secret) &&
+               !string.IsNullOrWhiteSpace(settings.Issuer) &&
+               !string.IsNullOrWhiteSpace(settings.Audience) &&
+               settings.ExpirationInMinutes > 0 &&
+               settings.RefreshTokenExpirationInDays > 0;
+    }, "Invalid JWT configuration.")
+    .ValidateOnStart();
+
+builder.Services.AddEndpoints();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -72,6 +86,8 @@ app.UseAuthentication();
 
 app.UseAuthorization();
 
-Register.MapEndpoint(app);
+RouteGroupBuilder group = app.MapGroup("api/");
+
+app.MapEndpoints(group);
 
 app.Run();
