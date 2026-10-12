@@ -20,6 +20,7 @@ public sealed class Refresh : IEndpoint
         IOptions<JwtSettings> jwtOptions,
         IHostEnvironment environment,
         AppDbContext dbContext,
+        ILogger<Handler> logger,
         IHttpContextAccessor contextAccessor) : IRequestHandler<Command, Result<Login.AuthResponse>>
     {
         private readonly JwtSettings jwtSettings = jwtOptions.Value;
@@ -29,8 +30,10 @@ public sealed class Refresh : IEndpoint
             string? cookieRefresh = CookieHelper.GetRefreshTokenCookie(contextAccessor.HttpContext!.Request);
 
             if (string.IsNullOrEmpty(cookieRefresh))
+            {
+                logger.LogWarning("Cookie is missing");
                 return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
-
+            }
             string hashed = RefreshTokenHasher.Hash(cookieRefresh);
 
             RefreshToken? existedRefresh = await dbContext.RefreshTokens
@@ -39,7 +42,10 @@ public sealed class Refresh : IEndpoint
                 .FirstOrDefaultAsync(r => r.TokenHash == hashed, cancellationToken);
 
             if (existedRefresh is null)
+            {
+                logger.LogWarning("Token is missing in db.");
                 return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+            }
 
             // If the token has already been used/revoked, it indicates token theft/replay attack.
             // Revoke the entire family chain.
@@ -56,11 +62,17 @@ public sealed class Refresh : IEndpoint
                     contextAccessor.HttpContext.Response,
                     environment.IsDevelopment());
 
+
+                logger.LogInformation("Token is re-used");
+
                 return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
             }
 
             if (existedRefresh.IsExpired || existedRefresh.User is null)
+            {
+                logger.LogInformation("Token expired.");
                 return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+            }
 
             existedRefresh.IsUsed = true;
             existedRefresh.RevokedAtUtc = DateTime.UtcNow;
@@ -123,6 +135,8 @@ public sealed class Refresh : IEndpoint
         })
             .AllowAnonymous()
             .WithName("Refresh")
-            .WithTags("Auth");
+            .WithTags("Auth")
+            .ProducesProblem(StatusCodes.Status401Unauthorized)
+            .Produces<Login.AuthResponse>(StatusCodes.Status200OK);
     }
 }

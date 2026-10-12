@@ -8,7 +8,7 @@ using server.Shared.Helpers;
 
 namespace server.Application.Features.Auth;
 
-public class Register : IEndpoint
+public sealed class Register : IEndpoint
 {
     public sealed record Command(
         string DisplayName,

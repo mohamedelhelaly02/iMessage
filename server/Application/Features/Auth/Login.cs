@@ -12,7 +12,7 @@ using server.Shared.Helpers;
 
 namespace server.Application.Features.Auth;
 
-public class Login : IEndpoint
+public sealed class Login : IEndpoint
 {
 
     public record AuthResponse(
