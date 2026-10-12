@@ -32,4 +32,6 @@ public static class CookieHelper
 
         response.Cookies.Delete(CookieName, cookieOptions);
     }
+
+    public static string? GetRefreshTokenCookie(HttpRequest httpRequest) => httpRequest.Cookies[CookieName];
 }

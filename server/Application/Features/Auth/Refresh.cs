@@ -1,0 +1,128 @@
+using MediatR;
+using Microsoft.Extensions.Options;
+using server.Application.Interfaces;
+using server.Domain.Entities;
+using server.Shared.Abstraction;
+using server.Shared.Helpers;
+using server.Infrastructure.Identity;
+using server.Infrastructure.Persistence;
+using Microsoft.EntityFrameworkCore;
+using server.Shared.Extensions;
+
+namespace server.Application.Features.Auth;
+
+public sealed class Refresh : IEndpoint
+{
+    public sealed record Command : IRequest<Result<Login.AuthResponse>>;
+
+    public sealed class Handler(
+        IJwtGenerator jwtGenerator,
+        IOptions<JwtSettings> jwtOptions,
+        IHostEnvironment environment,
+        AppDbContext dbContext,
+        IHttpContextAccessor contextAccessor) : IRequestHandler<Command, Result<Login.AuthResponse>>
+    {
+        private readonly JwtSettings jwtSettings = jwtOptions.Value;
+
+        public async Task<Result<Login.AuthResponse>> Handle(Command request, CancellationToken cancellationToken)
+        {
+            string? cookieRefresh = CookieHelper.GetRefreshTokenCookie(contextAccessor.HttpContext!.Request);
+
+            if (string.IsNullOrEmpty(cookieRefresh))
+                return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+
+            string hashed = RefreshTokenHasher.Hash(cookieRefresh);
+
+            RefreshToken? existedRefresh = await dbContext.RefreshTokens
+                .AsNoTracking()
+                .Include(r => r.User)
+                .FirstOrDefaultAsync(r => r.TokenHash == hashed, cancellationToken);
+
+            if (existedRefresh is null)
+                return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+
+            // If the token has already been used/revoked, it indicates token theft/replay attack.
+            // Revoke the entire family chain.
+
+            if (existedRefresh.IsUsed || existedRefresh.RevokedAtUtc is not null)
+            {
+                await dbContext.RefreshTokens
+                    .Where(r => r.FamilyId == existedRefresh.FamilyId && r.RevokedAtUtc == null)
+                    .ExecuteUpdateAsync(s => s
+                        .SetProperty(r => r.RevokedAtUtc, DateTime.UtcNow)
+                        .SetProperty(r => r.IsUsed, true), cancellationToken);
+
+                CookieHelper.DeleteRefreshTokenCookie(
+                    contextAccessor.HttpContext.Response,
+                    environment.IsDevelopment());
+
+                return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+            }
+
+            if (existedRefresh.IsExpired || existedRefresh.User is null)
+                return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+
+            existedRefresh.IsUsed = true;
+            existedRefresh.RevokedAtUtc = DateTime.UtcNow;
+
+            string newRawRefreshToken = RefreshTokenGenerator.GenerateToken();
+            string newHashedToken = RefreshTokenHasher.Hash(newRawRefreshToken);
+
+            var newRefreshToken = new RefreshToken
+            {
+                UserId = existedRefresh.UserId,
+                TokenHash = newHashedToken,
+                FamilyId = existedRefresh.FamilyId, // Preserve family
+                ExpiresAtUtc = DateTime.UtcNow.AddDays(jwtSettings.RefreshTokenExpirationInDays)
+            };
+
+            dbContext.RefreshTokens.Add(newRefreshToken);
+            existedRefresh.ReplacedByTokenId = newRefreshToken.Id;
+
+            try
+            {
+                await dbContext.SaveChangesAsync(cancellationToken);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                await dbContext.RefreshTokens
+                    .Where(r => r.FamilyId == existedRefresh.FamilyId && r.RevokedAtUtc == null)
+                    .ExecuteUpdateAsync(s => s
+                        .SetProperty(r => r.RevokedAtUtc, DateTime.UtcNow)
+                        .SetProperty(r => r.IsUsed, true), cancellationToken);
+
+                CookieHelper.DeleteRefreshTokenCookie(contextAccessor.HttpContext.Response, environment.IsDevelopment());
+                return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
+            }
+
+            string newAccessToken = jwtGenerator.Generate(existedRefresh.User);
+
+            CookieHelper.SetRefreshTokenCookie(
+                contextAccessor.HttpContext.Response,
+                newRawRefreshToken,
+                newRefreshToken.ExpiresAtUtc,
+                environment.IsDevelopment());
+
+            return Result<Login.AuthResponse>.Success(
+                new Login.AuthResponse(
+                    existedRefresh.User.DisplayName,
+                    existedRefresh.User.Email,
+                    existedRefresh.User.UserName,
+                    newAccessToken
+                ));
+
+        }
+    }
+
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapPost("auth/refresh", async (ISender sender) =>
+        {
+            Result<Login.AuthResponse> authResult = await sender.Send(new Command());
+            return authResult.ToResponse();
+        })
+            .AllowAnonymous()
+            .WithName("Refresh")
+            .WithTags("Auth");
+    }
+}
