@@ -1,6 +1,4 @@
-import { Service } from "@angular/core";
+import { Service } from '@angular/core';
 
 @Service()
-export class MessagesApi {
-
-}
+export class MessagesApi {}

@@ -15,6 +15,7 @@ namespace server.Application.Features.Auth;
 public sealed class Login : IEndpoint
 {
     public record AuthResponse(
+        string Id,
         string DisplayName,
         string? Email,
         string? UserName,
@@ -81,7 +82,7 @@ public sealed class Login : IEndpoint
                 rfToken.ExpiresAtUtc,
                 environment.IsDevelopment());
 
-            var response = new AuthResponse(user.DisplayName, user.Email, user.UserName, token);
+            var response = new AuthResponse(user.Id, user.DisplayName, user.Email, user.UserName, token);
 
             return Result<AuthResponse>.Success(response);
         }

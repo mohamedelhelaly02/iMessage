@@ -1,8 +1,11 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpContext } from '@angular/common/http';
 import { inject, Service } from '@angular/core';
 import { Observable } from 'rxjs';
-import { AuthResponse, LoginCredentails, RegisterRequest } from '../auth.models';
 import { environment } from '../../../../environments/environment';
+import { SKIP_CREDENTIALS } from '../../../core/auth.tokens';
+import { RegisterRequest } from '../models/register-request';
+import { AuthResponse } from '../models/auth-response';
+import { LoginCredentails } from '../models/credentails';
 
 @Service()
 export class AuthApi {
@@ -10,11 +13,15 @@ export class AuthApi {
   private readonly httpClient = inject(HttpClient);
 
   register(registerData: RegisterRequest): Observable<void> {
-    return this.httpClient.post<void>(`${this.BASE_URL}/register`, registerData);
+    return this.httpClient.post<void>(`${this.BASE_URL}/register`, registerData, {
+      context: new HttpContext().set(SKIP_CREDENTIALS, true),
+    });
   }
 
   login(loginData: LoginCredentails): Observable<AuthResponse> {
-    return this.httpClient.post<AuthResponse>(`${this.BASE_URL}/login`, loginData);
+    return this.httpClient.post<AuthResponse>(`${this.BASE_URL}/login`, loginData, {
+      context: new HttpContext().set(SKIP_CREDENTIALS, true),
+    });
   }
 
   logout(): Observable<void> {
