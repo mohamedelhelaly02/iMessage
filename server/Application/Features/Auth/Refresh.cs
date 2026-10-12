@@ -1,13 +1,13 @@
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using server.Application.Interfaces;
 using server.Domain.Entities;
-using server.Shared.Abstraction;
-using server.Shared.Helpers;
 using server.Infrastructure.Identity;
 using server.Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
+using server.Shared.Abstraction;
 using server.Shared.Extensions;
+using server.Shared.Helpers;
 
 namespace server.Application.Features.Auth;
 

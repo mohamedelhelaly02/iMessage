@@ -1,0 +1,97 @@
+{
+    "REGISTER": {
+        "TITLE": "Create a new account",
+        "SUBTITLE": "Join now and start chatting with your friends",
+        "DISPLAY_NAME": {
+            "LABEL": "Display name",
+            "PLACEHOLDER": "Example: Sarah Ahmed",
+            "ERROR_MAX_LENGTH": "Name must not exceed 100 characters"
+        },
+        "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "example@email.com",
+            "ERROR_INVALID": "Please enter a valid email address"
+        },
+        "PASSWORD": {
+            "LABEL": "Password",
+            "PLACEHOLDER": "At least 8 characters",
+            "ERROR_PATTERN": "Password must be at least 8 characters and contain an uppercase letter, lowercase letter, number, and special character"
+        },
+        "CONFIRM_PASSWORD": {
+            "LABEL": "Confirm password",
+            "PLACEHOLDER": "Re-enter your password",
+            "ERROR_REQUIRED": "Password confirmation is required",
+            "ERROR_MISMATCH": "Passwords do not match"
+        },
+        "BUTTON": {
+            "LOADING": "Creating account...",
+            "SUBMIT": "Create account"
+        },
+        "FOOTER": {
+            "QUESTION": "Already have an account?",
+            "LOGIN": "Log in"
+        }
+    },
+    "LOGIN": {
+        "TITLE": "Login",
+        "SUBTITLE": "Enter your details to continue to your chats",
+        "EMAIL": {
+            "LABEL": "Email",
+            "PLACEHOLDER": "example@email.com",
+            "ERROR_INVALID": "Please enter a valid email address"
+        },
+        "PASSWORD": {
+            "LABEL": "Password",
+            "PLACEHOLDER": "••••••••",
+            "ERROR_REQUIRED": "Password is required"
+        },
+        "BUTTON": {
+            "SUBMIT": "Sign In",
+            "LOADING": "Signing in..."
+        },
+        "FOOTER": {
+            "QUESTION": "Don't have an account?",
+            "REGISTER": "Create a new account"
+        }
+    },
+    "AUTH_NAVBAR": {
+        "BRAND": "Messages",
+        "LINKS": {
+            "HELP": "Help",
+            "HOME": "Home"
+        }
+    },
+    "NAVBAR": {
+        "BRAND": "Messages",
+        "LOGOUT": "Log out"
+    },
+    "CHAT": {
+        "SIDEBAR_HEADER": {
+            "TITLE": "Messages",
+            "NEW_CHAT": "New chat"
+        },
+        "EMPTY": {
+            "TITLE": "Chat",
+            "CHOOSE": "Choose a conversation to start messaging"
+        },
+        "LIST": {
+            "TYPING": "typing",
+            "LAST_ACTIVE": "Last active",
+            "START_NOW": "Start the conversation now"
+        },
+        "HEADER": {
+            "TYPING": "typing",
+            "ONLINE": "online",
+            "OFFLINE": "offline",
+            "LAST_SEEN": "Last seen",
+            "VOICE_CALL": "Voice call",
+            "VIDEO_CALL": "Video call",
+            "INFO": "Info"
+        }
+    },
+    "COMMON": {
+        "SEARCH": {
+            "PLACEHOLDER": "Search"
+        }
+    }
+}

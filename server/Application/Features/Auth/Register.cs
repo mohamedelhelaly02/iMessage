@@ -40,9 +40,9 @@ public sealed class Register : IEndpoint
     {
         public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
         {
-            var existingUser = await userManager.FindByEmailAsync(request.Email);
+            User? existingUser = await userManager.FindByEmailAsync(request.Email);
 
-            if (existingUser != null)
+            if (existingUser is not null)
                 return Result.Failure(UserErrors.EmailInUse);
 
             User user = new()
@@ -52,7 +52,7 @@ public sealed class Register : IEndpoint
                 UserName = request.Email.Split('@')[0]
             };
 
-            var createResult = await userManager.CreateAsync(user, request.Password);
+            IdentityResult createResult = await userManager.CreateAsync(user, request.Password);
 
             if (!createResult.Succeeded)
             {
@@ -72,16 +72,16 @@ public sealed class Register : IEndpoint
 
                 }
 
-                var formattedErrors = errorDictionary.ToDictionary(k => k.Key, v => v.Value.ToArray());
+                Dictionary<string, string[]>? formattedErrors = errorDictionary.ToDictionary(k => k.Key, v => v.Value.ToArray());
 
                 return Result.Failure(UserErrors.RegistrationFailed(formattedErrors));
             }
 
-            var addToRoleResult = await userManager.AddToRoleAsync(user, "User");
+            IdentityResult addToRoleResult = await userManager.AddToRoleAsync(user, "User");
 
             if (!addToRoleResult.Succeeded)
             {
-                var errors = addToRoleResult.Errors
+                Dictionary<string, string[]>? errors = addToRoleResult.Errors
                     .GroupBy(e => e.Code)
                     .ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToArray());
 
@@ -96,14 +96,14 @@ public sealed class Register : IEndpoint
     {
         app.MapPost("auth/register", async (Command command, ISender sender) =>
         {
-            var result = await sender.Send(command);
+            Result result = await sender.Send(command);
             return result.ToResponse(StatusCodes.Status204NoContent);
         })
         .AllowAnonymous()
         .WithName("Register")
         .WithTags("Auth")
-        .Produces(StatusCodes.Status409Conflict)
-        .Produces(StatusCodes.Status400BadRequest)
+        .ProducesProblem(StatusCodes.Status409Conflict)
+        .ProducesProblem(StatusCodes.Status400BadRequest)
         .Produces(StatusCodes.Status204NoContent);
     }
 

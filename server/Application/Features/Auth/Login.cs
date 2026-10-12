@@ -14,7 +14,6 @@ namespace server.Application.Features.Auth;
 
 public sealed class Login : IEndpoint
 {
-
     public record AuthResponse(
         string DisplayName,
         string? Email,

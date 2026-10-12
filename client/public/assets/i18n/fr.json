@@ -1,0 +1,97 @@
+{
+    "REGISTER": {
+        "TITLE": "Créer un nouveau compte",
+        "SUBTITLE": "Rejoignez-nous et commencez à discuter avec vos amis",
+        "DISPLAY_NAME": {
+            "LABEL": "Nom affiché",
+            "PLACEHOLDER": "Exemple : Sarah Ahmed",
+            "ERROR_MAX_LENGTH": "Le nom ne doit pas dépasser 100 caractères"
+        },
+        "EMAIL": {
+            "LABEL": "E-mail",
+            "PLACEHOLDER": "example@email.com",
+            "ERROR_INVALID": "Veuillez entrer une adresse e-mail valide"
+        },
+        "PASSWORD": {
+            "LABEL": "Mot de passe",
+            "PLACEHOLDER": "Au moins 8 caractères",
+            "ERROR_PATTERN": "Le mot de passe doit contenir au moins 8 caractères et inclure une lettre majuscule, une lettre minuscule, un chiffre et un caractère spécial"
+        },
+        "CONFIRM_PASSWORD": {
+            "LABEL": "Confirmer le mot de passe",
+            "PLACEHOLDER": "Saisissez à nouveau votre mot de passe",
+            "ERROR_REQUIRED": "La confirmation du mot de passe est obligatoire",
+            "ERROR_MISMATCH": "Les mots de passe ne correspondent pas"
+        },
+        "BUTTON": {
+            "LOADING": "Création du compte...",
+            "SUBMIT": "Créer un compte"
+        },
+        "FOOTER": {
+            "QUESTION": "Vous avez déjà un compte ?",
+            "LOGIN": "Se connecter"
+        }
+    },
+    "LOGIN": {
+        "TITLE": "Connexion",
+        "SUBTITLE": "Saisissez vos informations pour accéder à vos discussions",
+        "EMAIL": {
+            "LABEL": "E-mail",
+            "PLACEHOLDER": "example@email.com",
+            "ERROR_INVALID": "Veuillez entrer une adresse e-mail valide"
+        },
+        "PASSWORD": {
+            "LABEL": "Mot de passe",
+            "PLACEHOLDER": "••••••••",
+            "ERROR_REQUIRED": "Le mot de passe est requis"
+        },
+        "BUTTON": {
+            "SUBMIT": "Se connecter",
+            "LOADING": "Connexion en cours..."
+        },
+        "FOOTER": {
+            "QUESTION": "Vous n'avez pas de compte ?",
+            "REGISTER": "Créer un nouveau compte"
+        }
+    },
+    "AUTH_NAVBAR": {
+        "BRAND": "Messages",
+        "LINKS": {
+            "HELP": "Aide",
+            "HOME": "Accueil"
+        }
+    },
+    "NAVBAR": {
+        "BRAND": "Messages",
+        "LOGOUT": "Se déconnecter"
+    },
+    "CHAT": {
+        "SIDEBAR_HEADER": {
+            "TITLE": "Messages",
+            "NEW_CHAT": "Nouvelle conversation"
+        },
+        "EMPTY": {
+            "TITLE": "Conversation",
+            "CHOOSE": "Choisissez une conversation pour commencer à discuter"
+        },
+        "LIST": {
+            "TYPING": "écrit",
+            "LAST_ACTIVE": "Dernière activité",
+            "START_NOW": "Commencer la conversation maintenant"
+        },
+        "HEADER": {
+            "TYPING": "écrit",
+            "ONLINE": "en ligne",
+            "OFFLINE": "hors ligne",
+            "LAST_SEEN": "Dernière connexion",
+            "VOICE_CALL": "Appel vocal",
+            "VIDEO_CALL": "Appel vidéo",
+            "INFO": "Info"
+        }
+    },
+    "COMMON": {
+        "SEARCH": {
+            "PLACEHOLDER": "Rechercher"
+        }
+    }
+}

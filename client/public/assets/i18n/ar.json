@@ -1,0 +1,97 @@
+{
+    "REGISTER": {
+        "TITLE": "إنشاء حساب جديد",
+        "SUBTITLE": "انضم الآن وابدأ محادثاتك مع أصدقائك",
+        "DISPLAY_NAME": {
+            "LABEL": "الاسم الظاهر",
+            "PLACEHOLDER": "مثال: سارة أحمد",
+            "ERROR_MAX_LENGTH": "الاسم يجب ألا يزيد عن 100 حرف"
+        },
+        "EMAIL": {
+            "LABEL": "البريد الإلكتروني",
+            "PLACEHOLDER": "example@email.com",
+            "ERROR_INVALID": "الرجاء إدخال بريد إلكتروني صحيح"
+        },
+        "PASSWORD": {
+            "LABEL": "كلمة المرور",
+            "PLACEHOLDER": "8 أحرف على الأقل",
+            "ERROR_PATTERN": "كلمة المرور يجب أن تكون 8 أحرف على الأقل وتحتوي على حرف كبير وحرف صغير ورقم ورمز خاص"
+        },
+        "CONFIRM_PASSWORD": {
+            "LABEL": "تأكيد كلمة المرور",
+            "PLACEHOLDER": "أعد كتابة كلمة المرور",
+            "ERROR_REQUIRED": "تأكيد كلمة المرور مطلوب",
+            "ERROR_MISMATCH": "كلمتا المرور غير متطابقتين"
+        },
+        "BUTTON": {
+            "LOADING": "جاري إنشاء الحساب...",
+            "SUBMIT": "إنشاء الحساب"
+        },
+        "FOOTER": {
+            "QUESTION": "لديك حساب بالفعل؟",
+            "LOGIN": "تسجيل الدخول"
+        }
+    },
+    "LOGIN": {
+        "TITLE": "تسجيل الدخول",
+        "SUBTITLE": "أدخل بياناتك للمتابعة إلى محادثاتك",
+        "EMAIL": {
+            "LABEL": "البريد الإلكتروني",
+            "PLACEHOLDER": "example@email.com",
+            "ERROR_INVALID": "الرجاء إدخال بريد إلكتروني صحيح"
+        },
+        "PASSWORD": {
+            "LABEL": "كلمة المرور",
+            "PLACEHOLDER": "••••••••",
+            "ERROR_REQUIRED": "كلمة المرور مطلوبة"
+        },
+        "BUTTON": {
+            "SUBMIT": "تسجيل الدخول",
+            "LOADING": "جاري تسجيل الدخول..."
+        },
+        "FOOTER": {
+            "QUESTION": "ليس لديك حساب؟",
+            "REGISTER": "إنشاء حساب جديد"
+        }
+    },
+    "AUTH_NAVBAR": {
+        "BRAND": "الرسائل",
+        "LINKS": {
+            "HELP": "المساعدة",
+            "HOME": "الرئيسية"
+        }
+    },
+    "NAVBAR": {
+        "BRAND": "الرسائل",
+        "LOGOUT": "تسجيل الخروج"
+    },
+    "CHAT": {
+        "SIDEBAR_HEADER": {
+            "TITLE": "الرسائل",
+            "NEW_CHAT": "محادثة جديدة"
+        },
+        "EMPTY": {
+            "TITLE": "دردشة",
+            "CHOOSE": "اختر محادثة لبدء المراسلة"
+        },
+        "LIST": {
+            "TYPING": "يكتب",
+            "LAST_ACTIVE": "آخر نشاط",
+            "START_NOW": "ابدأ المحادثة الآن"
+        },
+        "HEADER": {
+            "TYPING": "يكتب",
+            "ONLINE": "متصل",
+            "OFFLINE": "غير متصل",
+            "LAST_SEEN": "آخر ظهور",
+            "VOICE_CALL": "مكالمة صوتية",
+            "VIDEO_CALL": "مكالمة فيديو",
+            "INFO": "معلومات"
+        }
+    },
+    "COMMON": {
+        "SEARCH": {
+            "PLACEHOLDER": "بحث"
+        }
+    }
+}
