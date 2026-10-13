@@ -1,0 +1,51 @@
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using server.Infrastructure.Persistence;
+using server.Shared.Abstraction;
+using server.Shared.Extensions;
+using server.Shared.Helpers;
+
+namespace server.Application.Features.Auth;
+
+public sealed class GetUsers : IEndpoint
+{
+    public sealed record Response(
+        string Id,
+        string? UserName,
+        string? Email,
+        string? PictureUrl,
+        DateTime? LastSeenAtUtc);
+
+    public sealed record Query : IRequest<Result<IReadOnlyList<Response>>>;
+
+    public sealed class Handler(AppDbContext dbContext) : IRequestHandler<Query, Result<IReadOnlyList<Response>>>
+    {
+        public async Task<Result<IReadOnlyList<Response>>> Handle(
+            Query request,
+            CancellationToken cancellationToken)
+        {
+            var users = await dbContext.Users
+                .AsNoTracking()
+                .Select(user => new Response(
+                    user.Id,
+                    user.UserName,
+                    user.Email,
+                    user.ProfilePictureUrl,
+                    user.LastSeenAtUtc))
+                .ToListAsync(cancellationToken);
+
+            return Result<IReadOnlyList<Response>>.Success(users);
+        }
+    }
+
+
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapGet("users", async (ISender sender) => (await sender.Send(new Query())).ToResponse())
+            .WithName("GetUsers")
+            .WithTags("Users")
+            .Produces<IReadOnlyList<Response>>(StatusCodes.Status200OK);
+
+    }
+
+}

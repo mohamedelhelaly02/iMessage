@@ -7,7 +7,7 @@ using server.Shared.Abstraction;
 using server.Shared.Extensions;
 using server.Shared.Helpers;
 
-namespace server.Application.Features.Conversation;
+namespace server.Application.Features.Conversations;
 
 public sealed class GetConversations : IEndpoint
 {

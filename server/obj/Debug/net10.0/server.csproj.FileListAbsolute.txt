@@ -171,3 +171,4 @@ D:\projects\iMessage\server\obj\Debug\net10.0\refint\server.dll
 D:\projects\iMessage\server\obj\Debug\net10.0\server.pdb
 D:\projects\iMessage\server\obj\Debug\net10.0\server.genruntimeconfig.cache
 D:\projects\iMessage\server\obj\Debug\net10.0\ref\server.dll
+D:\projects\iMessage\server\bin\Debug\net10.0\Infrastructure\Persistence\Seed\Data\users.json

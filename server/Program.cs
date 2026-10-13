@@ -1,12 +1,16 @@
+using System.Text;
 using FluentValidation;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using server.Application.Behaviors;
 using server.Application.Interfaces;
 using server.Domain.Entities;
 using server.Infrastructure.Identity;
 using server.Infrastructure.Persistence;
+using server.Infrastructure.Persistence.Seed;
 using server.Shared.Abstraction;
 using server.Shared.Extensions;
 using server.Shared.Helpers;
@@ -25,7 +29,32 @@ builder.Services.AddIdentity<User, IdentityRole>()
 
 builder.Services.AddProblemDetails();
 
-builder.Services.AddAuthentication();
+JwtSettings jwtSettings = builder.Configuration
+    .GetSection(JwtSettings.SectionName)
+    .Get<JwtSettings>() ?? throw new InvalidOperationException("JwtSettings is missing in configuration.");
+
+builder.Services.AddSingleton(jwtSettings);
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.SaveToken = true;
+        options.TokenValidationParameters = new()
+        {
+            ValidateAudience = true,
+            ValidateIssuer = true,
+            ValidateIssuerSigningKey = true,
+            ClockSkew = TimeSpan.Zero,
+            ValidIssuer = jwtSettings.Issuer,
+            ValidAudience = jwtSettings.Audience,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+
+        };
+    });
 
 builder.Services.AddAuthorization();
 
@@ -78,6 +107,8 @@ builder.Services.AddScoped<IUser, CurrentUser>();
 builder.Services.AddEndpoints();
 
 var app = builder.Build();
+
+await DbInitializer.SeedAsync(app.Services);
 
 if (app.Environment.IsDevelopment())
 {
