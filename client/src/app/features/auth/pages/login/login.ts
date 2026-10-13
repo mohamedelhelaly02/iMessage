@@ -8,6 +8,7 @@ import {
 import { TranslatePipe } from '@ngx-translate/core';
 import { AuthStore } from '../../services/store';
 import { LoginCredentails } from '../../models/credentails';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   imports: [TranslatePipe, ReactiveFormsModule],
@@ -35,6 +36,10 @@ export class Login {
 
     const credentials = this.loginForm.getRawValue() as LoginCredentails;
 
-    this._authStore.login(credentials).subscribe();
+    this._authStore.login(credentials).subscribe({
+      error: (e: HttpErrorResponse) => {
+        this._authStore.clearMessage();
+      },
+    });
   }
 }

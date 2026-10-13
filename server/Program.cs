@@ -11,7 +11,7 @@ using server.Shared.Abstraction;
 using server.Shared.Extensions;
 using server.Shared.Helpers;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddOpenApi();
 
@@ -33,7 +33,12 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAngularApp", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        var clientUrl = builder.Configuration["AngularClient"];
+
+        if (string.IsNullOrEmpty(clientUrl))
+            throw new InvalidOperationException(nameof(clientUrl));
+
+        policy.WithOrigins(clientUrl)
             .AllowAnyHeader()
             .AllowAnyMethod()
             .AllowCredentials();

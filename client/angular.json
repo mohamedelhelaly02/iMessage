@@ -24,7 +24,9 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.css"]
+            "styles": [
+              "src/styles.css"
+            ]
           },
           "configurations": {
             "production": {
@@ -63,7 +65,10 @@
               "buildTarget": "client:build:production"
             },
             "development": {
-              "buildTarget": "client:build:development"
+              "buildTarget": "client:build:development",
+              "ssl": true,
+              "sslCert": "localhost+1.pem",
+              "sslKey": "localhost+1-key.pem"
             }
           },
           "defaultConfiguration": "development"

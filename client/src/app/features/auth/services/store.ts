@@ -115,6 +115,12 @@ export class AuthStore {
     );
   }
 
+  clearMessage() {
+    setTimeout(() => {
+      this._error.set('');
+    }, 3000);
+  }
+
   userOnline(user: User) {
     this._onlineUsers.update(
       (users) => new Set([...[...users].filter((onlineUser) => onlineUser.id !== user.id), user]),

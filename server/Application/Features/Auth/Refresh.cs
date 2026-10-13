@@ -18,7 +18,6 @@ public sealed class Refresh : IEndpoint
     public sealed class Handler(
         IJwtGenerator jwtGenerator,
         IOptions<JwtSettings> jwtOptions,
-        IHostEnvironment environment,
         AppDbContext dbContext,
         ILogger<Handler> logger,
         IHttpContextAccessor contextAccessor) : IRequestHandler<Command, Result<Login.AuthResponse>>
@@ -58,9 +57,7 @@ public sealed class Refresh : IEndpoint
                         .SetProperty(r => r.RevokedAtUtc, DateTime.UtcNow)
                         .SetProperty(r => r.IsUsed, true), cancellationToken);
 
-                CookieHelper.DeleteRefreshTokenCookie(
-                    contextAccessor.HttpContext.Response,
-                    environment.IsDevelopment());
+                CookieHelper.DeleteRefreshTokenCookie(contextAccessor.HttpContext.Response);
 
 
                 logger.LogInformation("Token is re-used");
@@ -103,7 +100,7 @@ public sealed class Refresh : IEndpoint
                         .SetProperty(r => r.RevokedAtUtc, DateTime.UtcNow)
                         .SetProperty(r => r.IsUsed, true), cancellationToken);
 
-                CookieHelper.DeleteRefreshTokenCookie(contextAccessor.HttpContext.Response, environment.IsDevelopment());
+                CookieHelper.DeleteRefreshTokenCookie(contextAccessor.HttpContext.Response);
                 return Result<Login.AuthResponse>.Failure(Error.Unauthorized());
             }
 
@@ -112,8 +109,7 @@ public sealed class Refresh : IEndpoint
             CookieHelper.SetRefreshTokenCookie(
                 contextAccessor.HttpContext.Response,
                 newRawRefreshToken,
-                newRefreshToken.ExpiresAtUtc,
-                environment.IsDevelopment());
+                newRefreshToken.ExpiresAtUtc);
 
             return Result<Login.AuthResponse>.Success(
                 new Login.AuthResponse(

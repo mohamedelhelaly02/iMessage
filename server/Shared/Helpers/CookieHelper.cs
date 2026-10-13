@@ -6,28 +6,28 @@ public static class CookieHelper
     public static void SetRefreshTokenCookie(
         HttpResponse response,
         string refreshToken,
-        DateTime expires,
-        bool isDev)
+        DateTime expires)
     {
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = !isDev,
+            Secure = true,
             Expires = expires,
-            Path = "/api/auth"
+            Path = "/api/auth",
+            SameSite = SameSiteMode.Unspecified
         };
 
         response.Cookies.Append(CookieName, refreshToken, cookieOptions);
     }
 
-    public static void DeleteRefreshTokenCookie(HttpResponse response, bool isDev)
+    public static void DeleteRefreshTokenCookie(HttpResponse response)
     {
         var cookieOptions = new CookieOptions
         {
             HttpOnly = true,
-            Secure = !isDev,
-            SameSite = SameSiteMode.Lax,
-            Path = "/api/auth"
+            Secure = true,
+            Path = "/api/auth",
+            SameSite = SameSiteMode.Unspecified
         };
 
         response.Cookies.Delete(CookieName, cookieOptions);

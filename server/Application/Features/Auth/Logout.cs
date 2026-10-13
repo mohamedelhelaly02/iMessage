@@ -15,7 +15,6 @@ public sealed class Logout : IEndpoint
 
     public sealed class Handler(
         AppDbContext dbContext,
-        IHostEnvironment environment,
         IHttpContextAccessor contextAccessor) : IRequestHandler<Command, Result>
     {
         public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
@@ -37,9 +36,7 @@ public sealed class Logout : IEndpoint
                 }
             }
 
-            CookieHelper.DeleteRefreshTokenCookie(
-                contextAccessor.HttpContext?.Response!,
-                 environment.IsDevelopment());
+            CookieHelper.DeleteRefreshTokenCookie(contextAccessor.HttpContext?.Response!);
 
             return Result.Success();
         }

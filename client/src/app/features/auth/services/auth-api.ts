@@ -9,7 +9,7 @@ import { LoginCredentails } from '../models/credentails';
 
 @Service()
 export class AuthApi {
-  private readonly BASE_URL: string = `${environment.apiUrl}/auth`;
+  private readonly BASE_URL: string = `${environment.apiUrl}/api/auth`;
   private readonly httpClient = inject(HttpClient);
 
   register(registerData: RegisterRequest): Observable<void> {

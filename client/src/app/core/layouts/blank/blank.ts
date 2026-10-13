@@ -15,7 +15,7 @@ export class Blank {
   readonly isRtl = inject(LanguageService).isRtl;
   onLogout() {
     if (confirm('Are you sure to signout ?')) {
-      this._authStore.logout();
+      this._authStore.logout().subscribe();
     }
   }
 }

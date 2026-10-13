@@ -43,7 +43,6 @@ public sealed class Login : IEndpoint
         IJwtGenerator jwtGenerator,
         IOptions<JwtSettings> jwtOptions,
         AppDbContext dbContext,
-        IHostEnvironment environment,
         IHttpContextAccessor contextAccessor) : IRequestHandler<Command, Result<AuthResponse>>
     {
         private readonly JwtSettings jwtSettings = jwtOptions.Value;
@@ -79,8 +78,7 @@ public sealed class Login : IEndpoint
             CookieHelper.SetRefreshTokenCookie(
                 httpResponse!,
                 refreshToken,
-                rfToken.ExpiresAtUtc,
-                environment.IsDevelopment());
+                rfToken.ExpiresAtUtc);
 
             var response = new AuthResponse(user.Id, user.DisplayName, user.Email, user.UserName, token);
 
