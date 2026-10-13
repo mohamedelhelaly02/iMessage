@@ -2,6 +2,11 @@
   <app-blank-navbar (logoutEvent)="onLogout()"></app-blank-navbar>
 
   <div class="app-shell" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
-    <router-outlet></router-outlet>
+    <app-sidebar></app-sidebar>
+    <main>
+          <router-outlet></router-outlet>
+    </main>
   </div>
+
+  <app-footer></app-footer>
 </div>

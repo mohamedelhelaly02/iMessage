@@ -9,7 +9,9 @@ public sealed class AppDbContext(
     DbContextOptions<AppDbContext> options) : IdentityDbContext<User>(options)
 {
 
-    public DbSet<RefreshToken> RefreshTokens { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
+    public DbSet<Conversation> Conversations { get; set; } = null!;
+    public DbSet<Participant> Participants { get; set; } = null!;
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {

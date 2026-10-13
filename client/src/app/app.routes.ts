@@ -46,7 +46,7 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    loadComponent: () => import('./shared/components/not-fount/not-fount').then((c) => c.NotFount),
+    loadComponent: () => import('./shared/not-fount/not-fount').then((c) => c.NotFount),
     title: '404 not-found',
   },
 ];

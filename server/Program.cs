@@ -73,6 +73,8 @@ builder.Services.AddOptions<JwtSettings>()
 
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddScoped<IUser, CurrentUser>();
+
 builder.Services.AddEndpoints();
 
 var app = builder.Build();

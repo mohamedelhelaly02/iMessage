@@ -25,9 +25,9 @@ export const appConfig: ApplicationConfig = {
         suffix: '.json',
       }),
     }),
-    // provideAppInitializer(() => {
-    //   const authStore = inject(AuthStore);
-    //   return firstValueFrom(authStore.refresh());
-    // }),
+    provideAppInitializer(() => {
+      const authStore = inject(AuthStore);
+      return firstValueFrom(authStore.refresh());
+    }),
   ],
 };

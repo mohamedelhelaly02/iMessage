@@ -13,8 +13,7 @@ public static class CookieHelper
             HttpOnly = true,
             Secure = true,
             Expires = expires,
-            Path = "/api/auth",
-            SameSite = SameSiteMode.Unspecified
+            SameSite = SameSiteMode.Strict
         };
 
         response.Cookies.Append(CookieName, refreshToken, cookieOptions);
@@ -26,8 +25,7 @@ public static class CookieHelper
         {
             HttpOnly = true,
             Secure = true,
-            Path = "/api/auth",
-            SameSite = SameSiteMode.Unspecified
+            SameSite = SameSiteMode.Strict
         };
 
         response.Cookies.Delete(CookieName, cookieOptions);

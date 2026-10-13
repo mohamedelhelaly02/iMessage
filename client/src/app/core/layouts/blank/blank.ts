@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { BlankNavbar } from '../../../shared/components/blank-navbar/blank-navbar';
+import { BlankNavbar } from '../../../shared/blank-navbar/blank-navbar';
 import { LanguageService } from '../../services/language';
 import { AuthStore } from '../../../features/auth/services/store';
+import { Footer } from '../../../shared/footer/footer';
+import { Sidebar } from './sidebar/sidebar';
 
 @Component({
-  imports: [RouterOutlet, BlankNavbar],
+  imports: [RouterOutlet, BlankNavbar, Footer, Sidebar],
   selector: 'app-blank',
   styleUrl: './blank.css',
   templateUrl: './blank.html',

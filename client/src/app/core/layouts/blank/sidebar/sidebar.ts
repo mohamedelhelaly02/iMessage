@@ -1,0 +1,16 @@
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { Header } from './header/header';
+import { ChatList } from './chat-list/chat-list';
+
+@Component({
+  imports: [FormsModule, Header, ChatList],
+  selector: 'app-sidebar',
+  styleUrl: './sidebar.css',
+  templateUrl: './sidebar.html',
+})
+export class Sidebar {
+  onSearchChanged(searchQuery: string) {
+    console.log(`Searched for: ${searchQuery}`);
+  }
+}

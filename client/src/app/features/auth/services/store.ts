@@ -127,6 +127,10 @@ export class AuthStore {
     );
   }
 
+  isOnline(userId: string) {
+    return [...this._onlineUsers()].some((u) => u.id === userId);
+  }
+
   userOffline(user: User) {
     this._onlineUsers.update(
       (users) => new Set([...users].filter((onlineUser) => onlineUser.id !== user.id)),

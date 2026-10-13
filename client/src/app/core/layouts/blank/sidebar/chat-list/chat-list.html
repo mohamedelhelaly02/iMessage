@@ -1,0 +1,33 @@
+<div class="imessage-chats-list">
+  @for (conversation of conversations(); track conversation.id) {
+    <div class="imessage-chat-item" (click)="selectConversation(conversation)">
+      <div class="imessage-avatar-wrapper">
+        @if (!isGroup(conversation)) {
+          <img
+            [src]="getOtherParticipant(conversation)?.pictureUrl"
+            [alt]="getOtherParticipant(conversation)?.displayName"
+            class="imessage-avatar"
+          />
+        }
+        @if (!isGroup(conversation) && isUserOnline(conversation)) {
+          <span class="imessage-online-dot"></span>
+        }
+      </div>
+
+      <div class="imessage-chat-info">
+        <div class="imessage-chat-top">
+          <span class="imessage-chat-name">{{ getDisplayName(conversation) }}</span>
+          @if (conversation.lastMessageAtUtc) {
+            <span class="imessage-chat-time">{{ conversation.lastMessageAtUtc }}</span>
+          }
+        </div>
+        <div class="imessage-chat-bottom">
+          <!-- <p class="imessage-chat-preview">{{ chat.lastMessage }}</p> -->
+          <!-- @if (chat.unreadCount && chat.unreadCount > 0) {
+            <span class="imessage-unread-badge">{{ chat.unreadCount }}</span>
+          } -->
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -4,15 +4,15 @@ import { TranslateService } from '@ngx-translate/core';
 interface ILanguage {
   code: string;
   name: string;
-  flag: string;
+  flagClass: string;
 }
 
 @Injectable({ providedIn: 'root' })
 export class LanguageService {
   private readonly _languages = signal<ILanguage[]>([
-    { code: 'ar', name: 'العربية', flag: '🇸🇦' },
-    { code: 'en', name: 'English', flag: '🇬🇧' },
-    { code: 'fr', name: 'Français', flag: '🇫🇷' },
+    { code: 'ar', name: 'العربية', flagClass: 'flag-eg' },
+    { code: 'en', name: 'English', flagClass: 'flag-us' },
+    { code: 'fr', name: 'Français', flagClass: 'flag-fr' },
   ]);
 
   private readonly _currentLanguage = signal<ILanguage>(this.getInitialLanguage());
@@ -43,8 +43,6 @@ export class LanguageService {
 
     try {
       const language = JSON.parse(storedLanguage) as ILanguage;
-      console.log('Parsed lang: ', language);
-
       if (!this.isSupportedLanguage(language)) {
         return this._languages()[0];
       }

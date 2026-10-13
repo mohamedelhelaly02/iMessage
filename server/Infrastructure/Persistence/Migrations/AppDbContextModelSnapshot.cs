@@ -51,15 +51,15 @@ namespace server.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "366be902-9365-4a5e-950a-549c1f8abb03",
-                            ConcurrencyStamp = "dc6f17d4-4659-4fcf-91b9-0badb112351b",
+                            Id = "dbd4d5df-ae31-47dd-9973-31f1c950ff7f",
+                            ConcurrencyStamp = "d126eae2-8bb6-4fe2-a3e6-af157eb7cf7b",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "021cdc11-e70e-487a-9253-86f02899908f",
-                            ConcurrencyStamp = "8dc4594f-e16c-440f-8857-d432edc4c5a9",
+                            Id = "17730cce-afec-4db3-ada9-74f37a30478e",
+                            ConcurrencyStamp = "e3c945c9-409e-4a89-a94d-3b77181d4d3d",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -169,6 +169,65 @@ namespace server.Infrastructure.Persistence.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("server.Domain.Entities.Conversation", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("CreatedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CreatedById")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime?>("LastMessageAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.ToTable("Conversations");
+                });
+
+            modelBuilder.Entity("server.Domain.Entities.Participant", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("ConversationId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("JoinedAtUtc")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Role")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId", "ConversationId")
+                        .IsUnique();
+
+                    b.ToTable("Participants");
                 });
 
             modelBuilder.Entity("server.Domain.Entities.RefreshToken", b =>
@@ -340,6 +399,36 @@ namespace server.Infrastructure.Persistence.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("server.Domain.Entities.Conversation", b =>
+                {
+                    b.HasOne("server.Domain.Entities.User", "CreatedBy")
+                        .WithMany("Conversations")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedBy");
+                });
+
+            modelBuilder.Entity("server.Domain.Entities.Participant", b =>
+                {
+                    b.HasOne("server.Domain.Entities.Conversation", "Conversation")
+                        .WithMany("Participants")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("server.Domain.Entities.User", "User")
+                        .WithMany("Participants")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("server.Domain.Entities.RefreshToken", b =>
                 {
                     b.HasOne("server.Domain.Entities.User", "User")
@@ -351,8 +440,17 @@ namespace server.Infrastructure.Persistence.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("server.Domain.Entities.Conversation", b =>
+                {
+                    b.Navigation("Participants");
+                });
+
             modelBuilder.Entity("server.Domain.Entities.User", b =>
                 {
+                    b.Navigation("Conversations");
+
+                    b.Navigation("Participants");
+
                     b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618

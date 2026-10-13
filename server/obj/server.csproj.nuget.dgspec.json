@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "d:\\projects\\iMessage\\server\\server.csproj": {}
+    "D:\\projects\\iMessage\\server\\server.csproj": {}
   },
   "projects": {
-    "d:\\projects\\iMessage\\server\\server.csproj": {
+    "D:\\projects\\iMessage\\server\\server.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "d:\\projects\\iMessage\\server\\server.csproj",
+        "projectUniqueName": "D:\\projects\\iMessage\\server\\server.csproj",
         "projectName": "server",
-        "projectPath": "d:\\projects\\iMessage\\server\\server.csproj",
+        "projectPath": "D:\\projects\\iMessage\\server\\server.csproj",
         "packagesPath": "C:\\Users\\Mohamed\\.nuget\\packages\\",
-        "outputPath": "d:\\projects\\iMessage\\server\\obj\\",
+        "outputPath": "D:\\projects\\iMessage\\server\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -9,7 +9,7 @@ export class ConversationApi {
   private readonly BASE_URL = `${environment.apiUrl}/api/conversations`;
   private readonly httpClient = inject(HttpClient);
 
-  getConversation(): Observable<IConversation[]> {
+  getConversations(): Observable<IConversation[]> {
     return this.httpClient.get<IConversation[]>(this.BASE_URL);
   }
 }
