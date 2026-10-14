@@ -51,15 +51,15 @@ namespace server.Infrastructure.Persistence.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "dbd4d5df-ae31-47dd-9973-31f1c950ff7f",
-                            ConcurrencyStamp = "d126eae2-8bb6-4fe2-a3e6-af157eb7cf7b",
+                            Id = "78c9bb1c-9c58-4fea-be54-8cd0d3bf7f8c",
+                            ConcurrencyStamp = "5d91b337-05a5-4372-9bfb-f4ce03d0c0a1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "17730cce-afec-4db3-ada9-74f37a30478e",
-                            ConcurrencyStamp = "e3c945c9-409e-4a89-a94d-3b77181d4d3d",
+                            Id = "e56febee-b7de-492b-9877-dd76375b4b2e",
+                            ConcurrencyStamp = "15511929-81c8-473c-8000-844263ab2083",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -185,6 +185,10 @@ namespace server.Infrastructure.Persistence.Migrations
 
                     b.Property<DateTime?>("LastMessageAtUtc")
                         .HasColumnType("datetime2");
+
+                    b.Property<string>("PublicId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .HasColumnType("nvarchar(max)");

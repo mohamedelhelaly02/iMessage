@@ -13,7 +13,6 @@ internal static class DbInitializer
         public string Id { get; set; } = null!;
         public string Email { get; set; } = null!;
         public string DisplayName { get; set; } = null!;
-        public string PictureUrl { get; set; } = null!;
         public string Password { get; set; } = null!;
     }
 
@@ -58,7 +57,8 @@ internal static class DbInitializer
                     Id = dto.Id,
                     Email = dto.Email,
                     DisplayName = dto.DisplayName,
-                    ProfilePictureUrl = dto.PictureUrl
+                    ProfilePictureUrl = $"https://ui-avatars.com/api/?name={Uri.EscapeDataString(dto.DisplayName)}&background=0D8ABC&color=fff&size=128&bold=true",
+                    NormalizedEmail = dto.Email.ToUpper()
                 };
 
                 user.PasswordHash = passwordHasher.HashPassword(user, dto.Password);

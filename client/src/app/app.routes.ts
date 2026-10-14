@@ -6,13 +6,14 @@ export const routes: Routes = [
   {
     path: '',
     loadComponent: () => import('./core/layouts/blank/blank').then((c) => c.Blank),
+    canActivate: [authGuard],
     children: [
       { path: '', redirectTo: 'conversations', pathMatch: 'full' },
       {
         path: 'conversations',
         loadComponent: () =>
-          import('./features/chat/pages/not-selected-conversation/not-selected-conversation').then(
-            (c) => c.NotSelectedConversation,
+          import('./features/chat/pages/empty/empty').then(
+            (c) => c.Empty,
           ),
         title: 'conversations',
       },
@@ -21,7 +22,6 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/chat/pages/conversation/conversation').then((c) => c.Conversation),
         title: 'Details',
-        canActivate: [authGuard],
       },
     ],
   },

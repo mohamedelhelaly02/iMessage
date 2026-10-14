@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
+import { ConversationStore } from '../../services/store';
 
 @Component({
   imports: [],
@@ -6,4 +7,10 @@ import { Component } from '@angular/core';
   styleUrl: './conversation.css',
   templateUrl: './conversation.html',
 })
-export class Conversation {}
+export class Conversation implements OnDestroy {
+  private readonly _conversationStore = inject(ConversationStore);
+
+  ngOnDestroy(): void {
+    this._conversationStore.resetState();  
+  }
+}

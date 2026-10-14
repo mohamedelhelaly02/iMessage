@@ -1,9 +1,11 @@
+using NanoidDotNet;
 using server.Domain.Enums;
 
 namespace server.Domain.Entities;
 
 public sealed class Conversation : Entity
 {
+    public string PublicId { get; set; } = Nanoid.Generate(size: 10);
     public string? Title { get; set; }
     public ConversationType Type { get; set; }
     public DateTime CreatedAtUtc { get; set; }

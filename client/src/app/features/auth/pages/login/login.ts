@@ -9,9 +9,10 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { AuthStore } from '../../services/store';
 import { LoginCredentails } from '../../models/credentails';
 import { HttpErrorResponse } from '@angular/common/http';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [TranslatePipe, ReactiveFormsModule],
+  imports: [TranslatePipe, ReactiveFormsModule, RouterLink],
   selector: 'app-login',
   styleUrl: './login.css',
   templateUrl: './login.html',

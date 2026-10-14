@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -6,8 +7,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using server.Application.Behaviors;
+using server.Application.Hubs;
 using server.Application.Interfaces;
 using server.Domain.Entities;
+using server.Infrastructure;
 using server.Infrastructure.Identity;
 using server.Infrastructure.Persistence;
 using server.Infrastructure.Persistence.Seed;
@@ -52,7 +55,21 @@ builder.Services.AddAuthentication(options =>
             ValidIssuer = jwtSettings.Issuer,
             ValidAudience = jwtSettings.Audience,
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.Secret))
+        };
 
+        options.Events = new JwtBearerEvents
+        {
+            OnMessageReceived = context =>
+            {
+                var accessToken = context.Request.Query["access_token"];
+
+                var path = context.HttpContext.Request.Path;
+                if (!string.IsNullOrEmpty(accessToken) && path.StartsWithSegments("/hubs/chat"))
+                {
+                    context.Token = accessToken;
+                }
+                return Task.CompletedTask;
+            }
         };
     });
 
@@ -106,7 +123,14 @@ builder.Services.AddScoped<IUser, CurrentUser>();
 
 builder.Services.AddEndpoints();
 
-var app = builder.Build();
+builder.Services.ConfigureHttpJsonOptions(options =>
+    options.SerializerOptions.Converters.Add(new JsonStringEnumConverter()));
+
+builder.Services.AddSignalR();
+
+builder.Services.AddSingleton<IConnectionTracker, ConnectionTracker>();
+
+WebApplication app = builder.Build();
 
 await DbInitializer.SeedAsync(app.Services);
 
@@ -128,5 +152,7 @@ app.UseAuthorization();
 RouteGroupBuilder group = app.MapGroup("api/");
 
 app.MapEndpoints(group);
+
+app.MapHub<ChatHub>("/hubs/chat");
 
 app.Run();

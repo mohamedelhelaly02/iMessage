@@ -20,6 +20,7 @@ public sealed class GetConversations : IEndpoint
 
     public sealed record Response(
         string Id,
+        string PublicId,
         ConversationType ConversationType,
         string? Title,
         string CreatedByUserId,
@@ -46,6 +47,7 @@ public sealed class GetConversations : IEndpoint
                 .Where(c => c.CreatedById == currentUserId || c.Participants.Any(p => p.UserId == currentUserId))
                 .Select(c => new Response(
                     c.Id,
+                    c.PublicId,
                     c.Type,
                     c.Title,
                     c.CreatedById,

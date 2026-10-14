@@ -4,7 +4,7 @@ import * as signalr from '@microsoft/signalr';
 import { environment } from '../../../environments/environment';
 import { AuthStore } from '../../features/auth/services/store';
 import { ConversationStore } from '../../features/chat/services/store';
-
+import { toast } from 'ngx-sonner';
 @Service()
 export class SignalrService {
   private _hubConnection!: HubConnection;
@@ -16,8 +16,9 @@ export class SignalrService {
     if (
       this._hubConnection?.state === signalr.HubConnectionState.Connected ||
       this._hubConnection?.state === signalr.HubConnectionState.Connecting
-    )
+    ) {
       return;
+    }
 
     this._hubConnection = new signalr.HubConnectionBuilder()
       .withUrl(this._hubUrl, {
@@ -30,7 +31,10 @@ export class SignalrService {
 
     try {
       await this._hubConnection.start();
-    } catch (error) {}
+      console.log('Hub Connnected.');
+    } catch (error) {
+      console.error(`Hub connection error: ${error}`);
+    }
   }
 
   async stopConnection(): Promise<void> {
@@ -92,6 +96,7 @@ export class SignalrService {
   private registerHubEvents(): void {
     this._hubConnection.on('ReceiveCallerConnected', () => {
       console.log('User connected.');
+      toast.success('User Connected');
     });
 
     this._hubConnection.onreconnecting((error) => {
@@ -103,7 +108,7 @@ export class SignalrService {
     });
 
     this._hubConnection.onclose((error) => {
-      console.error('signalr closed', error);
+      console.log(error);
     });
 
     this._hubConnection.on('UserOnline', (user) => {

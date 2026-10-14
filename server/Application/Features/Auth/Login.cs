@@ -39,7 +39,6 @@ public sealed class Login : IEndpoint
 
     public sealed class Handler(
         UserManager<User> userManager,
-        SignInManager<User> signInManager,
         IJwtGenerator jwtGenerator,
         IOptions<JwtSettings> jwtOptions,
         AppDbContext dbContext,
@@ -54,9 +53,9 @@ public sealed class Login : IEndpoint
             if (user is null)
                 return Result<AuthResponse>.Failure(UserErrors.InvalidCredentails);
 
-            var result = await signInManager.CheckPasswordSignInAsync(user, request.Password, false);
+            var isValid = await userManager.CheckPasswordAsync(user, request.Password);
 
-            if (!result.Succeeded)
+            if (!isValid)
                 return Result<AuthResponse>.Failure(UserErrors.InvalidCredentails);
 
             var token = jwtGenerator.Generate(user);

@@ -45,11 +45,15 @@ public sealed class Register : IEndpoint
             if (existingUser is not null)
                 return Result.Failure(UserErrors.EmailInUse);
 
+            string encodedName = Uri.EscapeDataString(request.DisplayName);
+            string defaultPictureUrl = $"https://ui-avatars.com/api/?name={encodedName}&background=0D8ABC&color=fff&size=128&bold=true";
+
             User user = new()
             {
                 DisplayName = request.DisplayName,
                 Email = request.Email,
-                UserName = request.Email.Split('@')[0]
+                UserName = request.Email.Split('@')[0],
+                ProfilePictureUrl = defaultPictureUrl
             };
 
             IdentityResult createResult = await userManager.CreateAsync(user, request.Password);

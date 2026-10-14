@@ -9,6 +9,7 @@ import { RegisterRequest } from '../models/register-request';
 import { LoginCredentails } from '../models/credentails';
 import { AuthResponse } from '../models/auth-response';
 import { IOnlineUser } from '../models/online-user';
+import { toast } from 'ngx-sonner';
 
 @Service()
 export class AuthStore {
@@ -48,9 +49,10 @@ export class AuthStore {
         });
         this._router.navigate(['/conversations']);
       }),
-      catchError((e) => {
-        const message = e?.error?.message || 'Login failed. Please check your credentials.';
+      catchError((e:HttpErrorResponse) => {        
+        const message = e.error.detail || 'Login failed. Please check your credentials.';
         this._error.set(message);
+        toast.error(message);
         return of(null);
       }),
       finalize(() => this._isLoading.set(false)),
