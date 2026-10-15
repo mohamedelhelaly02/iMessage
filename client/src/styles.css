@@ -144,3 +144,9 @@ app-language-switcher {
     display: inline-flex;
     align-items: center;
 }
+
+@media (max-width: 760px) {
+    .app-shell:has(app-conversation) app-sidebar {
+        display: none;
+    }
+}

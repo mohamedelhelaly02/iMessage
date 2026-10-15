@@ -1,4 +1,4 @@
-<div class="imessage-empty-state">
+<main class="imessage-empty-state" [attr.aria-label]="'CHAT.EMPTY.TITLE' | translate">
   <div class="imessage-empty-content">
     <div class="imessage-empty-icon-wrapper">
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -10,7 +10,8 @@
         />
       </svg>
     </div>
-    <h2>{{ 'CHAT.EMPTY.TITLE' | translate }}</h2>
+    <span class="imessage-empty-kicker">MESSAGES</span>
+    <h1>{{ 'CHAT.EMPTY.TITLE' | translate }}</h1>
     <p>{{ 'CHAT.EMPTY.CHOOSE' | translate }}</p>
   </div>
-</div>
+</main>

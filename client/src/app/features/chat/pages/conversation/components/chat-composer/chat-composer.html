@@ -11,7 +11,12 @@
   </button>
 
   <div class="composer-input-wrapper">
-    <input class="composer-textarea" placeholder="iMessage" [value]="message()" (input)="onMessageInput($event)" />
+    <input
+      class="composer-textarea"
+      [placeholder]="'CHAT.COMPOSER.PLACEHOLDER' | translate"
+      [value]="message()"
+      (input)="onMessageInput($event)"
+    />
 
     <button
       class="composer-audio-btn"
@@ -30,6 +35,8 @@
   <button
     class="composer-send-btn"
     type="button"
+    [class.active]="message().trim().length > 0"
+    (click)="sendMessage()"
     [attr.aria-label]="'CHAT.COMPOSER.SEND' | translate"
   >
     <svg viewBox="0 0 24 24" fill="currentColor">

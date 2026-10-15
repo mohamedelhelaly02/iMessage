@@ -2,12 +2,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    height: 62px;
-    padding: 0 16px;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    min-height: 66px;
+    padding: 8px 18px;
+    background: rgba(255, 255, 255, 0.94);
+    border-bottom: 1px solid #e9edf3;
     user-select: none;
     box-sizing: border-box;
     width: 100%;
@@ -30,10 +28,14 @@
     min-width: 0;
 }
 
+.imessage-mobile-back {
+    display: none;
+}
+
 .imessage-header-avatar-box {
     position: relative;
-    width: 40px;
-    height: 40px;
+    width: 42px;
+    height: 42px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -168,14 +170,14 @@
 .imessage-header-toolbar {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: 5px;
 }
 
 .imessage-toolbar-btn {
     background: transparent;
     border: none;
-    width: 34px;
-    height: 34px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -195,6 +197,72 @@
 }
 
 .imessage-toolbar-btn svg {
-    width: 18px;
-    height: 18px;
+    width: 17px;
+    height: 17px;
+}
+
+@media (max-width: 760px) {
+    .imessage-chat-header {
+        min-height: 64px;
+        padding: 7px 12px;
+        gap: 8px;
+    }
+
+    .imessage-mobile-back {
+        width: 34px;
+        height: 34px;
+        display: inline-flex;
+        flex: 0 0 auto;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        color: #3478f6;
+        text-decoration: none;
+    }
+
+    .imessage-mobile-back:hover {
+        background: #edf4ff;
+    }
+
+    :host-context([dir="rtl"]) .imessage-mobile-back svg {
+        transform: rotate(180deg);
+    }
+
+    .imessage-header-profile {
+        flex: 1;
+        gap: 9px;
+    }
+
+    .imessage-header-avatar-box {
+        width: 38px;
+        height: 38px;
+    }
+
+    .imessage-header-toolbar {
+        flex: 0 0 auto;
+    }
+
+    .imessage-toolbar-btn:nth-child(-n + 2) {
+        display: none;
+    }
+}
+
+@media (max-width: 390px) {
+    .imessage-chat-header {
+        padding-inline: 7px;
+        gap: 4px;
+    }
+
+    .imessage-header-title {
+        max-width: 145px;
+    }
+
+    .imessage-status-indicator {
+        max-width: 140px;
+    }
+
+    .imessage-toolbar-btn {
+        width: 32px;
+        height: 32px;
+    }
 }

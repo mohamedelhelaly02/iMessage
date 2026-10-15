@@ -33,6 +33,11 @@ public sealed class Logout : IEndpoint
                         .ExecuteUpdateAsync(s => s
                             .SetProperty(r => r.RevokedAtUtc, DateTime.UtcNow)
                             .SetProperty(r => r.IsUsed, true), cancellationToken);
+
+                    await dbContext.Users
+                        .Where(u => u.Id == existingToken.UserId)
+                        .ExecuteUpdateAsync(s => s
+                            .SetProperty(u => u.LastSeenAtUtc, DateTime.UtcNow), cancellationToken);
                 }
             }
 

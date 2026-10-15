@@ -1,30 +1,32 @@
 .imessage-sidebar-header {
-    padding: 16px 16px 12px 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    padding: 20px 16px 14px;
+    border-bottom: 1px solid #edf0f5;
 }
 
 .imessage-sidebar-title-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 10px;
+    margin-bottom: 14px;
 }
 
 .imessage-sidebar-title-row h2 {
-    font-size: 22px;
-    font-weight: 600;
-    color: #1c1c1e;
+    font-size: 23px;
+    font-weight: 700;
+    color: #19283e;
     margin: 0;
     letter-spacing: -0.02em;
 }
 
 .imessage-new-chat-btn {
-    background: transparent;
-    border: none;
+    width: 34px;
+    height: 34px;
+    border: 1px solid #e6edf7;
+    background: #ffffff;
     cursor: pointer;
     color: #007aff;
-    padding: 4px;
-    border-radius: 50%;
+    padding: 0;
+    border-radius: 11px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,7 +34,8 @@
 }
 
 .imessage-new-chat-btn:hover {
-    background: rgba(0, 122, 255, 0.1);
+    background: #edf4ff;
+    border-color: #d5e5ff;
 }
 
 .imessage-new-chat-btn svg {
@@ -49,7 +52,7 @@
 
 .imessage-search-icon {
     position: absolute;
-    left: 10px;
+    inset-inline-start: 11px;
     width: 14px;
     height: 14px;
     color: #8e8e93;
@@ -57,17 +60,25 @@
 
 .imessage-search-input {
     width: 100%;
-    padding: 7px 10px 7px 30px;
-    background: rgba(120, 120, 128, 0.08);
-    border: none;
-    border-radius: 10px;
+    min-height: 38px;
+    padding: 8px 11px 8px 34px;
+    padding-inline-start: 34px;
+    border: 1px solid transparent;
+    background: #f1f4f8;
+    border-radius: 11px;
     font-size: 13px;
-    color: #1c1c1e;
+    color: #23334b;
     outline: none;
     font-family: inherit;
     transition: background 0.15s ease;
 }
 
 .imessage-search-input:focus {
-    background: rgba(120, 120, 128, 0.12);
+    border-color: #bcd4ff;
+    background: #ffffff;
+    box-shadow: 0 0 0 3px rgba(52, 120, 246, 0.08);
+}
+
+.imessage-search-input::placeholder {
+    color: #929db0;
 }

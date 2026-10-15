@@ -14,21 +14,18 @@
 }
 
 .blank-navbar {
-    position: sticky;
-    top: 0;
+    position: relative;
     z-index: 10;
     width: 100%;
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+    background: #ffffff;
+    border-bottom: 1px solid #e8edf4;
 }
 
 .blank-navbar__inner {
-    max-width: 1200px;
+    max-width: 1440px;
     margin: 0 auto;
-    height: 56px;
-    padding: 0 20px;
+    height: 58px;
+    padding: 0 24px;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -40,12 +37,17 @@
     gap: 8px;
     text-decoration: none;
     color: var(--color-text);
+    min-width: 0;
 }
 
 .blank-navbar__logo {
-    width: 26px;
-    height: 26px;
-    display: flex;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    border-radius: 10px;
+    background: #eff6ff;
 }
 
 .blank-navbar__logo svg {
@@ -54,7 +56,7 @@
 }
 
 .blank-navbar__name {
-    font-size: 16px;
+    font-size: 17px;
     font-weight: 700;
     letter-spacing: -0.01em;
 }
@@ -69,7 +71,7 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    padding: 7px 12px;
+    padding: 8px 12px;
     border-radius: 10px;
     border: 1px solid transparent;
     background: transparent;
@@ -93,8 +95,13 @@
 }
 
 @media (max-width: 480px) {
+    .blank-navbar__inner {
+        height: 54px;
+        padding-inline: 14px;
+    }
+
     .blank-navbar__actions {
-        gap: 8px;
+        gap: 6px;
     }
 
     .blank-navbar__logout-label {

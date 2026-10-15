@@ -29,6 +29,7 @@
     <input
       type="text"
       [placeholder]="'COMMON.SEARCH.PLACEHOLDER' | translate"
+      [attr.aria-label]="'COMMON.SEARCH.PLACEHOLDER' | translate"
       [value]="searchQuery()"
       (input)="onSearchInput($event)"
       class="imessage-search-input"

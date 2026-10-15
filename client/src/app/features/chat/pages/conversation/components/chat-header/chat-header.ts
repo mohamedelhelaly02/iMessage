@@ -4,9 +4,10 @@ import { IConversation } from '../../../../models/conversation';
 import { AuthStore } from '../../../../../auth/services/store';
 import { DatePipe } from '@angular/common';
 import { IParticipant } from '../../../../models/participant';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [TranslatePipe, DatePipe],
+  imports: [TranslatePipe, DatePipe, RouterLink],
   selector: 'app-chat-header',
   styleUrl: './chat-header.css',
   templateUrl: './chat-header.html',
@@ -63,9 +64,8 @@ export class ChatHeader {
     return this.getOtherParticipant(conversation)?.lastSeenAtUtc ?? null;
   }
   isUserOnline(conversation: IConversation) {
-    return true;
-  }
-  isOtherUserTyping() {
-    return true;
+    const id = this.getOtherParticipant(conversation)?.userId;
+    if (!id) return false;
+    return this._authStore.isOnline(id);
   }
 }

@@ -1,5 +1,14 @@
 @if (conversation(); as conv) {
   <header class="imessage-chat-header">
+    <a
+      class="imessage-mobile-back"
+      routerLink="/conversations"
+      [attr.aria-label]="'CHAT.SIDEBAR_HEADER.TITLE' | translate"
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="m15 18-6-6 6-6" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </a>
     <div class="imessage-header-profile">
       <div class="imessage-header-avatar-box">
         @if (getAvatarPictureUrl(conv); as pictureUrl) {
@@ -58,8 +67,8 @@
               {{
                 (subtitle.count > 0
                   ? 'CHAT.HEADER.GROUP_SUBTITLE_MORE'
-                  : 'CHAT.HEADER.GROUP_SUBTITLE')
-                  | translate: { names: subtitle.names, count: subtitle.count }
+                  : 'CHAT.HEADER.GROUP_SUBTITLE'
+                ) | translate: { names: subtitle.names, count: subtitle.count }
               }}
             </span>
           }
@@ -105,8 +114,4 @@
       </button>
     </div>
   </header>
-} @else {
-  <!-- <header class="imessage-chat-header imessage-header-blank" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
-    <span class="imessage-header-empty-text">{{ 'CHAT.EMPTY.CHOOSE' | translate }}</span>
-  </header> -->
 }

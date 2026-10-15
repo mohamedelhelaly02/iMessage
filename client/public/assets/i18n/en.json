@@ -55,11 +55,15 @@
         }
     },
     "AUTH_NAVBAR": {
-        "BRAND": "Messages",
-        "LINKS": {
-            "HELP": "Help",
-            "HOME": "Home"
-        }
+        "BRAND": "Messages"
+    },
+    "AUTH_LANDING": {
+        "EYEBROW": "A little closer, every day",
+        "TITLE": "Your conversations, all in one place.",
+        "DESCRIPTION": "A simple, welcoming space to catch up with friends, share a moment, and keep the conversation going.",
+        "FEATURE_ONE": "Pick up where your conversations left off",
+        "FEATURE_TWO": "See who's around and ready to chat",
+        "FEATURE_THREE": "Keep every conversation together"
     },
     "NAVBAR": {
         "BRAND": "Messages",
@@ -95,7 +99,8 @@
         "COMPOSER": {
             "APPS": "Apps",
             "AUDIO_MESSAGE": "Audio Message",
-            "SEND": "Send"
+            "SEND": "Send",
+            "PLACEHOLDER": "Write a message..."
         }
     },
     "COMMON": {

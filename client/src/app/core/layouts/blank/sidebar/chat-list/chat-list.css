@@ -20,7 +20,7 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 8px 10px;
+    padding: 12px 10px;
     display: flex;
     flex-direction: column;
     gap: 4px;
@@ -49,8 +49,13 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    padding: 10px 12px;
-    border-radius: 10px;
+    padding: 11px 12px;
+    border: 0;
+    border-radius: 13px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: start;
     cursor: pointer;
     transition: background-color 0.15s ease, color 0.15s ease;
     width: 100%;
@@ -58,11 +63,17 @@
 }
 
 .imessage-chat-item:hover {
-    background-color: rgba(0, 0, 0, 0.04);
+    background-color: #f0f4fa;
 }
 
 .imessage-chat-item.active {
-    background-color: #0063e5;
+    background: linear-gradient(135deg, #438bff, #2873ef);
+    box-shadow: 0 5px 14px rgba(52, 120, 246, 0.2);
+}
+
+.imessage-chat-item:focus-visible {
+    outline: 2px solid #3478f6;
+    outline-offset: 2px;
 }
 
 .imessage-chat-item.active .imessage-chat-name,
@@ -81,15 +92,15 @@
 }
 
 .imessage-avatar {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     object-fit: cover;
 }
 
 .imessage-group-avatar {
-    width: 44px;
-    height: 44px;
+    width: 46px;
+    height: 46px;
     border-radius: 50%;
     background-color: #e5e5ea;
     color: #8e8e93;
@@ -106,7 +117,7 @@
 .imessage-online-dot {
     position: absolute;
     bottom: 1px;
-    right: 1px;
+    inset-inline-end: 1px;
     width: 10px;
     height: 10px;
     background-color: #34c759;
@@ -147,7 +158,8 @@
     font-size: 11px;
     color: #8e8e93;
     flex-shrink: 0;
-    margin-left: 6px;
+    margin-inline-start: 6px;
+    white-space: nowrap;
 }
 
 .imessage-chat-bottom {

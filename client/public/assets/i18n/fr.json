@@ -55,11 +55,15 @@
         }
     },
     "AUTH_NAVBAR": {
-        "BRAND": "Messages",
-        "LINKS": {
-            "HELP": "Aide",
-            "HOME": "Accueil"
-        }
+        "BRAND": "Messages"
+    },
+    "AUTH_LANDING": {
+        "EYEBROW": "Un peu plus proches, chaque jour",
+        "TITLE": "Toutes vos conversations au même endroit.",
+        "DESCRIPTION": "Un espace simple et accueillant pour retrouver vos amis, partager un moment et poursuivre la conversation.",
+        "FEATURE_ONE": "Reprenez vos conversations là où vous les avez laissées",
+        "FEATURE_TWO": "Voyez qui est disponible pour discuter",
+        "FEATURE_THREE": "Retrouvez toutes vos conversations au même endroit"
     },
     "NAVBAR": {
         "BRAND": "Messages",
@@ -95,7 +99,8 @@
         "COMPOSER": {
             "APPS": "Applications",
             "AUDIO_MESSAGE": "Message audio",
-            "SEND": "Envoyer"
+            "SEND": "Envoyer",
+            "PLACEHOLDER": "Écrire un message..."
         }
     },
     "COMMON": {

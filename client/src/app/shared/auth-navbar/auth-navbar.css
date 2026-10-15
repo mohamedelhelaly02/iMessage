@@ -1,35 +1,29 @@
 .auth-navbar {
-    position: sticky;
-    top: 0;
-    z-index: 10;
+    position: relative;
+    z-index: 2;
     width: 100%;
-    background: rgba(255, 255, 255, 0.72);
-    backdrop-filter: blur(20px) saturate(180%);
-    -webkit-backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
 }
 
 .auth-navbar__inner {
-    max-width: 1120px;
+    max-width: 1240px;
     margin: 0 auto;
-    height: 56px;
-    padding: 0 24px;
+    height: 76px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
 }
 
 .auth-navbar__brand {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     text-decoration: none;
-    color: var(--color-text);
+    color: #14233b;
 }
 
 .auth-navbar__logo {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     display: flex;
 }
 
@@ -39,30 +33,14 @@
 }
 
 .auth-navbar__name {
-    font-size: 17px;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: -0.01em;
-}
-
-.auth-navbar__links {
-    display: flex;
-    align-items: center;
-    gap: 22px;
-}
-
-.auth-navbar__link {
-    font-size: 14px;
-    color: var(--color-text-secondary);
-    text-decoration: none;
-    transition: color 0.15s ease;
-}
-
-.auth-navbar__link:hover {
-    color: var(--color-accent);
+    letter-spacing: -0.025em;
 }
 
 @media (max-width: 480px) {
-    .auth-navbar__links {
-        gap: 14px;
+    .auth-navbar__inner {
+        height: 64px;
+        padding-inline: 20px;
     }
 }

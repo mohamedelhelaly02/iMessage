@@ -3,9 +3,9 @@
 
   <div class="app-shell" [attr.dir]="isRtl() ? 'rtl' : 'ltr'">
     <app-sidebar></app-sidebar>
-    <main>
-          <router-outlet></router-outlet>
-    </main>
+    <div class="app-shell__main">
+      <router-outlet></router-outlet>
+    </div>
   </div>
 
   <app-footer></app-footer>

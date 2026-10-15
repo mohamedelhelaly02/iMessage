@@ -1,4 +1,4 @@
-import { Component, inject, OnDestroy, signal } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ConversationStore } from '../../services/store';
 import { ChatHeader } from './components/chat-header/chat-header';
 import { ChatMessages } from './components/chat-messages/chat-messages';

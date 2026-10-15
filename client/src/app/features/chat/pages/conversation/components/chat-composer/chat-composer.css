@@ -1,13 +1,11 @@
 .imessage-composer {
     display: flex;
     align-items: flex-end;
-    gap: 8px;
-    padding: 10px 16px;
-    background: rgba(255, 255, 255, 0.75);
-    backdrop-filter: blur(25px);
-    -webkit-backdrop-filter: blur(25px);
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
-    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    gap: 10px;
+    padding: 12px 18px max(12px, env(safe-area-inset-bottom));
+    background: rgba(255, 255, 255, 0.94);
+    border-top: 1px solid #e9edf3;
+    font-family: inherit;
     user-select: none;
     width: 100%;
     box-sizing: border-box;
@@ -27,17 +25,17 @@
 }
 
 .composer-action-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #e5e5ea;
-    color: #8e8e93;
-    margin-bottom: 2px;
+    background: #f0f3f8;
+    color: #61718a;
+    margin-bottom: 1px;
     flex-shrink: 0;
 }
 
 .composer-action-btn:hover {
-    background: #d1d1d6;
+    background: #e4ebf5;
 }
 
 .composer-action-btn svg {
@@ -50,11 +48,16 @@
     display: flex;
     align-items: center;
     background: #ffffff;
-    border: 1px solid rgba(0, 0, 0, 0.15);
-    border-radius: 20px;
-    padding: 6px 12px;
-    min-height: 36px;
+    border: 1px solid #dfe6f0;
+    border-radius: 18px;
+    padding: 7px 12px;
+    min-height: 42px;
     box-sizing: border-box;
+}
+
+.composer-input-wrapper:focus-within {
+    border-color: #92b8fb;
+    box-shadow: 0 0 0 3px rgba(52, 120, 246, 0.08);
 }
 
 .composer-textarea {
@@ -62,11 +65,12 @@
     border: none;
     background: transparent;
     outline: none;
+    min-width: 0;
     font-size: 14px;
     font-family: inherit;
     color: #1c1c1e;
     resize: none;
-    max-height: 100px;
+    max-height: 120px;
     line-height: 1.4;
     padding: 0;
 }
@@ -79,7 +83,7 @@
     width: 24px;
     height: 24px;
     color: #8e8e93;
-    margin-left: 4px;
+    margin-inline-start: 4px;
     flex-shrink: 0;
 }
 
@@ -93,25 +97,43 @@
 }
 
 .composer-send-btn {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    background: #d1d1d6;
+    background: #d5dce7;
     color: #ffffff;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
     flex-shrink: 0;
     transition: background-color 0.2s ease, transform 0.1s ease;
 }
 
 .composer-send-btn.active {
-    background: #007aff;
+    background: #3478f6;
 }
 
 .composer-send-btn.active:hover {
-    background: #0063e5;
+    background: #2469e7;
 }
 
 .composer-send-btn svg {
     width: 14px;
     height: 14px;
+}
+
+@media (max-width: 600px) {
+    .imessage-composer {
+        gap: 7px;
+        padding: 9px 11px max(9px, env(safe-area-inset-bottom));
+    }
+
+    .composer-action-btn,
+    .composer-send-btn {
+        width: 34px;
+        height: 34px;
+    }
+
+    .composer-input-wrapper {
+        min-height: 40px;
+        padding-inline: 10px;
+    }
 }

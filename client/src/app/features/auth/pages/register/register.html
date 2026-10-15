@@ -30,8 +30,13 @@
     {{ 'REGISTER.SUBTITLE' | translate }}
   </p>
 
+  @if (errorMessage(); as message) {
+    <p class="form-field__error auth-card__error" role="alert">
+      {{ message }}
+    </p>
+  }
+
   <form class="auth-form" [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    <!-- Display Name -->
     <div class="form-field">
       <label class="form-field__label" for="displayName">
         {{ 'REGISTER.DISPLAY_NAME.LABEL' | translate }}
@@ -123,7 +128,7 @@
   <p class="auth-card__footer">
     {{ 'REGISTER.FOOTER.QUESTION' | translate }}
 
-    <a role="button" routerLink="/auth/login">
+    <a routerLink="/auth/login">
       {{ 'REGISTER.FOOTER.LOGIN' | translate }}
     </a>
   </p>
