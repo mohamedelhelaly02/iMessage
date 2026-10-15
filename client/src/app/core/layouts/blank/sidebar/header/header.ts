@@ -1,9 +1,9 @@
 import { Component, input, output, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
+import { NewConversation } from './new-conversation/new-conversation';
 
 @Component({
-  imports: [FormsModule, TranslatePipe],
+  imports: [TranslatePipe, NewConversation],
   selector: 'app-header',
   styleUrl: './header.css',
   templateUrl: './header.html',

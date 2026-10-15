@@ -12,4 +12,12 @@ export class ConversationApi {
   getConversations(): Observable<IConversation[]> {
     return this.httpClient.get<IConversation[]>(this.BASE_URL);
   }
+
+  createPrivate(userId: string): Observable<string> {
+    return this.httpClient.post<string>(`${this.BASE_URL}/private`, { userId });
+  }
+
+  createGroup(title: string, participantIds: string[]): Observable<string> {
+    return this.httpClient.post<string>(`${this.BASE_URL}/group`, { title, participantIds });
+  }
 }

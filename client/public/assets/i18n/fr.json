@@ -74,6 +74,30 @@
             "TITLE": "Messages",
             "NEW_CHAT": "Nouvelle conversation"
         },
+        "NEW_CONVERSATION": {
+            "EYEBROW": "Commencez quelque chose de nouveau",
+            "TITLE": "Nouvelle conversation",
+            "CLOSE": "Fermer",
+            "PRIVATE": "Discussion privée",
+            "GROUP": "Discussion de groupe",
+            "GROUP_NAME": "Nom du groupe",
+            "GROUP_NAME_PLACEHOLDER": "Donnez un nom à votre groupe",
+            "CHOOSE_PERSON": "Choisissez une personne",
+            "ADD_PEOPLE": "Ajoutez des personnes au groupe",
+            "SEARCH_PEOPLE": "Rechercher des personnes",
+            "LOADING": "Chargement des personnes...",
+            "NO_PEOPLE": "Aucune personne trouvée",
+            "SELECTED_COUNT": "{{count}} sélectionné(s)",
+            "START_PRIVATE": "Démarrer la discussion",
+            "CREATE_GROUP": "Créer le groupe",
+            "CREATING": "Création...",
+            "ERROR": {
+                "SELECT_PERSON": "Choisissez une personne pour démarrer une discussion privée.",
+                "GROUP_TITLE": "Saisissez un nom pour votre groupe.",
+                "SELECT_GROUP_MEMBER": "Choisissez au moins une personne pour votre groupe.",
+                "GENERIC": "Impossible de terminer cette action. Veuillez réessayer."
+            }
+        },
         "EMPTY": {
             "TITLE": "Aucune conversation sélectionnée",
             "CHOOSE": "Choisissez une conversation ou démarrez une nouvelle discussion pour commencer à échanger."

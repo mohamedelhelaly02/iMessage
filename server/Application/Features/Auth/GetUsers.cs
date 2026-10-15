@@ -11,6 +11,7 @@ public sealed class GetUsers : IEndpoint
 {
     public sealed record Response(
         string Id,
+        string DisplayName,
         string? UserName,
         string? Email,
         string? PictureUrl,
@@ -28,6 +29,7 @@ public sealed class GetUsers : IEndpoint
                 .AsNoTracking()
                 .Select(user => new Response(
                     user.Id,
+                    user.DisplayName,
                     user.UserName,
                     user.Email,
                     user.ProfilePictureUrl,
@@ -44,7 +46,8 @@ public sealed class GetUsers : IEndpoint
         app.MapGet("users", async (ISender sender) => (await sender.Send(new Query())).ToResponse())
             .WithName("GetUsers")
             .WithTags("Users")
-            .Produces<IReadOnlyList<Response>>(StatusCodes.Status200OK);
+            .Produces<IReadOnlyList<Response>>(StatusCodes.Status200OK)
+            .RequireAuthorization(options => options.RequireAuthenticatedUser());
 
     }
 

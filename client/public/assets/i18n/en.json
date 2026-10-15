@@ -74,6 +74,30 @@
             "TITLE": "Messages",
             "NEW_CHAT": "New chat"
         },
+        "NEW_CONVERSATION": {
+            "EYEBROW": "Start something new",
+            "TITLE": "New conversation",
+            "CLOSE": "Close",
+            "PRIVATE": "Private chat",
+            "GROUP": "Group chat",
+            "GROUP_NAME": "Group name",
+            "GROUP_NAME_PLACEHOLDER": "Give your group a name",
+            "CHOOSE_PERSON": "Choose someone to chat with",
+            "ADD_PEOPLE": "Add people to your group",
+            "SEARCH_PEOPLE": "Search people",
+            "LOADING": "Loading people...",
+            "NO_PEOPLE": "No people found",
+            "SELECTED_COUNT": "{{count}} selected",
+            "START_PRIVATE": "Start chat",
+            "CREATE_GROUP": "Create group",
+            "CREATING": "Creating...",
+            "ERROR": {
+                "SELECT_PERSON": "Choose someone to start a private chat.",
+                "GROUP_TITLE": "Enter a name for your group.",
+                "SELECT_GROUP_MEMBER": "Choose at least one person for your group.",
+                "GENERIC": "Unable to complete this action. Please try again."
+            }
+        },
         "EMPTY": {
             "TITLE": "No Conversation Selected",
             "CHOOSE": "Choose a conversation or start a new chat to begin messaging."

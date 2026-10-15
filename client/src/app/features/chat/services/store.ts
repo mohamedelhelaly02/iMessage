@@ -1,7 +1,7 @@
 import { DestroyRef, inject, Service, signal } from '@angular/core';
 import { ConversationApi } from './conversation-api';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { catchError, finalize, Observable, of, tap } from 'rxjs';
+import { catchError, finalize, map, Observable, of, switchMap, tap, throwError } from 'rxjs';
 import { IConversation } from '../models/conversation';
 import { Router } from '@angular/router';
 
@@ -74,5 +74,53 @@ export class ConversationStore {
 
     this._selectedConversation.set(conversation);
     this._router.navigate(['conversations', conversation.publicId]);
+  }
+
+  createPrivate(userId: string): Observable<IConversation> {
+    return this.createConversation(this._api.createPrivate(userId));
+  }
+
+  createGroup(title: string, participantIds: string[]): Observable<IConversation> {
+    return this.createConversation(this._api.createGroup(title, participantIds));
+  }
+
+  private createConversation(request: Observable<string>): Observable<IConversation> {
+    this._isLoading.set(true);
+    this._error.set(null);
+
+    return request.pipe(
+      switchMap((conversationId) =>
+        this._api.getConversations().pipe(
+          tap((conversations) => this._conversations.set(conversations)),
+          map((conversations) => {
+            const conversation = conversations.find((item) => item.id === conversationId);
+            if (!conversation) {
+              throw new Error('The new conversation was not returned by the server.');
+            }
+            return conversation;
+          }),
+          tap((conversation) => this.selectConversation(conversation)),
+        ),
+      ),
+      catchError((error: unknown) => {
+        const response =
+          typeof error === 'object' && error !== null && 'error' in error ? error.error : null;
+        const detail =
+          typeof response === 'object' && response !== null && 'detail' in response
+            ? response.detail
+            : null;
+        const responseMessage =
+          typeof response === 'object' && response !== null && 'message' in response
+            ? response.message
+            : null;
+        const message =
+          (typeof detail === 'string' && detail) ||
+          (typeof responseMessage === 'string' && responseMessage) ||
+          (error instanceof Error ? error.message : 'Unable to create conversation.');
+        this._error.set(message);
+        return throwError(() => error);
+      }),
+      finalize(() => this._isLoading.set(false)),
+    );
   }
 }
