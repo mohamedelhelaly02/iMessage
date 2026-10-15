@@ -26,7 +26,7 @@
 
     @if (isOpen()) {
       <div class="imessage-lang-menu">
-        <div class="imessage-lang-header">Language</div>
+        <div class="imessage-lang-header">{{ 'COMMON.LANGUAGE' | translate }}</div>
         @for (lang of languages(); track lang.code) {
           <button
             type="button"
@@ -60,6 +60,6 @@
   </div>
 
   <div class="imessage-copyright">
-    <span>Crafted by Me &bull; &copy; {{ currentYear() }} All rights reserved.</span>
+    <span>{{ 'COMMON.FOOTER.COPYRIGHT' | translate: { year: currentYear() } }}</span>
   </div>
 </footer>

@@ -49,7 +49,7 @@ export class AuthStore {
         });
         this._router.navigate(['/conversations']);
       }),
-      catchError((e:HttpErrorResponse) => {        
+      catchError((e: HttpErrorResponse) => {
         const message = e.error.detail || 'Login failed. Please check your credentials.';
         this._error.set(message);
         toast.error(message);
@@ -203,7 +203,7 @@ export class AuthStore {
     this._router.navigate(['/auth/login']);
   }
 
-  private isUserTyping(conversationId: string, userId: string): boolean {
+  isUserTyping(conversationId: string, userId: string): boolean {
     return this._typingUsers().get(conversationId)?.has(userId) ?? false;
   }
 }

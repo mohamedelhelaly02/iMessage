@@ -1,8 +1,9 @@
 import { Component, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule, TranslatePipe],
   selector: 'app-header',
   styleUrl: './header.css',
   templateUrl: './header.html',

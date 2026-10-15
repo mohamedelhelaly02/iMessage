@@ -1,9 +1,10 @@
 import { Component, HostListener, inject, signal } from '@angular/core';
 import { LanguageService } from '../../core/services/language';
 import { UpperCasePipe, NgClass } from '@angular/common';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
-  imports: [UpperCasePipe, NgClass],
+  imports: [UpperCasePipe, NgClass, TranslatePipe],
   selector: 'app-footer',
   styleUrl: './footer.css',
   templateUrl: './footer.html',

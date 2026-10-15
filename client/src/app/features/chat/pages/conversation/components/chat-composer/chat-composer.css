@@ -1,0 +1,117 @@
+.imessage-composer {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 16px;
+    background: rgba(255, 255, 255, 0.75);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    user-select: none;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.composer-action-btn,
+.composer-audio-btn,
+.composer-send-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    transition: transform 0.1s ease, background-color 0.15s ease;
+}
+
+.composer-action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e5e5ea;
+    color: #8e8e93;
+    margin-bottom: 2px;
+    flex-shrink: 0;
+}
+
+.composer-action-btn:hover {
+    background: #d1d1d6;
+}
+
+.composer-action-btn svg {
+    width: 18px;
+    height: 18px;
+}
+
+.composer-input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    background: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 20px;
+    padding: 6px 12px;
+    min-height: 36px;
+    box-sizing: border-box;
+}
+
+.composer-textarea {
+    flex: 1;
+    border: none;
+    background: transparent;
+    outline: none;
+    font-size: 14px;
+    font-family: inherit;
+    color: #1c1c1e;
+    resize: none;
+    max-height: 100px;
+    line-height: 1.4;
+    padding: 0;
+}
+
+.composer-textarea::placeholder {
+    color: #8e8e93;
+}
+
+.composer-audio-btn {
+    width: 24px;
+    height: 24px;
+    color: #8e8e93;
+    margin-left: 4px;
+    flex-shrink: 0;
+}
+
+.composer-audio-btn:hover {
+    color: #1c1c1e;
+}
+
+.composer-audio-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.composer-send-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #d1d1d6;
+    color: #ffffff;
+    margin-bottom: 2px;
+    flex-shrink: 0;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.composer-send-btn.active {
+    background: #007aff;
+}
+
+.composer-send-btn.active:hover {
+    background: #0063e5;
+}
+
+.composer-send-btn svg {
+    width: 14px;
+    height: 14px;
+}

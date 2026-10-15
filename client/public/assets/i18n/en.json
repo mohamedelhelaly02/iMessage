@@ -71,27 +71,43 @@
             "NEW_CHAT": "New chat"
         },
         "EMPTY": {
-            "TITLE": "Chat",
-            "CHOOSE": "Choose a conversation to start messaging"
+            "TITLE": "No Conversation Selected",
+            "CHOOSE": "Choose a conversation or start a new chat to begin messaging."
         },
         "LIST": {
             "TYPING": "typing",
             "LAST_ACTIVE": "Last active",
-            "START_NOW": "Start the conversation now"
+            "START_NOW": "Start the conversation now",
+            "LAST_MESSAGE_SENT": "Last message sent"
         },
         "HEADER": {
             "TYPING": "typing",
+            "GROUP_TYPING": "{{count}} people are typing",
+            "GROUP_SUBTITLE": "{{names}}",
+            "GROUP_SUBTITLE_MORE": "{{names}} and {{count}} others",
             "ONLINE": "online",
             "OFFLINE": "offline",
             "LAST_SEEN": "Last seen",
             "VOICE_CALL": "Voice call",
             "VIDEO_CALL": "Video call",
             "INFO": "Info"
+        },
+        "COMPOSER": {
+            "APPS": "Apps",
+            "AUDIO_MESSAGE": "Audio Message",
+            "SEND": "Send"
         }
     },
     "COMMON": {
+        "LANGUAGE": "Language",
+        "FOOTER": {
+            "COPYRIGHT": "Crafted by Me \u2022 \u00a9 {{year}} All rights reserved."
+        },
         "SEARCH": {
             "PLACEHOLDER": "Search"
         }
+    },
+    "NOT_FOUND": {
+        "TITLE": "Page not found"
     }
 }

@@ -71,27 +71,43 @@
             "NEW_CHAT": "Nouvelle conversation"
         },
         "EMPTY": {
-            "TITLE": "Conversation",
-            "CHOOSE": "Choisissez une conversation pour commencer à discuter"
+            "TITLE": "Aucune conversation sélectionnée",
+            "CHOOSE": "Choisissez une conversation ou démarrez une nouvelle discussion pour commencer à échanger."
         },
         "LIST": {
             "TYPING": "écrit",
             "LAST_ACTIVE": "Dernière activité",
-            "START_NOW": "Commencer la conversation maintenant"
+            "START_NOW": "Commencer la conversation maintenant",
+            "LAST_MESSAGE_SENT": "Dernier message envoyé"
         },
         "HEADER": {
             "TYPING": "écrit",
+            "GROUP_TYPING": "{{count}} personnes sont en train d’écrire",
+            "GROUP_SUBTITLE": "{{names}}",
+            "GROUP_SUBTITLE_MORE": "{{names}} et {{count}} autres",
             "ONLINE": "en ligne",
             "OFFLINE": "hors ligne",
             "LAST_SEEN": "Dernière connexion",
             "VOICE_CALL": "Appel vocal",
             "VIDEO_CALL": "Appel vidéo",
             "INFO": "Info"
+        },
+        "COMPOSER": {
+            "APPS": "Applications",
+            "AUDIO_MESSAGE": "Message audio",
+            "SEND": "Envoyer"
         }
     },
     "COMMON": {
+        "LANGUAGE": "Langue",
+        "FOOTER": {
+            "COPYRIGHT": "Conçu par Me \u2022 \u00a9 {{year}} Tous droits réservés."
+        },
         "SEARCH": {
             "PLACEHOLDER": "Rechercher"
         }
+    },
+    "NOT_FOUND": {
+        "TITLE": "Page introuvable"
     }
 }

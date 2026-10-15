@@ -71,27 +71,43 @@
             "NEW_CHAT": "محادثة جديدة"
         },
         "EMPTY": {
-            "TITLE": "دردشة",
-            "CHOOSE": "اختر محادثة لبدء المراسلة"
+            "TITLE": "لم يتم اختيار محادثة",
+            "CHOOSE": "اختر محادثة أو ابدأ محادثة جديدة لبدء المراسلة."
         },
         "LIST": {
             "TYPING": "يكتب",
             "LAST_ACTIVE": "آخر نشاط",
-            "START_NOW": "ابدأ المحادثة الآن"
+            "START_NOW": "ابدأ المحادثة الآن",
+            "LAST_MESSAGE_SENT": "تم إرسال آخر رسالة"
         },
         "HEADER": {
             "TYPING": "يكتب",
+            "GROUP_TYPING": "{{count}} أشخاص يكتبون",
+            "GROUP_SUBTITLE": "{{names}}",
+            "GROUP_SUBTITLE_MORE": "{{names}} و{{count}} آخرين",
             "ONLINE": "متصل",
             "OFFLINE": "غير متصل",
             "LAST_SEEN": "آخر ظهور",
             "VOICE_CALL": "مكالمة صوتية",
             "VIDEO_CALL": "مكالمة فيديو",
             "INFO": "معلومات"
+        },
+        "COMPOSER": {
+            "APPS": "التطبيقات",
+            "AUDIO_MESSAGE": "رسالة صوتية",
+            "SEND": "إرسال"
         }
     },
     "COMMON": {
+        "LANGUAGE": "اللغة",
+        "FOOTER": {
+            "COPYRIGHT": "صُنع بواسطة Me \u2022 \u00a9 {{year}} جميع الحقوق محفوظة."
+        },
         "SEARCH": {
             "PLACEHOLDER": "بحث"
         }
+    },
+    "NOT_FOUND": {
+        "TITLE": "الصفحة غير موجودة"
     }
 }

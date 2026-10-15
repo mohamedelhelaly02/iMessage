@@ -1,7 +1,11 @@
 <div class="imessage-sidebar-header">
   <div class="imessage-sidebar-title-row">
-    <h2>Messages</h2>
-    <button class="imessage-new-chat-btn" title="New Message">
+    <h2>{{ 'CHAT.SIDEBAR_HEADER.TITLE' | translate }}</h2>
+    <button
+      class="imessage-new-chat-btn"
+      [attr.aria-label]="'CHAT.SIDEBAR_HEADER.NEW_CHAT' | translate"
+      [attr.title]="'CHAT.SIDEBAR_HEADER.NEW_CHAT' | translate"
+    >
       <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
         <path
           stroke-linecap="round"
@@ -24,7 +28,7 @@
     </svg>
     <input
       type="text"
-      placeholder="Search"
+      [placeholder]="'COMMON.SEARCH.PLACEHOLDER' | translate"
       [value]="searchQuery()"
       (input)="onSearchInput($event)"
       class="imessage-search-input"

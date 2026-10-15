@@ -36,16 +36,20 @@
           }
         </div>
         <div class="imessage-chat-bottom">
-          @if (isConversationTyping(conversation.publicId)) {
+          @if (isConversationTyping(conversation.id)) {
             <span class="chat-header__status chat-header__status--typing">
-              Typing
-              <span class="typing-dots" aria-label="Typing">
+              {{ 'CHAT.LIST.TYPING' | translate }}
+              <span class="typing-dots" [attr.aria-label]="'CHAT.LIST.TYPING' | translate">
                 <span></span><span></span><span></span>
               </span>
             </span>
           } @else {
             <p class="imessage-chat-preview">
-              {{ conversation.lastMessageAtUtc ?? 'Last message sent' }}
+              @if (conversation.lastMessageAtUtc) {
+                {{ conversation.lastMessageAtUtc }}
+              } @else {
+                {{ 'CHAT.LIST.LAST_MESSAGE_SENT' | translate }}
+              }
             </p>
           }
         </div>

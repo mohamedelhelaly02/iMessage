@@ -4,7 +4,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { catchError, finalize, Observable, of, tap } from 'rxjs';
 import { IConversation } from '../models/conversation';
 import { Router } from '@angular/router';
-import { AuthStore } from '../../auth/services/store';
 
 @Service()
 export class ConversationStore {
@@ -12,7 +11,6 @@ export class ConversationStore {
     this._selectedConversation.set(null);
   }
   private readonly _api = inject(ConversationApi);
-  private readonly _authStore = inject(AuthStore);
   private readonly _router = inject(Router);
   private readonly _isLoading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);

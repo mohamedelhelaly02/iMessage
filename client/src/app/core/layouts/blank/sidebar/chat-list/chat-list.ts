@@ -58,6 +58,20 @@ export class ChatList implements OnInit {
   }
 
   async selectConversation(conversation: IConversation) {
+    console.log(`Selected Conversation: ${conversation.id}`);
+
+    if (this.selected()?.id === conversation.id) {
+      console.log('User selected the same conversation');
+      return;
+    }
+
+    const activeConversationId = this.selected()?.id;
+
+    if (activeConversationId) {
+      console.log(`Leaving conversation: ${activeConversationId}`);
+      await this._hub.leaveConversation(activeConversationId);
+    }
+
     this._conversationStore.selectConversation(conversation);
     await this._hub.joinConversation(conversation.id);
   }
