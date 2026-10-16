@@ -54,6 +54,27 @@
             "REGISTER": "Create a new account"
         }
     },
+    "CONFIRM_EMAIL": {
+        "VERIFYING": {
+            "TITLE": "Confirming your email",
+            "DESCRIPTION": "Please wait while we verify your email address."
+        },
+        "SUCCESS": {
+            "TITLE": "Email confirmed",
+            "DESCRIPTION": "Your email address has been verified. You can now sign in to your account."
+        },
+        "ERROR": {
+            "TITLE": "Confirmation failed",
+            "DESCRIPTION": "We couldn't confirm this email address. The link may be invalid or expired."
+        },
+        "INVALID": {
+            "TITLE": "Invalid confirmation link",
+            "DESCRIPTION": "This link is missing the information needed to confirm your email. Please request a new confirmation email."
+        },
+        "BUTTON": {
+            "LOGIN": "Continue to login"
+        }
+    },
     "AUTH_NAVBAR": {
         "BRAND": "Messages"
     },

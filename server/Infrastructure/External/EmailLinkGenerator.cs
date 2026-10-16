@@ -7,7 +7,7 @@ public sealed class EmailLinkGenerator(IConfiguration configuration) : IEmailLin
     private readonly string clientUrl = configuration["AngularClient"]
          ?? throw new KeyNotFoundException("clientUrl is not configured");
 
-    public string GenerateConfirmEmailLink(string userId, string encodedToken)
-        => $"{clientUrl}/auth/confirm-email?userId={userId}&token=${encodedToken}";
+    public string GenerateConfirmEmailLink(string encodedEmail, string encodedToken)
+        => $"{clientUrl}/auth/confirm-email?email={encodedEmail}&token={encodedToken}";
 
 }

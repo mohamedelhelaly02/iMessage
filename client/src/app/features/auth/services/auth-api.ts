@@ -5,14 +5,15 @@ import { environment } from '../../../../environments/environment';
 import { RegisterRequest } from '../models/register-request';
 import { AuthResponse } from '../models/auth-response';
 import { LoginCredentails } from '../models/credentails';
+import { ConfirmEmailRequest } from '../models/confirm-email';
 
 @Service()
 export class AuthApi {
   private readonly BASE_URL: string = `${environment.apiUrl}/api/auth`;
   private readonly httpClient = inject(HttpClient);
 
-  register(registerData: RegisterRequest): Observable<void> {
-    return this.httpClient.post<void>(`${this.BASE_URL}/register`, registerData);
+  register(registerData: RegisterRequest): Observable<string> {
+    return this.httpClient.post<string>(`${this.BASE_URL}/register`, registerData);
   }
 
   login(loginData: LoginCredentails): Observable<AuthResponse> {
@@ -25,5 +26,9 @@ export class AuthApi {
 
   refresh(): Observable<AuthResponse> {
     return this.httpClient.post<AuthResponse>(`${this.BASE_URL}/refresh`, {});
+  }
+
+  confirmEmail(request: ConfirmEmailRequest): Observable<string> {
+    return this.httpClient.post<string>(`${this.BASE_URL}/confirm-email`, request);
   }
 }

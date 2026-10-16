@@ -10,6 +10,7 @@ import { LoginCredentails } from '../models/credentails';
 import { AuthResponse } from '../models/auth-response';
 import { IOnlineUser } from '../models/online-user';
 import { toast } from 'ngx-sonner';
+import { ConfirmEmailRequest } from '../models/confirm-email';
 
 @Service()
 export class AuthStore {
@@ -50,6 +51,7 @@ export class AuthStore {
         this._router.navigate(['/conversations']);
       }),
       catchError((e: HttpErrorResponse) => {
+        console.log(e);
         const message = e.error.detail || 'Login failed. Please check your credentials.';
         this._error.set(message);
         toast.error(message);
@@ -59,17 +61,36 @@ export class AuthStore {
     );
   }
 
-  register(request: RegisterRequest): Observable<void | null> {
+  register(request: RegisterRequest): Observable<string | null> {
     this._isLoading.set(true);
     this._error.set(null);
 
     return this._auth.register(request).pipe(
       takeUntilDestroyed(this._destroyRef),
-      tap(() => {
-        this._router.navigate(['/auth/login']);
+      tap((response) => {
+        toast.success(response);
       }),
-      catchError((e) => {
-        const message = e?.error?.message || 'Login failed. Please check your credentials.';
+      catchError((e: HttpErrorResponse) => {
+        const message = e?.error.detail;
+        this._error.set(message);
+        toast.error(message);
+        return of(null);
+      }),
+      finalize(() => this._isLoading.set(false)),
+    );
+  }
+
+  confirmEmail(request: ConfirmEmailRequest): Observable<string | null> {
+    this._isLoading.set(true);
+    this._error.set(null);
+
+    return this._auth.confirmEmail(request).pipe(
+      takeUntilDestroyed(this._destroyRef),
+      catchError((e: HttpErrorResponse) => {
+        const message =
+          e.error?.message ||
+          e.error?.detail ||
+          'Email confirmation failed. The link may be invalid or expired.';
         this._error.set(message);
         return of(null);
       }),

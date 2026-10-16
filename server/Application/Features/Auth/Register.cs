@@ -99,12 +99,14 @@ public sealed class Register : IEndpoint
             }
 
 
-            string emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
-            string encodedToken = Base64Url.EncodeToString(Encoding.UTF8.GetBytes(emailToken));
+            string token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
-            string confirmationLink = emailLinkGenerator.GenerateConfirmEmailLink(user.Id, encodedName);
+            var encodedEmail = Base64Url.EncodeToString(Encoding.UTF8.GetBytes(user.Email));
+            var encodedToken = Base64Url.EncodeToString(Encoding.UTF8.GetBytes(token));
 
-            await emailService.SendEmailAsync(user.Email, "Confirm Email", $"Link: <a href='{confirmationLink}'>confirm email</a>");
+            string confirmationLink = emailLinkGenerator.GenerateConfirmEmailLink(encodedEmail, encodedToken);
+
+            await emailService.SendEmailAsync(user.Email, "Confirm your email", $"Please confirm your account by clicking this link: <a href='{confirmationLink}'>confirm email</a>");
 
             return Result<string>.Success("Registration completed successfully, check your inbox and confirm email.");
         }
@@ -114,7 +116,7 @@ public sealed class Register : IEndpoint
     {
         app.MapPost("auth/register", async (Command command, ISender sender) =>
         {
-            Result result = await sender.Send(command);
+            Result<string> result = await sender.Send(command);
             return result.ToResponse();
         })
         .AllowAnonymous()

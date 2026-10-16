@@ -54,6 +54,27 @@
             "REGISTER": "Créer un nouveau compte"
         }
     },
+    "CONFIRM_EMAIL": {
+        "VERIFYING": {
+            "TITLE": "Confirmation de votre adresse e-mail",
+            "DESCRIPTION": "Veuillez patienter pendant la vérification de votre adresse e-mail."
+        },
+        "SUCCESS": {
+            "TITLE": "Adresse e-mail confirmée",
+            "DESCRIPTION": "Votre adresse e-mail a été vérifiée. Vous pouvez maintenant vous connecter."
+        },
+        "ERROR": {
+            "TITLE": "Échec de la confirmation",
+            "DESCRIPTION": "Nous n'avons pas pu confirmer cette adresse e-mail. Le lien est peut-être invalide ou expiré."
+        },
+        "INVALID": {
+            "TITLE": "Lien de confirmation invalide",
+            "DESCRIPTION": "Ce lien ne contient pas les informations nécessaires pour confirmer votre adresse e-mail. Veuillez demander un nouvel e-mail de confirmation."
+        },
+        "BUTTON": {
+            "LOGIN": "Continuer vers la connexion"
+        }
+    },
     "AUTH_NAVBAR": {
         "BRAND": "Messages"
     },

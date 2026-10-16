@@ -42,6 +42,12 @@ export const routes: Routes = [
           import('./features/auth/pages/register/register').then((c) => c.Register),
         title: 'Register',
       },
+      {
+        path: 'confirm-email',
+        loadComponent: () =>
+          import('./features/auth/pages/confirm-email/confirm-email').then(c => c.ConfirmEmail),
+        title: 'Confirm email'
+      }
     ],
   },
   {

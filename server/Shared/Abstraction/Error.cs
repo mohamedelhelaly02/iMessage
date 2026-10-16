@@ -18,7 +18,7 @@ public sealed record Error
     public static Error NotFound(string code = "NOT_FOUND", string message = "Resource not found.") => new(code, message, ErrorType.NotFound);
     public static Error Conflict(string code = "CONFLICT", string message = "Conflict occurred.") => new(code, message, ErrorType.Conflict);
     public static Error Validation(
-        string code,
+        string code = "VALIDATION",
         string? message = null,
         Dictionary<string, string[]>? errors = null)
             => new(code, message, ErrorType.Validation, errors);
