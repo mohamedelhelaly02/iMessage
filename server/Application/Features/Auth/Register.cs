@@ -1,6 +1,9 @@
+using System.Buffers.Text;
+using System.Text;
 using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
+using server.Application.Interfaces;
 using server.Domain.Entities;
 using server.Shared.Abstraction;
 using server.Shared.Extensions;
@@ -13,7 +16,7 @@ public sealed class Register : IEndpoint
     public sealed record Command(
         string DisplayName,
         string Email,
-        string Password) : IRequest<Result>;
+        string Password) : IRequest<Result<string>>;
 
     public sealed class Validator : AbstractValidator<Command>
     {
@@ -36,14 +39,16 @@ public sealed class Register : IEndpoint
 
 
     public sealed class Handler(
-        UserManager<User> userManager) : IRequestHandler<Command, Result>
+        UserManager<User> userManager,
+        IEmailLinkGenerator emailLinkGenerator,
+        IEmailService emailService) : IRequestHandler<Command, Result<string>>
     {
-        public async Task<Result> Handle(Command request, CancellationToken cancellationToken)
+        public async Task<Result<string>> Handle(Command request, CancellationToken cancellationToken)
         {
             User? existingUser = await userManager.FindByEmailAsync(request.Email);
 
             if (existingUser is not null)
-                return Result.Failure(UserErrors.EmailInUse);
+                return Result<string>.Failure(UserErrors.EmailInUse);
 
             string encodedName = Uri.EscapeDataString(request.DisplayName);
             string defaultPictureUrl = $"https://ui-avatars.com/api/?name={encodedName}&background=0D8ABC&color=fff&size=128&bold=true";
@@ -53,7 +58,8 @@ public sealed class Register : IEndpoint
                 DisplayName = request.DisplayName,
                 Email = request.Email,
                 UserName = request.Email.Split('@')[0],
-                ProfilePictureUrl = defaultPictureUrl
+                ProfilePictureUrl = defaultPictureUrl,
+                EmailConfirmed = false
             };
 
             IdentityResult createResult = await userManager.CreateAsync(user, request.Password);
@@ -78,7 +84,7 @@ public sealed class Register : IEndpoint
 
                 Dictionary<string, string[]>? formattedErrors = errorDictionary.ToDictionary(k => k.Key, v => v.Value.ToArray());
 
-                return Result.Failure(UserErrors.RegistrationFailed(formattedErrors));
+                return Result<string>.Failure(UserErrors.RegistrationFailed(formattedErrors));
             }
 
             IdentityResult addToRoleResult = await userManager.AddToRoleAsync(user, "User");
@@ -89,10 +95,18 @@ public sealed class Register : IEndpoint
                     .GroupBy(e => e.Code)
                     .ToDictionary(g => g.Key, g => g.Select(e => e.Description).ToArray());
 
-                return Result.Failure(UserErrors.RoleAssignmentFailed(errors));
+                return Result<string>.Failure(UserErrors.RoleAssignmentFailed(errors));
             }
 
-            return Result.Success();
+
+            string emailToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
+            string encodedToken = Base64Url.EncodeToString(Encoding.UTF8.GetBytes(emailToken));
+
+            string confirmationLink = emailLinkGenerator.GenerateConfirmEmailLink(user.Id, encodedName);
+
+            await emailService.SendEmailAsync(user.Email, "Confirm Email", $"Link: <a href='{confirmationLink}'>confirm email</a>");
+
+            return Result<string>.Success("Registration completed successfully, check your inbox and confirm email.");
         }
     }
 
@@ -101,14 +115,14 @@ public sealed class Register : IEndpoint
         app.MapPost("auth/register", async (Command command, ISender sender) =>
         {
             Result result = await sender.Send(command);
-            return result.ToResponse(StatusCodes.Status204NoContent);
+            return result.ToResponse();
         })
         .AllowAnonymous()
         .WithName("Register")
         .WithTags("Auth")
         .ProducesProblem(StatusCodes.Status409Conflict)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .Produces(StatusCodes.Status204NoContent)
+        .Produces(StatusCodes.Status200OK)
         .RequireRateLimiting("AuthLimiter");
     }
 

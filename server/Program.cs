@@ -13,6 +13,7 @@ using server.Application.Hubs;
 using server.Application.Interfaces;
 using server.Domain.Entities;
 using server.Infrastructure;
+using server.Infrastructure.External;
 using server.Infrastructure.Identity;
 using server.Infrastructure.Persistence;
 using server.Infrastructure.Persistence.Seed;
@@ -165,6 +166,11 @@ builder.Services.AddRateLimiter(options =>
         await context.HttpContext.Response.WriteAsJsonAsync(problem, cancellationToken);
     };
 });
+
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection(EmailSettings.SectionName));
+
+builder.Services.AddTransient<IEmailService, EmailService>();
+builder.Services.AddTransient<IEmailLinkGenerator, EmailLinkGenerator>();
 
 WebApplication app = builder.Build();
 
