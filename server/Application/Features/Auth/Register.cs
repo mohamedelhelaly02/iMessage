@@ -108,7 +108,8 @@ public sealed class Register : IEndpoint
         .WithTags("Auth")
         .ProducesProblem(StatusCodes.Status409Conflict)
         .ProducesProblem(StatusCodes.Status400BadRequest)
-        .Produces(StatusCodes.Status204NoContent);
+        .Produces(StatusCodes.Status204NoContent)
+        .RequireRateLimiting("AuthLimiter");
     }
 
 }

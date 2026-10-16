@@ -39,6 +39,7 @@ public sealed class Login : IEndpoint
 
     public sealed class Handler(
         UserManager<User> userManager,
+        SignInManager<User> signInManager,
         IJwtGenerator jwtGenerator,
         IOptions<JwtSettings> jwtOptions,
         AppDbContext dbContext,
@@ -51,12 +52,21 @@ public sealed class Login : IEndpoint
 
             var user = await userManager.FindByEmailAsync(request.Email);
             if (user is null)
-                return Result<AuthResponse>.Failure(UserErrors.InvalidCredentails);
+                return Result<AuthResponse>.Failure(UserErrors.InvalidCredentials);
 
-            var isValid = await userManager.CheckPasswordAsync(user, request.Password);
+            if (!user.EmailConfirmed)
+                return Result<AuthResponse>.Failure(UserErrors.EmailNotConfirmed);
 
-            if (!isValid)
-                return Result<AuthResponse>.Failure(UserErrors.InvalidCredentails);
+            var signInResult = await signInManager.CheckPasswordSignInAsync(
+                user,
+                request.Password,
+                lockoutOnFailure: true);
+
+            if (signInResult.IsLockedOut)
+                return Result<AuthResponse>.Failure(UserErrors.AccountLocked);
+
+            if (!signInResult.Succeeded)
+                return Result<AuthResponse>.Failure(UserErrors.InvalidCredentials);
 
             var token = jwtGenerator.Generate(user);
             var refreshToken = RefreshTokenGenerator.GenerateToken();
@@ -95,7 +105,8 @@ public sealed class Login : IEndpoint
         .WithName("Login")
         .WithTags("Auth")
         .Produces<AuthResponse>(StatusCodes.Status200OK)
-        .Produces(StatusCodes.Status401Unauthorized);
+        .Produces(StatusCodes.Status401Unauthorized)
+        .RequireRateLimiting("AuthLimiter");
     }
 
 }

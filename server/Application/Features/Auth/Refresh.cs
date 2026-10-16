@@ -134,6 +134,7 @@ public sealed class Refresh : IEndpoint
             .WithName("Refresh")
             .WithTags("Auth")
             .ProducesProblem(StatusCodes.Status401Unauthorized)
-            .Produces<Login.AuthResponse>(StatusCodes.Status200OK);
+            .Produces<Login.AuthResponse>(StatusCodes.Status200OK)
+            .RequireRateLimiting("AuthLimiter");
     }
 }

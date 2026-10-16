@@ -59,7 +59,8 @@ public sealed class Logout : IEndpoint
             .AllowAnonymous()
             .WithName("Logout")
             .WithTags("Auth")
-            .Produces(StatusCodes.Status204NoContent);
+            .Produces(StatusCodes.Status204NoContent)
+            .RequireRateLimiting("AuthLimiter");
     }
 
 }
