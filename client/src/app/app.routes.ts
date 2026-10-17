@@ -11,10 +11,7 @@ export const routes: Routes = [
       { path: '', redirectTo: 'conversations', pathMatch: 'full' },
       {
         path: 'conversations',
-        loadComponent: () =>
-          import('./features/chat/pages/empty/empty').then(
-            (c) => c.Empty,
-          ),
+        loadComponent: () => import('./features/chat/pages/empty/empty').then((c) => c.Empty),
         title: 'conversations',
       },
       {
@@ -22,6 +19,12 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/chat/pages/conversation/conversation').then((c) => c.Conversation),
         title: 'Details',
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./features/users/pages/profile/profile').then((component) => component.Profile),
+        title: 'My profile',
       },
     ],
   },
@@ -45,9 +48,25 @@ export const routes: Routes = [
       {
         path: 'confirm-email',
         loadComponent: () =>
-          import('./features/auth/pages/confirm-email/confirm-email').then(c => c.ConfirmEmail),
-        title: 'Confirm email'
-      }
+          import('./features/auth/pages/confirm-email/confirm-email').then((c) => c.ConfirmEmail),
+        title: 'Confirm email',
+      },
+      {
+        path: 'forgot-password',
+        loadComponent: () =>
+          import('./features/auth/pages/forgot-password/forgot-password').then(
+            (component) => component.ForgotPassword,
+          ),
+        title: 'Forgot password',
+      },
+      {
+        path: 'reset-password',
+        loadComponent: () =>
+          import('./features/auth/pages/reset-password/reset-password').then(
+            (component) => component.ResetPassword,
+          ),
+        title: 'Reset password',
+      },
     ],
   },
   {

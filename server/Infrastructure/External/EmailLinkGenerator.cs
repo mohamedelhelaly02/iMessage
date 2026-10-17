@@ -10,4 +10,7 @@ public sealed class EmailLinkGenerator(IConfiguration configuration) : IEmailLin
     public string GenerateConfirmEmailLink(string encodedEmail, string encodedToken)
         => $"{clientUrl}/auth/confirm-email?email={encodedEmail}&token={encodedToken}";
 
+    public string GenerateResetPasswordLink(string encodedEmail, string encodedToken)
+        => $"{clientUrl}/auth/reset-password?email={encodedEmail}&token={encodedToken}";
+
 }

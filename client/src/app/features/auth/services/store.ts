@@ -7,7 +7,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { User } from '../models/user';
 import { RegisterRequest } from '../models/register-request';
 import { LoginCredentails } from '../models/credentails';
-import { AuthResponse } from '../models/auth-response';
+import { AuthResponse, LoginResponse } from '../models/auth-response';
 import { IOnlineUser } from '../models/online-user';
 import { toast } from 'ngx-sonner';
 import { ConfirmEmailRequest } from '../models/confirm-email';
@@ -22,6 +22,7 @@ export class AuthStore {
   private readonly _accessToken = signal<string | null>(null);
   private readonly _isLoading = signal<boolean>(false);
   private readonly _error = signal<string | null>(null);
+  private readonly _requiresTwoFactor = signal<boolean>(false);
   private readonly _onlineUsers = signal<Set<User>>(new Set());
   private readonly _typingUsers = signal<Map<string, Set<string>>>(new Map());
 
@@ -29,18 +30,32 @@ export class AuthStore {
   readonly accessToken = this._accessToken.asReadonly();
   readonly isLoading = this._isLoading.asReadonly();
   readonly error = this._error.asReadonly();
+  readonly requiresTwoFactor = this._requiresTwoFactor.asReadonly();
   readonly onlineUsers = this._onlineUsers.asReadonly();
   readonly typingUsers = this._typingUsers.asReadonly();
 
   readonly isAuthenticated = computed(() => this._user() !== null && this._accessToken() !== null);
 
-  login(credentials: LoginCredentails): Observable<AuthResponse | null> {
+  login(credentials: LoginCredentails): Observable<LoginResponse | null> {
     this._isLoading.set(true);
     this._error.set(null);
+    if (!credentials.twoFactorCode && !credentials.recoveryCode) {
+      this._requiresTwoFactor.set(false);
+    }
 
     return this._auth.login(credentials).pipe(
       takeUntilDestroyed(this._destroyRef),
-      tap((response: AuthResponse) => {
+      tap((response: LoginResponse) => {
+        if (response.requiresTwoFactor) {
+          this._requiresTwoFactor.set(true);
+          return;
+        }
+        if (!response.id || !response.token || !response.displayName) {
+          this._error.set('The server returned an incomplete login response.');
+          return;
+        }
+
+        this._requiresTwoFactor.set(false);
         this._accessToken.set(response.token);
         this._user.set({
           id: response.id,
@@ -51,8 +66,8 @@ export class AuthStore {
         this._router.navigate(['/conversations']);
       }),
       catchError((e: HttpErrorResponse) => {
-        console.log(e);
-        const message = e.error.detail || 'Login failed. Please check your credentials.';
+        const message =
+          e.error?.detail || e.error?.message || 'Login failed. Please check your credentials.';
         this._error.set(message);
         toast.error(message);
         return of(null);
@@ -222,6 +237,14 @@ export class AuthStore {
     this._user.set(null);
     this._accessToken.set(null);
     this._router.navigate(['/auth/login']);
+  }
+
+  clearLocalSession(): void {
+    this._clearLocalSession();
+  }
+
+  updateUserProfile(profile: Pick<User, 'displayName' | 'userName'>): void {
+    this._user.update((user) => (user ? { ...user, ...profile } : user));
   }
 
   isUserTyping(conversationId: string, userId: string): boolean {

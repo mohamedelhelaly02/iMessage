@@ -45,14 +45,120 @@
             "PLACEHOLDER": "••••••••",
             "ERROR_REQUIRED": "Le mot de passe est requis"
         },
+        "TWO_FACTOR": {
+            "TITLE": "Vérification en deux étapes",
+            "DESCRIPTION": "Saisissez le code de votre application pour vous connecter.",
+            "LABEL": "Code d’authentification",
+            "PLACEHOLDER": "Code à 6 chiffres",
+            "ERROR": "Saisissez un code valide à 6 chiffres.",
+            "USE_RECOVERY": "Utiliser un code de récupération",
+            "USE_AUTHENTICATOR": "Utiliser un code d’authentification"
+        },
+        "RECOVERY_CODE": {
+            "LABEL": "Code de récupération",
+            "PLACEHOLDER": "Saisissez un code non utilisé",
+            "ERROR": "Saisissez un code de récupération valide."
+        },
         "BUTTON": {
             "SUBMIT": "Se connecter",
+            "VERIFY": "Vérifier et se connecter",
             "LOADING": "Connexion en cours..."
         },
         "FOOTER": {
             "QUESTION": "Vous n'avez pas de compte ?",
-            "REGISTER": "Créer un nouveau compte"
+            "REGISTER": "Créer un nouveau compte",
+            "FORGOT_PASSWORD": "Mot de passe oublié ?"
         }
+    },
+    "PASSWORD": {
+        "FORGOT": {
+            "TITLE": "Réinitialiser votre mot de passe",
+            "DESCRIPTION": "Saisissez l’e-mail de votre compte pour recevoir un lien de réinitialisation si le compte existe.",
+            "SENT_TITLE": "Consultez votre boîte de réception",
+            "SENT_DESCRIPTION": "Si un compte correspond à cette adresse, un lien de réinitialisation a été envoyé."
+        },
+        "RESET": {
+            "TITLE": "Choisissez un nouveau mot de passe",
+            "DESCRIPTION": "Créez un mot de passe robuste pour protéger votre compte.",
+            "SUCCESS_TITLE": "Mot de passe mis à jour",
+            "SUCCESS_DESCRIPTION": "Votre mot de passe a été réinitialisé. Vous pouvez maintenant vous connecter.",
+            "INVALID_TITLE": "Lien de réinitialisation invalide",
+            "INVALID_DESCRIPTION": "Ce lien ne contient pas les informations nécessaires. Demandez un nouvel e-mail de réinitialisation."
+        },
+        "FIELDS": {
+            "EMAIL": "Adresse e-mail",
+            "NEW_PASSWORD": "Nouveau mot de passe",
+            "CONFIRM_PASSWORD": "Confirmer le nouveau mot de passe"
+        },
+        "ERRORS": {
+            "EMAIL": "Saisissez une adresse e-mail valide.",
+            "PASSWORD": "Utilisez au moins 8 caractères avec majuscule, minuscule, chiffre et symbole.",
+            "PASSWORD_MISMATCH": "Les mots de passe ne correspondent pas."
+        },
+        "BUTTONS": {
+            "SEND_LINK": "Envoyer le lien",
+            "SENDING": "Envoi en cours...",
+            "RESET": "Réinitialiser le mot de passe",
+            "SAVING": "Enregistrement...",
+            "BACK_TO_LOGIN": "Retour à la connexion"
+        }
+    },
+    "PROFILE": {
+        "EYEBROW": "Paramètres du compte",
+        "TITLE": "Votre profil",
+        "SUBTITLE": "Gérez vos informations, votre sécurité et votre compte.",
+        "LOADING": "Chargement de votre profil...",
+        "SECTIONS": {
+            "DETAILS": "Détails du profil",
+            "PASSWORD": "Changer le mot de passe",
+            "TWO_FACTOR": "Authentification à deux facteurs",
+            "DELETE_ACCOUNT": "Supprimer le compte"
+        },
+        "DETAILS_DESCRIPTION": "Modifiez les informations visibles par vos contacts.",
+        "PASSWORD_DESCRIPTION": "Utilisez un mot de passe unique.",
+        "TWO_FACTOR_DESCRIPTION": "Protégez votre compte avec une application d’authentification et des codes de récupération.",
+        "DELETE_DESCRIPTION": "La suppression est définitive. Votre compte et votre profil seront supprimés, ainsi que les conversations créées. Les sessions de renouvellement seront révoquées.",
+        "FIELDS": {
+            "DISPLAY_NAME": "Nom affiché",
+            "USERNAME": "Nom d’utilisateur",
+            "EMAIL": "Adresse e-mail",
+            "PICTURE_URL": "URL de la photo de profil (HTTPS)",
+            "CURRENT_PASSWORD": "Mot de passe actuel",
+            "NEW_PASSWORD": "Nouveau mot de passe",
+            "PASSWORD_FOR_CODES": "Confirmez votre mot de passe pour renouveler les codes",
+            "AUTHENTICATOR_CODE": "Code d’authentification à 6 chiffres"
+        },
+        "ERRORS": {
+            "DISPLAY_NAME": "Saisissez un nom de 100 caractères maximum.",
+            "PASSWORD": "Utilisez au moins 8 caractères avec majuscule, minuscule, chiffre et symbole.",
+            "CODE": "Saisissez un code d’authentification valide à 6 chiffres."
+        },
+        "FEEDBACK": {
+            "PROFILE_SAVED": "Votre profil a été mis à jour.",
+            "PASSWORD_CHANGED": "Votre mot de passe a été modifié. Les autres sessions ont été déconnectées.",
+            "TWO_FACTOR_DISABLED": "L’authentification à deux facteurs a été désactivée."
+        },
+        "BUTTONS": {
+            "SAVE": "Enregistrer le profil",
+            "SAVING": "Enregistrement...",
+            "CHANGE_PASSWORD": "Mettre à jour le mot de passe",
+            "SETUP_TWO_FACTOR": "Configurer l’application",
+            "VERIFY_AND_ENABLE": "Vérifier et activer",
+            "DISABLE_TWO_FACTOR": "Désactiver l’authentification à deux facteurs",
+            "REGENERATE_CODES": "Renouveler les codes",
+            "DONE_SAVING_CODES": "J’ai enregistré ces codes",
+            "DELETE_ACCOUNT": "Supprimer définitivement le compte"
+        },
+        "TWO_FACTOR_ENABLED": "La protection par authentificateur est activée",
+        "RECOVERY_CODES_LEFT": "{{count}} codes de récupération restants",
+        "RECOVERY_CODES_TITLE": "Enregistrez vos codes de récupération",
+        "RECOVERY_CODES_WARNING": "Chaque code est à usage unique. Ils ne seront affichés que maintenant ; conservez-les en lieu sûr.",
+        "AUTHENTICATOR": {
+            "INSTRUCTIONS": "Ajoutez iMessage à votre application en ouvrant le lien ou en saisissant manuellement la clé.",
+            "OPEN_APP": "Ouvrir dans l’application d’authentification",
+            "MANUAL_KEY": "Ou saisissez cette clé de configuration :"
+        },
+        "DELETE_CONFIRMATION": "Je comprends que cette action est définitive et supprimera mon compte."
     },
     "CONFIRM_EMAIL": {
         "VERIFYING": {
@@ -88,6 +194,7 @@
     },
     "NAVBAR": {
         "BRAND": "Messages",
+        "PROFILE": "Profil",
         "LOGOUT": "Se déconnecter"
     },
     "CHAT": {

@@ -26,7 +26,9 @@
     </div>
 
     <div class="blank-navbar__actions">
-
+      <a class="blank-navbar__profile" routerLink="/profile">
+        {{ 'NAVBAR.PROFILE' | translate }}
+      </a>
       <button
         (click)="logout()"
         class="blank-navbar__logout"

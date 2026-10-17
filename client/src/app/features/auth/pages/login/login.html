@@ -21,13 +21,13 @@
     </svg>
   </div>
 
-  <h1 class="auth-card__title">
-    {{ 'LOGIN.TITLE' | translate }}
-  </h1>
-
-  <p class="auth-card__subtitle">
-    {{ 'LOGIN.SUBTITLE' | translate }}
-  </p>
+  @if (requiresTwoFactor()) {
+    <h1 class="auth-card__title">{{ 'LOGIN.TWO_FACTOR.TITLE' | translate }}</h1>
+    <p class="auth-card__subtitle">{{ 'LOGIN.TWO_FACTOR.DESCRIPTION' | translate }}</p>
+  } @else {
+    <h1 class="auth-card__title">{{ 'LOGIN.TITLE' | translate }}</h1>
+    <p class="auth-card__subtitle">{{ 'LOGIN.SUBTITLE' | translate }}</p>
+  }
 
   @if (errorMessage(); as message) {
     <p class="form-field__error auth-card__error" role="alert">
@@ -80,6 +80,55 @@
       }
     </div>
 
+    @if (requiresTwoFactor()) {
+      <div class="form-field">
+        @if (isUsingRecoveryCode()) {
+          <label class="form-field__label" for="recoveryCode">
+            {{ 'LOGIN.RECOVERY_CODE.LABEL' | translate }}
+          </label>
+          <input
+            class="form-field__input"
+            id="recoveryCode"
+            type="text"
+            formControlName="recoveryCode"
+            autocomplete="one-time-code"
+            [placeholder]="'LOGIN.RECOVERY_CODE.PLACEHOLDER' | translate"
+          />
+          @if (loginForm.controls.recoveryCode.invalid && loginForm.controls.recoveryCode.touched) {
+            <span class="form-field__error">{{ 'LOGIN.RECOVERY_CODE.ERROR' | translate }}</span>
+          }
+        } @else {
+          <label class="form-field__label" for="twoFactorCode">
+            {{ 'LOGIN.TWO_FACTOR.LABEL' | translate }}
+          </label>
+          <input
+            class="form-field__input"
+            id="twoFactorCode"
+            type="text"
+            inputmode="numeric"
+            maxlength="6"
+            formControlName="twoFactorCode"
+            autocomplete="one-time-code"
+            [placeholder]="'LOGIN.TWO_FACTOR.PLACEHOLDER' | translate"
+          />
+          @if (
+            loginForm.controls.twoFactorCode.invalid && loginForm.controls.twoFactorCode.touched
+          ) {
+            <span class="form-field__error">{{ 'LOGIN.TWO_FACTOR.ERROR' | translate }}</span>
+          }
+        }
+      </div>
+
+      <button class="auth-card__text-button" type="button" (click)="toggleRecoveryCode()">
+        {{
+          (isUsingRecoveryCode()
+            ? 'LOGIN.TWO_FACTOR.USE_AUTHENTICATOR'
+            : 'LOGIN.TWO_FACTOR.USE_RECOVERY'
+          ) | translate
+        }}
+      </button>
+    }
+
     <button
       class="btn-primary"
       [class.btn-primary--loading]="isLoading()"
@@ -90,10 +139,14 @@
         <span class="btn-spinner" aria-hidden="true"></span>
         <span class="sr-only">{{ 'LOGIN.BUTTON.LOADING' | translate }}</span>
       } @else {
-        {{ 'LOGIN.BUTTON.SUBMIT' | translate }}
+        {{ (requiresTwoFactor() ? 'LOGIN.BUTTON.VERIFY' : 'LOGIN.BUTTON.SUBMIT') | translate }}
       }
     </button>
   </form>
+
+  <p class="auth-card__footer">
+    <a routerLink="/auth/forgot-password">{{ 'LOGIN.FOOTER.FORGOT_PASSWORD' | translate }}</a>
+  </p>
 
   <p class="auth-card__footer">
     {{ 'LOGIN.FOOTER.QUESTION' | translate }}

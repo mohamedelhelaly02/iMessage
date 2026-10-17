@@ -45,14 +45,120 @@
             "PLACEHOLDER": "••••••••",
             "ERROR_REQUIRED": "Password is required"
         },
+        "TWO_FACTOR": {
+            "TITLE": "Two-step verification",
+            "DESCRIPTION": "Enter your authenticator code to finish signing in.",
+            "LABEL": "Authenticator code",
+            "PLACEHOLDER": "6-digit code",
+            "ERROR": "Enter a valid 6-digit code.",
+            "USE_RECOVERY": "Use a recovery code instead",
+            "USE_AUTHENTICATOR": "Use an authenticator code instead"
+        },
+        "RECOVERY_CODE": {
+            "LABEL": "Recovery code",
+            "PLACEHOLDER": "Enter an unused recovery code",
+            "ERROR": "Enter a valid recovery code."
+        },
         "BUTTON": {
             "SUBMIT": "Sign In",
+            "VERIFY": "Verify and sign in",
             "LOADING": "Signing in..."
         },
         "FOOTER": {
             "QUESTION": "Don't have an account?",
-            "REGISTER": "Create a new account"
+            "REGISTER": "Create a new account",
+            "FORGOT_PASSWORD": "Forgot password?"
         }
+    },
+    "PASSWORD": {
+        "FORGOT": {
+            "TITLE": "Reset your password",
+            "DESCRIPTION": "Enter your account email and we’ll send a password reset link if an account exists.",
+            "SENT_TITLE": "Check your inbox",
+            "SENT_DESCRIPTION": "If an account with that email exists, a password reset link has been sent."
+        },
+        "RESET": {
+            "TITLE": "Choose a new password",
+            "DESCRIPTION": "Create a strong password to secure your account.",
+            "SUCCESS_TITLE": "Password updated",
+            "SUCCESS_DESCRIPTION": "Your password has been reset. You can now sign in with your new password.",
+            "INVALID_TITLE": "Invalid reset link",
+            "INVALID_DESCRIPTION": "This reset link is missing information. Request a new password reset email."
+        },
+        "FIELDS": {
+            "EMAIL": "Email address",
+            "NEW_PASSWORD": "New password",
+            "CONFIRM_PASSWORD": "Confirm new password"
+        },
+        "ERRORS": {
+            "EMAIL": "Enter a valid email address.",
+            "PASSWORD": "Use at least 8 characters with uppercase, lowercase, a number, and a symbol.",
+            "PASSWORD_MISMATCH": "Passwords do not match."
+        },
+        "BUTTONS": {
+            "SEND_LINK": "Send reset link",
+            "SENDING": "Sending...",
+            "RESET": "Reset password",
+            "SAVING": "Saving...",
+            "BACK_TO_LOGIN": "Back to login"
+        }
+    },
+    "PROFILE": {
+        "EYEBROW": "Account settings",
+        "TITLE": "Your profile",
+        "SUBTITLE": "Manage your personal details, security, and account.",
+        "LOADING": "Loading your profile...",
+        "SECTIONS": {
+            "DETAILS": "Profile details",
+            "PASSWORD": "Change password",
+            "TWO_FACTOR": "Two-factor authentication",
+            "DELETE_ACCOUNT": "Delete account"
+        },
+        "DETAILS_DESCRIPTION": "Update the details people see when they chat with you.",
+        "PASSWORD_DESCRIPTION": "Use a unique password you don't use anywhere else.",
+        "TWO_FACTOR_DESCRIPTION": "Add an authenticator app and recovery codes to protect your account.",
+        "DELETE_DESCRIPTION": "Deleting your account is permanent. Your account and profile will be removed, your messages and conversations you created will be deleted, and active refresh sessions will be revoked.",
+        "FIELDS": {
+            "DISPLAY_NAME": "Display name",
+            "USERNAME": "Username",
+            "EMAIL": "Email address",
+            "PICTURE_URL": "Profile picture URL (HTTPS)",
+            "CURRENT_PASSWORD": "Current password",
+            "NEW_PASSWORD": "New password",
+            "PASSWORD_FOR_CODES": "Confirm password to replace recovery codes",
+            "AUTHENTICATOR_CODE": "6-digit authenticator code"
+        },
+        "ERRORS": {
+            "DISPLAY_NAME": "Enter a display name up to 100 characters.",
+            "PASSWORD": "Use at least 8 characters with uppercase, lowercase, a number, and a symbol.",
+            "CODE": "Enter a valid 6-digit authenticator code."
+        },
+        "FEEDBACK": {
+            "PROFILE_SAVED": "Your profile has been updated.",
+            "PASSWORD_CHANGED": "Your password has been changed. Other sessions have been signed out.",
+            "TWO_FACTOR_DISABLED": "Two-factor authentication has been disabled."
+        },
+        "BUTTONS": {
+            "SAVE": "Save profile",
+            "SAVING": "Saving...",
+            "CHANGE_PASSWORD": "Update password",
+            "SETUP_TWO_FACTOR": "Set up authenticator app",
+            "VERIFY_AND_ENABLE": "Verify and enable",
+            "DISABLE_TWO_FACTOR": "Disable two-factor authentication",
+            "REGENERATE_CODES": "Replace recovery codes",
+            "DONE_SAVING_CODES": "I've saved these codes",
+            "DELETE_ACCOUNT": "Permanently delete account"
+        },
+        "TWO_FACTOR_ENABLED": "Authenticator protection is enabled",
+        "RECOVERY_CODES_LEFT": "{{count}} recovery codes remaining",
+        "RECOVERY_CODES_TITLE": "Save your recovery codes",
+        "RECOVERY_CODES_WARNING": "Each code can be used once. These codes are shown only now; store them somewhere safe.",
+        "AUTHENTICATOR": {
+            "INSTRUCTIONS": "Add iMessage to your authenticator app by opening the app link or entering the key manually.",
+            "OPEN_APP": "Open in authenticator app",
+            "MANUAL_KEY": "Or enter this setup key:"
+        },
+        "DELETE_CONFIRMATION": "I understand this action is permanent and will remove my account."
     },
     "CONFIRM_EMAIL": {
         "VERIFYING": {
@@ -88,6 +194,7 @@
     },
     "NAVBAR": {
         "BRAND": "Messages",
+        "PROFILE": "Profile",
         "LOGOUT": "Log out"
     },
     "CHAT": {
